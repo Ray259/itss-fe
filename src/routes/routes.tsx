@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom';
-import BaseLayout from '../layouts/BaseLayout';
-import TestPage from '../pages/test';
+import BaseLayout from '@layouts/BaseLayout';
+import TestPage from '@pages/test';
 
 const routes: RouteObject[] = [
     {

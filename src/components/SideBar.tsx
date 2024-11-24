@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import sidebarItems from '../configs/sidebarItems';
+import sidebarItems from '@configs/sidebarItems';
 
 interface SideBarProps {
     isVisible: boolean;

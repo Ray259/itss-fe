@@ -1,5 +1,5 @@
-import api from '../configs/axios';
-import { LOGIN_ENDPOINT, LOGOUT_ENDPOINT, PROFILE_ENDPOINT } from '../configs/api-endpoints';
+import api from '@configs/axios';
+import { LOGIN_ENDPOINT, LOGOUT_ENDPOINT, PROFILE_ENDPOINT } from '@configs/api-endpoints';
 
 export const login = async (username: string, password: string) => {
     const response = await api.post(LOGIN_ENDPOINT, { username, password });

@@ -1,15 +1,15 @@
 import React from 'react';
-import facebookLogo from '../assets/img/facebook black.1.svg';
-import twitterLogo from '../assets/img/twitter black.1.svg';
-import linkedinLogo from '../assets/img/linkedin black.1.svg';
-import youtubeLogo from '../assets/img/youtube color.1.svg';
-import instagramLogo from '../assets/img/instagram black.1.svg';
-import googleLogo from '../assets/img/googleplus black.1.svg';
-import pinterestLogo from '../assets/img/pinterest color.1.svg';
-import rssLogo from '../assets/img/rss black.1.svg';
-import roundLocalPrintshopIcon from '../assets/img/round-local-printshop-24px.svg';
-import roundPhoneIcon from '../assets/img/round-phone-24px.svg';
-import roundPlaceIcon from '../assets/img/round-place-24px.svg';
+import facebookLogo from '@assets/img/facebook black.1.svg';
+import twitterLogo from '@assets/img/twitter black.1.svg';
+import linkedinLogo from '@assets/img/linkedin black.1.svg';
+import youtubeLogo from '@assets/img/youtube color.1.svg';
+import instagramLogo from '@assets/img/instagram black.1.svg';
+import googleLogo from '@assets/img/googleplus black.1.svg';
+import pinterestLogo from '@assets/img/pinterest color.1.svg';
+import rssLogo from '@assets/img/rss black.1.svg';
+import roundLocalPrintshopIcon from '@assets/img/round-local-printshop-24px.svg';
+import roundPhoneIcon from '@assets/img/round-phone-24px.svg';
+import roundPlaceIcon from '@assets/img/round-place-24px.svg';
 
 const footerLinks = ['About Us', 'Contact Us', 'Help', 'Privacy Policy', 'Disclaimer'];
 const socialIcons = [

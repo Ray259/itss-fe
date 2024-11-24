@@ -1,5 +1,5 @@
 import React from 'react';
-import toggleButton from '../assets/img/toggle btn.svg';
+import toggleButton from '@assets/img/toggle btn.svg';
 
 interface HeaderProps {
     toggleSidebar: () => void;

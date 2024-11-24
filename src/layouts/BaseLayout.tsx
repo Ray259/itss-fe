@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import SideBar from '../components/SideBar';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
+import SideBar from '@components/SideBar';
+import Footer from '@components/Footer';
+import Header from '@components/Header';
 
 const BaseLayout: React.FC = () => {
     const [isSidebarVisible, setSidebarVisible] = useState(false);
