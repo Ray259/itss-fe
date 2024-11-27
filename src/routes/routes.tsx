@@ -2,6 +2,7 @@ import { RouteObject } from 'react-router-dom';
 import BaseLayout from '../layouts/BaseLayout';
 import TestPage from '../pages/test';
 import Login from '@pages/Login/page';
+import Register from '@pages/Register/page'
 import HomePage from '../pages/homepages/HomePage';
 
 const routes: RouteObject[] = [
@@ -44,6 +45,10 @@ const routes: RouteObject[] = [
     {
         path: '/login',
         element: <Login />
+    },
+    {
+        path: '/register',
+        element: <Register />
     }
 ];
 
