@@ -9,10 +9,13 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const handleLogin = () => {
-        navigate('/homepage');
+        navigate('/homepage'); // edit this line later to navigate to homepage after successful login
     };
     const handleRegister = () => {
-        navigate('/homepage');
+        navigate('/homepage'); // edit this line later to navigate to register page
+    };
+    const handleForgotPassword = () => {
+        navigate('/homepage'); // edit this line later to navigate to forgot password page
     };
 
     const isUsernameValid = username.length >= 6;
@@ -117,7 +120,9 @@ export default function Login() {
                         </a>
                     </p>
                     <p className='text-black font-bold mt-2'>
-                        <a href='#'>パスワードを忘れた？</a>
+                        <a href='#' onClick={handleForgotPassword}>
+                            パスワードを忘れた？
+                        </a>
                     </p>
                 </div>
                 <div className='mt-16 flex items-center justify-between'>
