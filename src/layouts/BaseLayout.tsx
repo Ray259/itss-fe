@@ -26,7 +26,7 @@ const BaseLayout: React.FC = () => {
                     </div>
 
                     {/* Main Content */}
-                    <div className='absolute flex-grow'>
+                    <div className='relative flex-grow flex'>
                         <Outlet />
                     </div>
                 </div>

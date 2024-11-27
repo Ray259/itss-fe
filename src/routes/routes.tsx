@@ -1,7 +1,8 @@
 import { RouteObject } from 'react-router-dom';
-import BaseLayout from '@layouts/BaseLayout';
-import TestPage from '@pages/test';
+import BaseLayout from '../layouts/BaseLayout';
+import TestPage from '../pages/test';
 import Login from '@pages/Login/page';
+import HomePage from '../pages/homepages/HomePage';
 
 const routes: RouteObject[] = [
     {
@@ -11,7 +12,7 @@ const routes: RouteObject[] = [
             {
                 path: 'homepage',
                 // TODO
-                element: <TestPage />
+                element: <HomePage />
             },
             {
                 path: 'survey',
