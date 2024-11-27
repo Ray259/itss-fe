@@ -29,73 +29,129 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-center text-xl font-semibold">アカウント登録</h2>
+    <div className="bg-white flex flex-col items-center justify-center min-h-screen p-4 relative">
+      {/* Decorative circles */}
+      <div
+        className='absolute'
+        style={{
+          width: '60px',
+          height: '60px',
+          top: '-10px',
+          left: '-25px',
+          backgroundColor: '#FE724C',
+          borderRadius: '50%',
+        }}
+      ></div>
+      <div
+        className='absolute'
+        style={{
+          width: '120px',
+          height: '120px',
+          top: '-50px',
+          left: '-10px',
+          backgroundColor: '#FFECE7',
+          borderRadius: '50%',
+        }}
+      ></div>
+      <div
+        className='absolute'
+        style={{
+          width: '130px',
+          height: '130px',
+          top: '-70px',
+          left: '180px',
+          backgroundColor: '#FE724C',
+          borderRadius: '50%',
+        }}
+      ></div>
+
+      {/* Form container */}
+      <div className="bg-white p-6 rounded-xl shadow-xl w-[280px] z-10">
+        <h2 className="text-center text-xl font-bold text-[#4e4f50] mb-5">アカウント登録</h2>
+
         <form onSubmit={handleSubmit} id="registration-form">
           <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium">ユーザー名</label>
+            <label htmlFor="username" className="block text-sm font-medium text-[#4e4f50]">ユーザー名</label>
             <input
               type="text"
               id="username"
               name="username"
-              className="w-full p-2 mt-1 border border-gray-300 rounded-md"
+              className={`w-full p-3 mt-2 border-2 border-[#d1d5db] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FE724C] ${!usernameError && username.length > 0 ? 'border-red-500' : ''}`}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
             {usernameError && (
-              <small className="text-red-500 text-xs mt-1 block">ユーザー名が已經使用されています</small>
+              <small className="text-red-500 text-xs mt-2 block">ユーザー名が已經使用されています</small>
             )}
           </div>
+
+          {/* Email input */}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium">メール</label>
+            <label htmlFor="email" className="block text-sm font-medium text-[#4e4f50]">メール</label>
             <input
               type="email"
               id="email"
               name="email"
-              className="w-full p-2 mt-1 border border-gray-300 rounded-md"
+              className="w-full p-3 mt-2 border-2 border-[#d1d5db] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FE724C]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
+
+          {/* Password input */}
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium">パスワード</label>
+            <label htmlFor="password" className="block text-sm font-medium text-[#4e4f50]">パスワード</label>
             <input
               type="password"
               id="password"
               name="password"
-              className="w-full p-2 mt-1 border border-gray-300 rounded-md"
+              className="w-full p-3 mt-2 border-2 border-[#d1d5db] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FE724C]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
+
+          {/* Confirm password input */}
           <div className="mb-4">
-            <label htmlFor="confirm-password" className="block text-sm font-medium">パスワード確認</label>
+            <label htmlFor="confirm-password" className="block text-sm font-medium text-[#4e4f50]">パスワード確認</label>
             <input
               type="password"
               id="confirm-password"
               name="confirm-password"
-              className="w-full p-2 mt-1 border border-gray-300 rounded-md"
+              className="w-full p-3 mt-2 border-2 border-[#d1d5db] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FE724C]"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
           </div>
+
           {passwordMismatch && (
             <div className="text-red-500 text-xs mb-4">パスワードが一致していません</div>
           )}
-          <button
+          
+          {/* Account login link */}
+          <div className="text-center mb-4">
+            <span className="text-sm text-gray-600">すでにアカウントをお持ちですか？</span>
+            <a href="#" className="text-sm text-[#FE724C] hover:underline">ログイン</a>
+          </div>
+
+
+
+           {/* Register button */}
+           <div className="mt-4">
+            <button
             type="submit"
-            className="w-full py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-          >
+            className="w-[60%] py-2 bg-[#FE724C] text-black rounded-full text-sm font-normal focus:outline-none focus:ring-2 focus:ring-[#FE724C] hover:bg-[#e55d3c] mx-auto block"
+            >
             登録
-          </button>
-          <p className="text-center mt-4 text-sm">
-            すでにアカウントをお持ちですか？ <a href="login.html" className="text-blue-500 hover:underline">ログイン</a>
-          </p>
+            </button>
+          </div>
+
+
+
         </form>
       </div>
     </div>
