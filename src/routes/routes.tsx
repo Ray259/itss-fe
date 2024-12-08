@@ -1,9 +1,10 @@
 import { RouteObject } from 'react-router-dom';
-import BaseLayout from '../layouts/BaseLayout';
-import TestPage from '../pages/test';
+import BaseLayout from '@/layouts/BaseLayout';
+import TestPage from '@/pages/test';
 import Login from '@pages/Login/page';
-import Register from '@pages/Register/page'
-import HomePage from '../pages/homepages/HomePage';
+import Register from '@pages/Register/page';
+import HomePage from '@/pages/homepages/HomePage';
+import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
 
 const routes: RouteObject[] = [
     {
@@ -11,9 +12,17 @@ const routes: RouteObject[] = [
         element: <BaseLayout />,
         children: [
             {
+                path: '/',
+                element: <HomePage />
+            },
+            {
                 path: 'homepage',
                 // TODO
                 element: <HomePage />
+            },
+            {
+                path: 'food-details/:foodId',
+                element: <FoodDetailsPage />
             },
             {
                 path: 'survey',
