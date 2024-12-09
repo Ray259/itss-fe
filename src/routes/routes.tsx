@@ -5,6 +5,7 @@ import Login from '@pages/Login/page';
 import Register from '@pages/Register/page';
 import HomePage from '@/pages/homepages/HomePage';
 import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
+import Anket from '@/pages/Anket/page';
 
 const routes: RouteObject[] = [
     {
@@ -27,7 +28,7 @@ const routes: RouteObject[] = [
             {
                 path: 'survey',
                 // TODO
-                element: <TestPage />
+                element: <Anket />
             },
             {
                 path: 'profile',
