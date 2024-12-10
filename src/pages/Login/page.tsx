@@ -1,141 +1,106 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid';
+import { login } from '@/api/auth.api';
 
-export default function Login() {
+const Login: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
-    const handleLogin = () => {
-        navigate('/homepage'); // edit this line later to navigate to homepage after successful login
-    };
-    const handleRegister = () => {
-        navigate('/homepage'); // edit this line later to navigate to register page
-    };
-    const handleForgotPassword = () => {
-        navigate('/homepage'); // edit this line later to navigate to forgot password page
-    };
 
     const isUsernameValid = username.length >= 6;
     const isPasswordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&]).{8,}$/.test(password);
     const isFormValid = isUsernameValid && isPasswordValid;
 
+    const handleLogin = async () => {
+        try {
+            await login(username, password);
+            navigate('/homepage');
+        } catch (error: any) {
+            setErrorMessage(error.response?.data?.message || 'ログインに失敗しました。もう一度お試しください。');
+        }
+    };
+
+    const handleRegister = () => navigate('/register');
+    const handleForgotPassword = () => navigate('/forgot-password');
+
     return (
         <div className='bg-white flex flex-col items-center justify-between min-h-screen p-4'>
             <div className='flex flex-col items-center justify-center flex-grow relative'>
-                <div
-                    className='absolute'
-                    style={{
-                        width: '96px',
-                        height: '96px',
-                        top: '-21px',
-                        left: '-46px',
-                        backgroundColor: '#FE724C',
-                        borderRadius: '50%'
-                    }}
-                ></div>
-                <div
-                    className='absolute'
-                    style={{
-                        width: '165px',
-                        height: '165px',
-                        top: '-99px',
-                        left: '-5px',
-                        backgroundColor: '#FFECE7',
-                        borderRadius: '50%'
-                    }}
-                ></div>
-                <div
-                    className='absolute'
-                    style={{
-                        width: '181px',
-                        height: '181px',
-                        top: '-109px',
-                        left: '298px',
-                        backgroundColor: '#FE724C',
-                        borderRadius: '50%'
-                    }}
-                ></div>
+                {/* Circles Background */}
+                <div className='absolute w-24 h-24 top-0 left-10 bg-orange-400 rounded-full'></div>
+                <div className='absolute w-36 h-36 -top-20 right-5 bg-orange-200 rounded-full'></div>
+
                 <div className='bg-white p-8 rounded-lg shadow-md z-10'>
                     <h1 className='text-center text-2xl text-black font-bold mb-4'>ログイン</h1>
+
+                    {errorMessage && <p className='text-red-500 text-sm mb-4'>{errorMessage}</p>}
+
+                    {/* Username */}
                     <div className='mb-4'>
-                        <label className='block text-gray-500 mb-2"='>ユーザー名</label>
-                        <div className='relative'>
-                            <input
-                                type='text'
-                                id='username'
-                                name='username'
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${!isUsernameValid && username.length > 0 ? 'border-red-500' : ''}`}
-                                style={{ width: '280px', height: '40px', borderRadius: '10px' }}
-                            />
-                        </div>
-                        {!isUsernameValid && username.length > 0 && (
-                            <p className='text-red-500 text-xs italic' style={{ width: '280px' }}>
-                                ユーザー名: 6文字以上
-                            </p>
-                        )}
+                        <label className='block text-gray-500 mb-2'>ユーザー名</label>
+                        <input
+                            type='text'
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            className={`w-full py-2 px-3 rounded border ${!isUsernameValid && username ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                        />
+                        {!isUsernameValid && username && <p className='text-red-500 text-xs'>ユーザー名: 6文字以上</p>}
                     </div>
+
+                    {/* Password */}
                     <div className='mb-4'>
                         <label className='block text-gray-500 mb-2'>パスワード</label>
                         <div className='relative'>
                             <input
                                 type={showPassword ? 'text' : 'password'}
-                                id='password'
-                                name='password'
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${!isPasswordValid && password.length > 0 ? 'border-red-500' : ''}`}
-                                style={{ width: '280px', height: '40px', borderRadius: '10px' }}
+                                className={`w-full py-2 px-3 rounded border ${!isPasswordValid && password ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                             />
-                            <div className='absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5'>
-                                <button
-                                    type='button'
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className='ml-2 focus:outline-none'
-                                >
-                                    {showPassword ? (
-                                        <EyeSlashIcon className='h-5 w-5 text-gray-500' />
-                                    ) : (
-                                        <EyeIcon className='h-5 w-5 text-gray-500' />
-                                    )}
-                                </button>
-                            </div>
+                            <button
+                                type='button'
+                                onClick={() => setShowPassword(!showPassword)}
+                                className='absolute right-2 top-2'
+                            >
+                                {showPassword ? <EyeSlashIcon className='w-5 h-5' /> : <EyeIcon className='w-5 h-5' />}
+                            </button>
                         </div>
-                        {!isPasswordValid && password.length > 0 && (
-                            <p className='text-red-500 text-xs italic' style={{ width: '280px' }}>
-                                パスワード: 8文字以上（大文字、小文字、数字、特殊文字「@#$%^&」をそれぞれ1文字以上含む）
+                        {!isPasswordValid && password && (
+                            <p className='text-red-500 text-xs'>
+                                パスワード: 8文字以上 (大文字、小文字、数字、記号を含む)
                             </p>
                         )}
                     </div>
-                </div>
-                <div className='mt-8 text-center'>
-                    <p className='text-gray-500'>
-                        アカウントをお持ちでないですか？{' '}
-                        <a href='#' className='text-orange-500' onClick={handleRegister}>
-                            登録
-                        </a>
-                    </p>
-                    <p className='text-black font-bold mt-2'>
-                        <a href='#' onClick={handleForgotPassword}>
-                            パスワードを忘れた？
-                        </a>
-                    </p>
-                </div>
-                <div className='mt-16 flex items-center justify-between'>
+
+                    {/* Buttons */}
                     <button
-                        className={`text-white py-2 px-4 rounded shadow-md ${isFormValid ? 'bg-orange-500 hover:bg-red-500' : 'bg-gray-400 cursor-not-allowed'} transition duration-300`}
-                        style={{ borderRadius: '28.5px' }}
                         onClick={handleLogin}
                         disabled={!isFormValid}
+                        className={`w-full py-2 px-4 rounded text-white ${isFormValid ? 'bg-orange-500' : 'bg-gray-300'} transition`}
                     >
                         ログイン
                     </button>
                 </div>
+
+                {/* Navigation */}
+                <div className='mt-8 text-center'>
+                    <p className='text-gray-500'>
+                        アカウントが必要ですか？{' '}
+                        <span onClick={handleRegister} className='text-orange-500 cursor-pointer'>
+                            登録
+                        </span>
+                    </p>
+                    <p className='text-orange-500 mt-2 cursor-pointer' onClick={handleForgotPassword}>
+                        パスワードを忘れた？
+                    </p>
+                </div>
             </div>
         </div>
     );
-}
+};
+
+export default Login;
