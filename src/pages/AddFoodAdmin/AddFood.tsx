@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './AddFood.css'; 
 
@@ -6,8 +7,7 @@ const AddFoodForm: React.FC = () => {
   const [foodName, setFoodName] = useState("");
   const [price, setPrice] = useState("");
   const [address, setAddress] = useState("");
-  const [restaurant, setRestaurant] = useState("");
-  const [image, setImage] = useState<File | null>(null);
+  const [images, setImages] = useState<File[]>([]);
   const [description, setDescription] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
 
@@ -18,16 +18,44 @@ const AddFoodForm: React.FC = () => {
         : [...prevCategories, category]
     );
   };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.files[0]);
+    const imageUrls = images.map((image) => URL.createObjectURL(image)); // Biến đổi các file thành URL tạm thời
+
+    const dishData = {
+      name: foodName,
+      price: parseFloat(price),
+      address: address,
+      categories: categories,
+      images: imageUrls, // Thay bằng các URL của ảnh đã tải lên
+      info: description,
+    };
+
+    try {
+      const response = await axios.post(
+        "https://itss-restaurant-backend.onrender.com/api/v1/dishes",
+        dishData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        }
+      );
+
+      console.log("Phản hồi từ server:", response.data);
+    } catch (error) {
+      console.error("Lỗi khi gửi request:", error);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Xử lý submit form ở đây
+  // Hàm xử lý khi người dùng chọn nhiều ảnh
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedImages = Array.from(e.target.files); // Chuyển các file được chọn thành mảng
+      setImages(selectedImages); // Lưu các file đã chọn vào state
+    }
   };
 
   return (
@@ -42,8 +70,6 @@ const AddFoodForm: React.FC = () => {
             id: "price", label: "価格:", value: price, setValue: setPrice,
           }, {
             id: "address", label: "住所:", value: address, setValue: setAddress,
-          }, {
-            id: "restaurant", label: "レストラン:", value: restaurant, setValue: setRestaurant,
         }].map((field) => (
           <div className="mb-3 d-flex align-items-center" key={field.id}>
             <label htmlFor={field.id} className="me-3" style={{ width: "150px", fontWeight: 'Bold', borderColor: "red", fontSize: "20px", padding:"20px" }}>
@@ -71,6 +97,7 @@ const AddFoodForm: React.FC = () => {
             className="d-none"
             style={{ width: "696px" }}
             onChange={handleImageChange}
+            multiple
           />
           {/* Thay thế bằng một button với icon */}
           <label htmlFor="image" className="btn btn-outline-secondary" style={{ display: "flex", alignItems: "center" }}>
@@ -80,6 +107,15 @@ const AddFoodForm: React.FC = () => {
             </svg>
             <span className="ms-2">Upload</span>
           </label>
+          {images.length > 0 && (
+          <div className="mt-3">
+            <ul>
+              {images.map((image, index) => (
+                <li key={index}>{image.name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         </div>
 
         {/* Mô tả */}
@@ -96,6 +132,8 @@ const AddFoodForm: React.FC = () => {
             rows={4}
           />
         </div>
+
+        
 
         {/* Danh mục món ăn */}
         <div className="mb-3 d-flex align-items-center">
