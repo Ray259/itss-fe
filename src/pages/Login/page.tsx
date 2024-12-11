@@ -38,14 +38,14 @@ const Login: React.FC = () => {
             <div className='flex flex-col items-center justify-center flex-grow relative'>
                 {/* Circles Background */}
                 <div className='absolute w-24 h-24 top-0 left-10 bg-orange-400 rounded-full'></div>
-                <div className='absolute w-36 h-36 -top-20 right-5 bg-orange-200 rounded-full'></div>
+     +           <div className='absolute w-36 h-36 -top-20 right-5 bg-orange-200 rounded-full'></div>
 
                 <div className='bg-white p-8 rounded-lg shadow-md z-10'>
                     <h1 className='text-center text-2xl text-black font-bold mb-4'>ログイン</h1>
 
                     {errorMessage && <p className='text-red-500 text-sm mb-4'>{errorMessage}</p>}
 
-                    {/* Username */}
+                    {/* Email */}
                     <div className='mb-4'>
                         <label className='block text-gray-500 mb-2'>メール</label>
                         <input

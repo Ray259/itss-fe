@@ -1,14 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { getSuggestedDishes } from '@/api/food-views.api';
 
-const HighRatedDishes: React.FC = () => {
-    const [dishes, setDishes] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [page, setPage] = useState(1);  // Dùng để theo dõi trang hiện tại
-    const [per_page] = useState(10); // Số lượng món ăn mỗi lần lấy
+const PopularDishes: React.FC = () => {
+    const popularDishes = [
+        { name: 'Salmon Salad', price: '12.50', rating: '4.5', deliveryTime: '15-20 mins', image: 'salmon-salad.jpg', description: 'A healthy salad made with fresh salmon, greens, and a tangy vinaigrette.' },
+        { name: 'Chicken Caesar', price: '10.00', rating: '4.0', deliveryTime: '10-15 mins', image: 'chicken-caesar.jpg', description: 'Crispy chicken on a bed of romaine lettuce with Caesar dressing.' },
+        { name: 'Veggie Bowl', price: '8.50', rating: '4.2', deliveryTime: '20-25 mins', image: 'veggie-bowl.jpg', description: 'A colorful bowl of mixed vegetables with quinoa and a light dressing.' },
+    ];
 
     const scrollRef = useRef<HTMLDivElement>(null);
+
     const [showLeftButton, setShowLeftButton] = useState(false);
 
     const checkScroll = () => {
@@ -32,53 +32,20 @@ const HighRatedDishes: React.FC = () => {
         }
     };
 
-    // Giả lập dữ liệu khi chưa có API thực
-    const fakeDishes = Array(10).fill({
-        price: '5.50',
-        rating: '4.5',
-        name: 'Salmon Salad',
-        deliveryTime: '10-15 mins',
-        images: ['link-to-image.jpg'],
-        info: 'Delicious salmon salad with fresh veggies.',
-        address: 'Tokyo, Japan'
-    });
-
-    // Gọi API để lấy danh sách món ăn đề xuất
-    const fetchDishes = async () => {
-        try {
-            const response = await getSuggestedDishes({ per_page, page});
-            setDishes(response.data); // Lưu dữ liệu món ăn vào state
-            setLoading(false); // Đánh dấu việc tải dữ liệu hoàn tất
-        } catch (err) {
-            setDishes(fakeDishes); // Nếu API thất bại, sử dụng dữ liệu giả
-            setError('Failed to fetch dishes, using fake data');
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        fetchDishes();
         checkScroll();
-    }, [page]);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>{error}</div>;
-    }
+    }, []);
 
     return (
         <div
-            className='p-6 rounded-lg'
+            className='p-6 rounded-lg mt-6'
             style={{
-                background: 'linear-gradient(135deg, #ffdede, #ff1100)',
+                background: 'linear-gradient(135deg, #ff1100, #ffdede)',
                 paddingLeft: '40px',
                 paddingRight: '40px'
             }}
         >
-            <h2 className='text-lg font-bold text-red-500 mb-4'>高評価の料理</h2>
+            <h2 className='text-lg font-bold text-white mb-4'>みんなもこれ見ていますよ！（これもやってみようか？）</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button
@@ -110,30 +77,25 @@ const HighRatedDishes: React.FC = () => {
                         overflow: 'hidden'
                     }}
                 >
-                    {dishes.map((dish, index) => (
+                    {popularDishes.map((dish, index) => (
                         <div
                             key={index}
-                            className='bg-white p-4 rounded-lg shadow-md flex flex-col items-center'
-                            style={{
-                                minWidth: '150px',
-                                flex: '1 0 auto'
-                            }}
+                            className='bg-white p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative'
                         >
-                            <div className='text-sm font-bold'>${dish.price}</div>
                             <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
-                                <img
-                                    src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'} // Kiểm tra ảnh có tồn tại không
-                                    alt={dish.name}
-                                    className='w-full h-full object-cover'
-                                />
+                                <img src={dish.image} alt={dish.name} className='w-full h-full object-cover' />
                             </div>
-                            <div className='text-yellow-500 text-sm'>{dish.info ? `⭐ ${dish.info}` : '⭐ No Rating'}</div> {/* Thay info cho rating */}
-                            <div className='text-sm'>{dish.name}</div>
-                            <div className='text-xs text-gray-500'>{dish.address}</div>
+
+                            <div className='text-sm font-bold'>{dish.name}</div>
+                            <div className='text-xs text-gray-500'>{dish.deliveryTime}</div>
+                            <div className='mt-2'>
+                                <span className='text-sm font-bold text-red-500'>${dish.price}</span>
+                                <span className='ml-2 text-sm text-yellow-500'>{dish.rating} stars</span>
+                            </div>
+                            <div className='text-xs text-gray-600 mt-2'>{dish.description}</div>
                         </div>
                     ))}
                 </div>
-
                 <button
                     onClick={scrollRight}
                     className='absolute right-[-40px] top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full transition-colors'
@@ -156,4 +118,4 @@ const HighRatedDishes: React.FC = () => {
     );
 };
 
-export default HighRatedDishes;
+export default PopularDishes;
