@@ -4,14 +4,7 @@ import TestPage from '@/pages/test';
 import Login from '@pages/Login/page';
 import Register from '@pages/Register/page';
 import HomePage from '@/pages/homepages/HomePage';
-<<<<<<< HEAD
-import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage'; 
-import Anket from '@/pages/Anket/page';
-=======
 import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
-import Anket from '@/pages/Anket/page';
-
->>>>>>> 6c7153aa97bc661dd9e9ad11ff00c524d6a66a88
 const routes: RouteObject[] = [
     {
         path: '/',
@@ -30,12 +23,12 @@ const routes: RouteObject[] = [
                 path: 'food-details/:foodId',
                 element: <FoodDetailsPage />
             },
-           
-            {
-                path: 'survey',
-                // TODO
-                element: <Anket />
-            },
+
+            // {
+            //     path: 'survey',
+            //     // TODO
+            //     element: <Anket />
+            // },
             {
                 path: 'profile',
                 // TODO
@@ -58,7 +51,7 @@ const routes: RouteObject[] = [
             }
         ]
     },
-   
+
     {
         path: '/login',
         element: <Login />
@@ -66,11 +59,11 @@ const routes: RouteObject[] = [
     {
         path: '/register',
         element: <Register />
-    },
-    {
-        path: '/anket',
-        element: <Anket />
     }
+    // {
+    //     path: '/anket',
+    //     element: <Anket />
+    // }
 ];
 
 export default routes;

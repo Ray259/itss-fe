@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { isValidEmail, isValidPassword, isValidUsername } from '@/utils/validInput';
+import { validInput } from '@/utils/validInput';
 import { register } from '@/api/auth.api';
 
 export default function Register() {
@@ -10,6 +10,10 @@ export default function Register() {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
+    const isEmailValid = validInput.email(email);
+    const isPasswordValid = validInput.password(password);
+    const isUsernameValid = validInput.username(username);
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
@@ -18,15 +22,15 @@ export default function Register() {
         setSuccessMessage('');
 
         // Validate inputs
-        if (!isValidUsername(username)) {
+        if (!isUsernameValid) {
             setErrorMessage('ユーザー名は6文字以上である必要があります。');
             return;
         }
-        if (!isValidEmail(email)) {
+        if (!isEmailValid) {
             setErrorMessage('有効なメールアドレスを入力してください。');
             return;
         }
-        if (!isValidPassword(password)) {
+        if (!isPasswordValid) {
             setErrorMessage('パスワードは8文字以上で、大文字、小文字、数字、特殊文字（@#$%^&）を含む必要があります。');
             return;
         }

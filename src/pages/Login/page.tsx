@@ -3,21 +3,22 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid';
 import { login } from '@/api/auth.api';
+import { validInput } from '@/utils/validInput';
 
 const Login: React.FC = () => {
-    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const isUsernameValid = username.length >= 6;
-    const isPasswordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&]).{8,}$/.test(password);
-    const isFormValid = isUsernameValid && isPasswordValid;
+    const isEmailValid = validInput.email(email);
+    const isPasswordValid = validInput.password(password);
+    const isFormValid = isEmailValid && isPasswordValid;
 
     const handleLogin = async () => {
         try {
-            await login(username, password);
+            await login(email, password);
             navigate('/homepage');
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || 'ログインに失敗しました。もう一度お試しください。');
@@ -44,11 +45,13 @@ const Login: React.FC = () => {
                         <label className='block text-gray-500 mb-2'>ユーザー名</label>
                         <input
                             type='text'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className={`w-full py-2 px-3 rounded border ${!isUsernameValid && username ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className={`w-full py-2 px-3 rounded border ${!isEmailValid && email ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                         />
-                        {!isUsernameValid && username && <p className='text-red-500 text-xs'>ユーザー名: 6文字以上</p>}
+                        {!isEmailValid && email && (
+                            <p className='text-red-500 text-xs'>有効なメールアドレスを入力してください。</p>
+                        )}
                     </div>
 
                     {/* Password */}
