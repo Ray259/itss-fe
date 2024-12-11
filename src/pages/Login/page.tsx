@@ -42,7 +42,7 @@ const Login: React.FC = () => {
 
                     {/* Username */}
                     <div className='mb-4'>
-                        <label className='block text-gray-500 mb-2'>ユーザー名</label>
+                        <label className='block text-gray-500 mb-2'>メール</label>
                         <input
                             type='text'
                             value={email}

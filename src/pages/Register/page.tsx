@@ -1,6 +1,8 @@
+'use  client';
 import React, { useState } from 'react';
 import { validInput } from '@/utils/validInput';
 import { register } from '@/api/auth.api';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -9,6 +11,7 @@ export default function Register() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const navigate = useNavigate();
 
     const isEmailValid = validInput.email(email);
     const isPasswordValid = validInput.password(password);
@@ -40,8 +43,9 @@ export default function Register() {
         }
 
         try {
-            await register(username, password, email);
+            await register(email, password);
             setSuccessMessage('登録が完了しました。ログインしてください。');
+            navigate('/login');
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || '登録に失敗しました。再度お試しください。');
         }
