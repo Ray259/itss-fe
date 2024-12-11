@@ -25,12 +25,6 @@ const routes: RouteObject[] = [
                 path: 'food-details/:foodId',
                 element: <FoodDetailsPage />
             },
-           
-            {
-                path: 'survey',
-                // TODO
-                element: <Anket />
-            },
             {
                 path: 'profile',
                 // TODO
@@ -53,7 +47,7 @@ const routes: RouteObject[] = [
             }
         ]
     },
-   
+
     {
         path: '/login',
         element: <Login />
@@ -61,7 +55,7 @@ const routes: RouteObject[] = [
     {
         path: '/register',
         element: <Register />
-    },
+    }
     {
         path: '/anket',
         element: <Anket />
