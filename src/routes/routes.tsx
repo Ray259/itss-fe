@@ -4,14 +4,9 @@ import TestPage from '@/pages/test';
 import Login from '@pages/Login/page';
 import Register from '@pages/Register/page';
 import HomePage from '@/pages/homepages/HomePage';
-<<<<<<< HEAD
-import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage'; 
-import Anket from '@/pages/Anket/page';
-=======
 import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
 import Anket from '@/pages/Anket/page';
 
->>>>>>> 6c7153aa97bc661dd9e9ad11ff00c524d6a66a88
 const routes: RouteObject[] = [
     {
         path: '/',
