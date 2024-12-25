@@ -1,8 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '@/contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid';
-import { login } from '@/api/auth.api';
+import { login as loginApi } from '@/api/auth.api';
 import { validInput } from '@/utils/validInput';
 
 const Login: React.FC = () => {
@@ -11,6 +12,7 @@ const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const isEmailValid = validInput.email(email);
     const isPasswordValid = validInput.password(password);
@@ -18,7 +20,8 @@ const Login: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            await login(email, password);
+            const response = await loginApi(email, password);
+            login(response.access_token, response.refresh_token);
             navigate('/homepage');
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || 'ログインに失敗しました。もう一度お試しください。');
@@ -42,7 +45,7 @@ const Login: React.FC = () => {
 
                     {/* Username */}
                     <div className='mb-4'>
-                        <label className='block text-gray-500 mb-2'>ユーザー名</label>
+                        <label className='block text-gray-500 mb-2'>メール</label>
                         <input
                             type='text'
                             value={email}

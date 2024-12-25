@@ -1,13 +1,18 @@
 import api from '@configs/axios';
 import { LOGIN_ENDPOINT, LOGOUT_ENDPOINT, PROFILE_ENDPOINT, REGISTER_ENDPOINT } from '@configs/api-endpoints';
 
-export const login = async (username: string, password: string): Promise<void> => {
-    const response = await api.post(LOGIN_ENDPOINT, { username, password });
+export const login = async (
+    email: string,
+    password: string,
+    rememberMe: boolean = true,
+    roleCode: string = 'USER'
+): Promise<{ access_token: string; refresh_token: string }> => {
+    const response = await api.post(LOGIN_ENDPOINT, { email, password, remember_me: rememberMe, role_code: roleCode });
     return response.data;
 };
 
-export const register = async (username: string, password: string, email: string): Promise<void> => {
-    const response = await api.post(REGISTER_ENDPOINT, { username, password, email });
+export const register = async (email: string, password: string): Promise<void> => {
+    const response = await api.post(REGISTER_ENDPOINT, { email, password });
     return response.data;
 };
 
