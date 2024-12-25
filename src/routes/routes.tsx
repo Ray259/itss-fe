@@ -57,7 +57,7 @@ const routes: RouteObject[] = [
         element: <Register />
     },
     {
-        path: '/anket',
+        path: '/anket/:userId',
         element: <Anket />
     }
 ];
