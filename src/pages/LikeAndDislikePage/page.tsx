@@ -26,7 +26,7 @@ const styles = {
       color: '#fff',
     },
   };
-function Buttons() {
+function LikeAndDislikePage() {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
         {/* Div lớn hơn với bg-white */}
@@ -133,4 +133,4 @@ function Buttons() {
     );
   }
   
-  export default Buttons;
+  export default LikeAndDislikePage;
