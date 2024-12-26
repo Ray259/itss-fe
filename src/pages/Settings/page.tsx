@@ -1,5 +1,4 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+
 import React, { useState } from "react";
 
 const SettingsPage = () => {
@@ -16,9 +15,6 @@ const SettingsPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      {/* Header */}
-      <Header></Header>
-   
       {/* Main Content */}
       <main className="container mx-auto px-4 mt-8 flex-grow">
         {/* Section Title */}
@@ -175,9 +171,6 @@ const SettingsPage = () => {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <Footer></Footer>
     </div>
   );
 };
