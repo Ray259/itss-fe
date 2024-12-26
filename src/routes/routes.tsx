@@ -6,7 +6,8 @@ import Register from '@pages/Register/page';
 import HomePage from '@/pages/homepages/HomePage';
 import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
 import Anket from '@/pages/Anket/page';
-
+import Setting from '@/pages/Setting/page';
+import Buttons from '@/pages/Buttons/page';
 const routes: RouteObject[] = [
     {
         path: '/',
@@ -59,6 +60,14 @@ const routes: RouteObject[] = [
     {
         path: '/anket/:userId',
         element: <Anket />
+    },
+    {
+        path: '/buttons',
+        element: <Buttons />
+    },
+    {
+        path: '/setting',
+        element: <Setting />
     }
 ];
 
