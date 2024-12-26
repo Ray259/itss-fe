@@ -6,7 +6,8 @@ import Register from '@pages/Register/page';
 import HomePage from '@/pages/homepages/HomePage';
 import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
 import Anket from '@/pages/Anket/page';
-
+import Settings from '@/pages/Settings/page'; 
+import LikeAndDislikePage from '@/pages/LikeAndDislikePage/page';
 const routes: RouteObject[] = [
     {
         path: '/',
@@ -38,13 +39,13 @@ const routes: RouteObject[] = [
             {
                 path: 'settings',
                 // TODO
-                element: <TestPage />
+                element: <Settings />
             },
             {
                 path: 'help',
                 // TODO
                 element: <TestPage />
-            }
+            },
         ]
     },
 
@@ -59,6 +60,10 @@ const routes: RouteObject[] = [
     {
         path: '/anket/:userId',
         element: <Anket />
+    },
+    {
+        path: '/likeanddislikepage',
+        element: <LikeAndDislikePage />
     }
 ];
 
