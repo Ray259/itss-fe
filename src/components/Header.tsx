@@ -13,7 +13,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
             <div>
                 <img onClick={toggleSidebar} src={toggleButton} className='w-28 mt-6 cursor-pointer' />
             </div>
-            <div className='flex-grow mx-4'>
+            <div className='w-4/5 max-w-lg mx-auto'>
                 <SearchBar />
             </div>
 
