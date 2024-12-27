@@ -9,7 +9,7 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ isVisible }) => {
     return (
         <div
-            className={`min-h-screen w-[386px] opacity-95 bg-gradient-to-r from-[#ff8486] to-[#ffd1d1] shadow transform transition-transform duration-300 ease-in-out z-40 ${
+            className={`h-full w-[386px] opacity-95 bg-gradient-to-r from-[#ff8486] to-[#ffd1d1] shadow transform transition-transform duration-300 ease-in-out z-40 ${
                 isVisible ? 'translate-x-0' : '-translate-x-full'
             }`}
         >

@@ -15,24 +15,23 @@ const BaseLayout: React.FC = () => {
         <div className='relative min-h-screen flex flex-col'>
             <Header toggleSidebar={toggleSidebar} isVisible={isSidebarVisible} />
 
-            <div className='relative flex flex-grow flex-col'>
-                <div className='relative flex flex-grow'>
-                    <div
-                        className={`z-10 left-0 w-64 shadow-lg md:w-1/4 lg:w-1/5 transition-transform duration-300 ${
-                            isSidebarVisible ? 'transform translate-x-0' : 'transform -translate-x-full'
-                        }`}
-                    >
-                        <SideBar isVisible={isSidebarVisible} />
-                    </div>
-
-                    {/* Main Content */}
-                    <div className='relative flex-grow flex'>
-                        <Outlet />
-                    </div>
+            <div className='relative flex flex-grow'>
+                <div
+                    className={`z-10 absolute top-0 left-0 w-64 h-full shadow-lg md:w-1/4 lg:w-1/5 transition-transform duration-300 ${
+                        isSidebarVisible ? 'transform translate-x-0' : 'transform -translate-x-full'
+                    }`}
+                >
+                    <SideBar isVisible={isSidebarVisible} />
                 </div>
 
-                <Footer />
+                {/* Main Content */}
+                <div className='flex-grow p-4'>
+                    <Outlet />
+                </div>
             </div>
+
+            {/* Footer */}
+            <Footer />
         </div>
     );
 };
