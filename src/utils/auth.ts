@@ -1,3 +1,5 @@
+import { UserProfile } from '@/contexts/AuthContext';
+
 export const setAccessToken = (token: string) => {
     localStorage.setItem('accessToken', token);
 };
@@ -17,4 +19,17 @@ export const getRefreshToken = (): string | null => {
 export const clearTokens = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+};
+
+export const setLocalUser = (user: UserProfile) => {
+    localStorage.setItem('user', JSON.stringify(user));
+};
+
+export const getLocalUser = (): UserProfile | null => {
+    const userString = localStorage.getItem('user');
+    return userString ? JSON.parse(userString) : null;
+};
+
+export const clearLocalUser = () => {
+    localStorage.removeItem('user');
 };
