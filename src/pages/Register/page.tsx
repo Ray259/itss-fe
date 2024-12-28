@@ -43,7 +43,7 @@ export default function Register() {
         }
 
         try {
-            await register(email, password);
+            await register(username, email, password);
             setSuccessMessage('登録が完了しました。ログインしてください。');
             navigate('/login');
         } catch (error: any) {

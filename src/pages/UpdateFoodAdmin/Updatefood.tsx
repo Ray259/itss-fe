@@ -4,6 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from "react-router-dom";
 import './AddFood.css'; 
 
+interface Image extends File {
+  url?: string;
+}
 const UpdateFoodForm: React.FC = () => {
 
   const { dishId } = useParams<{ dishId: string }>();
@@ -11,7 +14,7 @@ const UpdateFoodForm: React.FC = () => {
   const [foodName, setFoodName] = useState("");
   const [price, setPrice] = useState("");
   const [address, setAddress] = useState("");
-  const [images, setImages] = useState<File[]>([]);
+  const [images, setImages] = useState<Image[]>([]);
   const [description, setDescription] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
 
@@ -22,13 +25,12 @@ const UpdateFoodForm: React.FC = () => {
         const response = await axios.get(
           `https://itss-restaurant-backend.onrender.com/api/v1/dishes/${dishId}`
         );
-        const { name, price, address, categories, info, images } = response.data;
-        setFoodName(name);
-        setPrice(price);
-        setAddress(address);
-        setCategories(categories);
-        setDescription(info);
-        setImages(images.map((url: string) => ({ name: url, url }))); // Assuming images are URLs
+        setFoodName(response.data.name);
+        setPrice(response.data.price);
+        setAddress(response.data.address);
+        setCategories(response.data.categories);
+        setDescription(response.data.info);
+        setImages(response.data.images.map((url: string) => ({ name: url, url }))); // Assuming images are URLs
       } catch (error) {
         console.error("Failed to fetch dish data:", error);
       }
