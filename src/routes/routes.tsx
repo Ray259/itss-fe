@@ -1,4 +1,5 @@
-import { RouteObject } from 'react-router-dom';
+import React from 'react';
+import { RouteObject, Navigate } from 'react-router-dom';
 import BaseLayout from '@/layouts/BaseLayout';
 import TestPage from '@/pages/test';
 import Login from '@pages/Login/page';
@@ -13,7 +14,7 @@ import AddFoodForm from '@/pages/AddFoodAdmin/AddFood';
 import UpdateFoodForm from '@/pages/UpdateFoodAdmin/Updatefood';
 import DishesList from '@/pages/DishesListAdmin/disheslist';
 import ProtectedRoute from '@/components/ProtectedRoute';
-
+import { isLoggedIn } from '@/utils/auth';
 const routes: RouteObject[] = [
     {
         path: '/',

@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { getDishes } from '@/api/food-views.api'; // Giả sử bạn có hàm này để lấy danh sách món ăn
 import { useTranslation } from 'react-i18next';
+import { getDishes } from '@/api/food-views.api';
+import { ClockIcon, StarIcon } from '@heroicons/react/24/solid';
 
 const HighRatedDishes: React.FC = () => {
     const [dishes, setDishes] = useState<any[]>([]);
@@ -80,7 +81,9 @@ const HighRatedDishes: React.FC = () => {
             className='p-6 rounded-lg mt-6 bg-gradient-to-r from-red-500 to-pink-100 dark:from-gray-700 dark:to-red-500'
             style={{
                 paddingLeft: '40px',
-                paddingRight: '40px'
+                paddingRight: '40px',
+                boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.5)', // Thêm boxShadow màu trắng cho container chính
+                borderRadius: '15px' // Thêm borderRadius cho container chính
             }}
         >
             <h2 className='text-lg font-bold text-gray-100 dark:text-gray-200 mb-4'>{t('highlyRated')}</h2>
@@ -92,7 +95,7 @@ const HighRatedDishes: React.FC = () => {
                         style={{ zIndex: 10 }}
                     >
                         <span
-                            className='text-3xl'
+                            className='text-3xl text-red-500'
                             style={{
                                 transform: 'scaleY(6)',
                                 display: 'inline-block',
@@ -116,28 +119,49 @@ const HighRatedDishes: React.FC = () => {
                 >
                     {dishes.map((dish, index) => (
                         <div
-                            key={index}
-                            className='bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
-                            onClick={() => navigate(`/food-details/${dish.id}`)}
-                            style={{
-                                transition: 'transform 0.3s', // Thêm transition để mượt mà
-                            }}
-                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')} // Phóng to khi di chuột tới
-                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
+                          key={index}
+                          className="bg-white p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer"
+                          onClick={() => navigate(`/food-details/${dish.id}`)}
+                          style={{
+                            transition: 'transform 0.3s', // Thêm transition để mượt mà
+                            boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.25)', // Thêm boxShadow màu trắng cho mỗi món ăn
+                            borderRadius: '15px' // Thêm borderRadius cho mỗi món ăn
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')} // Phóng to khi di chuột tới
+                          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
-                            <div className='text-sm font-bold text-gray-900 dark:text-gray-100'>${dish.price}</div>
-                            <div className='w-full h-32 bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden mb-4'>
-                                <img
-                                    src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'}
-                                    alt={dish.name}
-                                    className='w-full h-full object-cover'
-                                />
-                            </div>
-                            <div className='text-yellow-500 text-sm'>
-                                {`⭐ ${dish.avgRating.toFixed(1)}`}
-                            </div> {/* Hiển thị rating cụ thể */}
-                            <div className='text-sm text-gray-900 dark:text-gray-100'>{dish.name}</div>
-                            <div className='text-xs text-gray-500 dark:text-gray-400'>{dish.address}</div>
+                          {/* Giá sản phẩm */}
+                          <div className="absolute top-2 left-2 bg-white shadow-lg rounded-full p-2 text-[#FE724C] font-bold text-base flex items-center justify-center" style={{ boxShadow: '0px 5px 20px rgba(255, 255, 255, 0.20)' }}>
+                            <span className="text-xs">đ</span>
+                            <span className="text-lg">{dish.price}</span>
+                          </div>
+
+                          {/* Hình ảnh sản phẩm */}
+                          <div className="w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4">
+                            <img
+                              src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'}
+                              alt={dish.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+
+                          {/* Đánh giá sản phẩm */}
+                          <div className="absolute top-2 right-2 bg-white shadow-lg rounded-full p-1 flex items-center text-xs" style={{ boxShadow: '0px 5px 20px rgba(255, 255, 255, 0.6)' }}>
+                            <span className="text-black font-bold mr-1">{dish.avgRating.toFixed(1)}</span>
+                            <StarIcon className="text-[#FFC529] w-3 h-3 ml-1" />
+                          </div>
+
+                          {/* Tên sản phẩm */}
+                          <div className="text-sm font-bold mt-2">{dish.name}</div>
+
+                          {/* Địa chỉ */}
+                          <div className="text-xs text-gray-500">{dish.address}</div>
+
+                          {/* Thời gian giao hàng */}
+                          <div className="absolute bottom-2 left-2 flex items-center text-xs text-gray-500">
+                              <ClockIcon className="text-[#FE724C] mr-1" style={{ width: '20px', height: '20px' }} /> {/* Sử dụng biểu tượng đồng hồ */}
+                              10-15 mins
+                          </div>
                         </div>
                     ))}
                 </div>
@@ -147,7 +171,7 @@ const HighRatedDishes: React.FC = () => {
                     style={{ zIndex: 10 }}
                 >
                     <span
-                        className='text-3xl text-red-500 dark:text-red-400'
+                        className='text-3xl'
                         style={{
                             transform: 'scaleY(6)',
                             display: 'inline-block',
