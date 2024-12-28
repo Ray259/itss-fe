@@ -1,0 +1,28 @@
+{
+  "survey": "Survey",
+  "generalInfo": "General Information",
+  "vegetarianQuestion": "Are you a vegetarian?",
+  "yes": "Yes",
+  "no": "No",
+  "locationQuestion": "Where are you located?",
+  "locationPlaceholder": "e.g., 1 Dai Co Viet Street, Hai Ba Trung, Ha Noi",
+  "distanceQuestion": "Distance you can travel",
+  "distancePlaceholder": "e.g., within 3 km",
+  "budgetQuestion": "Meal budget",
+  "budgetPlaceholder": "e.g., ~50000 VND",
+  "likes": "Likes",
+  "dislikes": "Dislikes",
+  "flavors": {
+    "spicy": "Spicy",
+    "sweet": "Sweet",
+    "fried": "Fried",
+    "grilled": "Grilled",
+    "japanese": "Japanese",
+    "french": "French"
+  },
+  "cancel": "Cancel",
+  "save": "Save",
+  "saved": "Saved!",
+  "userIdNotFound": "User ID not found.",
+  "updateFailed": "Update failed."
+}

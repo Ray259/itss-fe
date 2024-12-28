@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { updatePreferences, UserPreferencesRequest } from '@api/user-info.api';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Anket: React.FC = () => {
     const { userId } = useParams<{ userId: string }>();
+    const { t } = useTranslation('anket');
     const [vegetarian, setVegetarian] = useState<string>('');
     const [location, setLocation] = useState<string>('');
     const [distance, setDistance] = useState<string>('');
@@ -17,7 +19,7 @@ const Anket: React.FC = () => {
         const requestData: UserPreferencesRequest = {
             vegeterian: vegetarian === 'yes',
             address: location,
-            loved_distinct: parseInt(distance.replace('キロ以下', ''), 10),
+            loved_distinct: parseInt(distance.replace(t('distanceUnit'), ''), 10),
             loved_price: parseInt(budget.replace('~', '').replace('VND', ''), 10),
             loved_flavor: likes,
             hated_flavor: dislikes
@@ -26,15 +28,15 @@ const Anket: React.FC = () => {
         try {
             if (userId) {
                 const response = await updatePreferences(userId, requestData);
-                alert('保存しました！');
+                alert(t('saved'));
                 console.log('Response from API:', response);
             } else {
                 console.error('User ID is undefined');
-                alert('ユーザーIDが見つかりません。');
+                alert(t('userIdNotFound'));
             }
         } catch (error) {
             console.error('Error updating user:', error);
-            alert('更新に失敗しました。');
+            alert(t('updateFailed'));
         }
     };
 
@@ -45,7 +47,7 @@ const Anket: React.FC = () => {
         setBudget('');
         setLikes([]);
         setDislikes([]);
-        console.log('Form đã được reset.');
+        console.log(t('formReset'));
     };
 
     const handleAddItem = (list: string[], setter: React.Dispatch<React.SetStateAction<string[]>>, item: string) => {
@@ -57,14 +59,14 @@ const Anket: React.FC = () => {
     };
 
     return (
-        <div className='flex flex-col items-center justify-center h-screen bg-gray-100 p-5'>
+        <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 p-5'>
             <div className='bg-white w-full max-w-2xl p-5 rounded-lg shadow-md'>
-                <h1 className='text-center text-red-600 text-4xl mb-5'>アンケート</h1>
+                <h1 className='text-center text-red-600 text-4xl mb-5'>{t('survey')}</h1>
                 <form onSubmit={handleSubmit}>
                     <div className='mb-5'>
-                        <h2 className='font-bold text-xl mb-3'>一般情報</h2>
+                        <h2 className='font-bold text-xl mb-3'>{t('generalInfo')}</h2>
                         <div className='mb-3'>
-                            <label>ベジタリアンですか？</label>
+                            <label>{t('vegetarianQuestion')}</label>
                             <div className='flex space-x-3 mt-2'>
                                 <label className='flex items-center'>
                                     <input
@@ -75,7 +77,7 @@ const Anket: React.FC = () => {
                                         checked={vegetarian === 'yes'}
                                         className='mr-2'
                                     />
-                                    はい
+                                    {t('yes')}
                                 </label>
                                 <label className='flex items-center'>
                                     <input
@@ -86,35 +88,35 @@ const Anket: React.FC = () => {
                                         checked={vegetarian === 'no'}
                                         className='mr-2'
                                     />
-                                    いいえ
+                                    {t('no')}
                                 </label>
                             </div>
                         </div>
                         <div className='mb-3'>
-                            <label>どこにいますか？</label>
+                            <label>{t('locationQuestion')}</label>
                             <input
                                 type='text'
-                                placeholder='例: １Dai Co Viet通り、Hai Ba Trung、Ha Noi'
+                                placeholder={t('locationPlaceholder')}
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
                                 className='w-full p-2 mt-2 border rounded'
                             />
                         </div>
                         <div className='mb-3'>
-                            <label>本場から行ける距離</label>
+                            <label>{t('distanceQuestion')}</label>
                             <input
                                 type='text'
-                                placeholder='例: ３キロ以下'
+                                placeholder={t('distancePlaceholder')}
                                 value={distance}
                                 onChange={(e) => setDistance(e.target.value)}
                                 className='w-full p-2 mt-2 border rounded'
                             />
                         </div>
                         <div className='mb-3'>
-                            <label>食事の予算</label>
+                            <label>{t('budgetQuestion')}</label>
                             <input
                                 type='text'
-                                placeholder='例: ~50000VND'
+                                placeholder={t('budgetPlaceholder')}
                                 value={budget}
                                 onChange={(e) => setBudget(e.target.value)}
                                 className='w-full p-2 mt-2 border rounded'
@@ -123,40 +125,40 @@ const Anket: React.FC = () => {
                     </div>
 
                     <div className='mb-5'>
-                        <h2 className='font-bold text-xl mb-3'>好み</h2>
+                        <h2 className='font-bold text-xl mb-3'>{t('likes')}</h2>
                         <div className='flex flex-wrap gap-3'>
-                            {['辛い物', '甘い物', '揚げ物', '焼き物'].map((item) => (
+                            {['spicy', 'sweet', 'fried', 'grilled'].map((item) => (
                                 <button
                                     key={item}
                                     className={`py-2 px-4 rounded transition duration-300 ${
-                                        likes.includes(item)
+                                        likes.includes(t(`flavors.${item}`))
                                             ? 'bg-[#4e4070] text-white'
                                             : 'bg-[#65558f] text-white hover:bg-[#4e4070]'
                                     }`}
-                                    onClick={() => handleAddItem(likes, setLikes, item)}
+                                    onClick={() => handleAddItem(likes, setLikes, t(`flavors.${item}`))}
                                     type='button'
                                 >
-                                    {item}
+                                    {t(`flavors.${item}`)}
                                 </button>
                             ))}
                         </div>
                     </div>
 
                     <div className='mb-5'>
-                        <h2 className='font-bold text-xl mb-3'>苦手</h2>
+                        <h2 className='font-bold text-xl mb-3'>{t('dislikes')}</h2>
                         <div className='flex flex-wrap gap-3'>
-                            {['日本料理', 'フランス料理', '揚げ物', '焼き物'].map((item) => (
+                            {['japanese', 'french', 'fried', 'grilled'].map((item) => (
                                 <button
                                     key={item}
                                     className={`py-2 px-4 rounded transition duration-300 ${
-                                        dislikes.includes(item)
+                                        dislikes.includes(t(`flavors.${item}`))
                                             ? 'bg-[#4e4070] text-white'
                                             : 'bg-[#65558f] text-white hover:bg-[#4e4070]'
                                     }`}
-                                    onClick={() => handleAddItem(dislikes, setDislikes, item)}
+                                    onClick={() => handleAddItem(dislikes, setDislikes, t(`flavors.${item}`))}
                                     type='button'
                                 >
-                                    {item}
+                                    {t(`flavors.${item}`)}
                                 </button>
                             ))}
                         </div>
@@ -168,13 +170,13 @@ const Anket: React.FC = () => {
                             type='button'
                             onClick={handleCancel}
                         >
-                            キャンセル
+                            {t('cancel')}
                         </button>
                         <button
                             className='bg-red-600 text-white py-2 px-4 rounded transition duration-300 hover:bg-red-700'
                             type='submit'
                         >
-                            保存
+                            {t('save')}
                         </button>
                     </div>
                 </form>
