@@ -1,43 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserReview from './UserReview';
 import ReviewForm from './ReviewForm';
+import { getDishReviews, createDishReview } from '@/api/user-reviews.api';
 
 interface ReviewProps {
-    username: string;
-    date: string;
+    id: number;
+    user_id: number;
+    dish_id: number;
+    rating: number;
     comment: string;
-    rating?: number;
+    created_at: string;
     avatar?: string;
 }
 
-const mockReviews: ReviewProps[] = [
-    {
-        username: 'ユーザー名1',
-        date: '25/06/2020',
-        comment:
-            'Really convenient and the points system helps benefit loyalty. Some mild glitches here and there, but nothing too egregious. Obviously needs to roll out to more remote.'
-    },
-    {
-        username: 'ユーザー名2',
-        date: '26/06/2020',
-        comment: 'Great experience overall. Would recommend to friends and family!'
-    },
-    {
-        username: 'ユーザー名3',
-        date: '27/06/2020',
-        comment: 'The food was delicious and the service was excellent.'
-    },
-    {
-        username: 'ユーザー名4',
-        date: '28/06/2020',
-        comment: 'A bit pricey but worth it for the quality.'
-    }
-];
-
-// TODO: remove mock data
-const UserReviewSection: React.FC<{ reviews?: ReviewProps[] }> = ({ reviews = mockReviews }) => {
+const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishId, userId }) => {
+    const [reviews, setReviews] = useState<ReviewProps[]>([]); // Khởi tạo là một mảng rỗng
     const [currentPage, setCurrentPage] = useState(1);
     const reviewsPerPage = 2;
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const fetchedReviews = await getDishReviews(dishId);
+                // Đảm bảo rằng fetchedReviews là một mảng
+                if (Array.isArray(fetchedReviews)) {
+                    setReviews(fetchedReviews);
+                } else {
+                    console.error('Fetched reviews is not an array:', fetchedReviews);
+                }
+            } catch (error) {
+                console.error('Failed to fetch reviews:', error);
+            }
+        };
+
+        fetchReviews();
+    }, [dishId]);
+
+    const handleCreateReview = async (review: { comment: string; rating?: number }) => {
+        try {
+            const newReview = await createDishReview(dishId, { ...review, userId });
+            setReviews([newReview, ...reviews]);
+        } catch (error) {
+            console.error('Failed to create review:', error);
+        }
+    };
 
     const totalPages = Math.ceil(reviews.length / reviewsPerPage);
     const currentReviews = reviews.slice((currentPage - 1) * reviewsPerPage, currentPage * reviewsPerPage);
@@ -46,8 +52,8 @@ const UserReviewSection: React.FC<{ reviews?: ReviewProps[] }> = ({ reviews = mo
         <div className='flex border-t'>
             <div className='p-4 w-1/2'>
                 <h2 className='text-2xl text-red-600 font-semibold'>レビュー</h2>
-                {currentReviews.map((review, index) => (
-                    <UserReview key={index} {...review} />
+                {currentReviews.map((review) => (
+                    <UserReview key={review.id} {...review} />
                 ))}
                 <div className='flex justify-center items-center p-4'>
                     {Array.from({ length: totalPages }).map((_, index) => (
@@ -64,7 +70,7 @@ const UserReviewSection: React.FC<{ reviews?: ReviewProps[] }> = ({ reviews = mo
                 </div>
             </div>
             <div className='w-1/2'>
-                <ReviewForm />
+                <ReviewForm onCreateReview={handleCreateReview} />
             </div>
         </div>
     );

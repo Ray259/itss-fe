@@ -5,6 +5,7 @@ import FoodInfo from './FoodInfo/FoodInfo';
 import UserReviewSection from './UserReviews/UserReviewSection';
 import StarRating from '@/components/StarRating';
 import { getFoodDetailsById } from '@/api/food-details.api';
+import { getUserInfo } from '@/api/user-info.api';
 
 interface FoodDetailsData {
     id: number;
@@ -17,15 +18,10 @@ interface FoodDetailsData {
     restaurant: string;
 }
 
-// interface UserReview {
-//     userName: number;
-//     rating: number;
-//     comment: string;
-// }
-
 const FoodDetailsPage: React.FC = () => {
     const { foodId } = useParams<{ foodId: string }>();
     const [foodDetails, setFoodDetails] = useState<FoodDetailsData | null>(null);
+    const [userId, setUserId] = useState<number | null>(null); // State để lưu trữ userId
 
     // TODO: fetch reviews, calculate rating
     const rating = 4;
@@ -45,7 +41,20 @@ const FoodDetailsPage: React.FC = () => {
         fetchFoodDetails();
     }, [foodId]);
 
-    if (!foodDetails) {
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const userInfo = await getUserInfo();
+                setUserId(userInfo.id);
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        };
+
+        fetchUserInfo();
+    }, []);
+
+    if (!foodDetails || userId === null) {
         return <div>Loading...</div>;
     }
 
@@ -65,7 +74,7 @@ const FoodDetailsPage: React.FC = () => {
                 details={foodDetails.info}
                 categories={foodDetails.categories}
             />
-            <UserReviewSection />
+            <UserReviewSection dishId={foodId} userId={userId} />
         </div>
     );
 };

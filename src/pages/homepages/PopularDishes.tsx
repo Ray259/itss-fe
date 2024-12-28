@@ -1,15 +1,27 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getSuggestedDishes } from '@/api/food-views.api';
 
-const PopularDishes: React.FC = () => {
-    const popularDishes = [
-        { name: 'Salmon Salad', price: '12.50', rating: '4.5', deliveryTime: '15-20 mins', image: 'salmon-salad.jpg', description: 'A healthy salad made with fresh salmon, greens, and a tangy vinaigrette.' },
-        { name: 'Chicken Caesar', price: '10.00', rating: '4.0', deliveryTime: '10-15 mins', image: 'chicken-caesar.jpg', description: 'Crispy chicken on a bed of romaine lettuce with Caesar dressing.' },
-        { name: 'Veggie Bowl', price: '8.50', rating: '4.2', deliveryTime: '20-25 mins', image: 'veggie-bowl.jpg', description: 'A colorful bowl of mixed vegetables with quinoa and a light dressing.' },
-    ];
-
+const RecommendedMenu: React.FC = () => {
+    const [dishes, setDishes] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [showLeftButton, setShowLeftButton] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    const [showLeftButton, setShowLeftButton] = useState(false);
+    const navigate = useNavigate();
+
+    const fetchDishes = async () => {
+        try {
+            const response = await getSuggestedDishes({ per_page: 50, page: 1 });
+            const sortedDishes = response.data.sort((a: any, b: any) => (a.distance || Infinity) - (b.distance || Infinity)); // Sắp xếp theo khoảng cách
+            setDishes(sortedDishes);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch suggested dishes');
+            setLoading(false);
+        }
+    };
 
     const checkScroll = () => {
         if (scrollRef.current) {
@@ -33,8 +45,17 @@ const PopularDishes: React.FC = () => {
     };
 
     useEffect(() => {
+        fetchDishes();
         checkScroll();
-    }, []);
+    }, []); // Chỉ gọi fetchDishes một lần khi component được mount
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div
@@ -45,7 +66,7 @@ const PopularDishes: React.FC = () => {
                 paddingRight: '40px'
             }}
         >
-            <h2 className='text-lg font-bold text-white mb-4'>みんなもこれ見ていますよ！（これもやってみようか？）</h2>
+            <h2 className='text-lg font-bold text-white mb-4'>近くのおすすめメニュー</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button
@@ -77,22 +98,36 @@ const PopularDishes: React.FC = () => {
                         overflow: 'hidden'
                     }}
                 >
-                    {popularDishes.map((dish, index) => (
+                    {dishes.map((dish, index) => (
                         <div
                             key={index}
-                            className='bg-white p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative'
+                            className='bg-white p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
+                            onClick={() => navigate(`/food-details/${dish.id}`)}
+                            style={{
+                                transition: 'transform 0.3s', // Thêm transition để mượt mà
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')} // Phóng to khi di chuột tới
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
+                            {dish.distance !== null && (
+                                <div className='absolute top-2 right-2 text-xl font-bold text-red-500'>
+                                    {dish.distance.toFixed(1)} km
+                                </div>
+                            )}
+
                             <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
-                                <img src={dish.image} alt={dish.name} className='w-full h-full object-cover' />
+                                <img src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'} alt={dish.name} className='w-full h-full object-cover' />
                             </div>
 
                             <div className='text-sm font-bold'>{dish.name}</div>
                             <div className='text-xs text-gray-500'>{dish.deliveryTime}</div>
-                            <div className='mt-2'>
-                                <span className='text-sm font-bold text-red-500'>${dish.price}</span>
-                                <span className='ml-2 text-sm text-yellow-500'>{dish.rating} stars</span>
+                            <div className='flex flex-wrap gap-1 mt-2'>
+                                {dish.ingredients && dish.ingredients.map((ingredient: string, i: number) => (
+                                    <span key={i} className='px-2 py-1 text-xs bg-gray-200 rounded-full text-gray-600'>
+                                        {ingredient}
+                                    </span>
+                                ))}
                             </div>
-                            <div className='text-xs text-gray-600 mt-2'>{dish.description}</div>
                         </div>
                     ))}
                 </div>
@@ -118,4 +153,4 @@ const PopularDishes: React.FC = () => {
     );
 };
 
-export default PopularDishes;
+export default RecommendedMenu;
