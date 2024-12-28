@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getSuggestedDishes } from '@/api/food-views.api';
+import axios from 'axios';
 
 const RecommendedMenu: React.FC = () => {
     const [dishes, setDishes] = useState<any[]>([]);
@@ -13,10 +13,15 @@ const RecommendedMenu: React.FC = () => {
 
     const fetchDishes = async () => {
         try {
-            const response = await getSuggestedDishes({ per_page: 50, page: 1 });
-            const sortedDishes = response.data.sort((a: any, b: any) => (a.distance || Infinity) - (b.distance || Infinity)); // Sắp xếp theo khoảng cách
-            setDishes(sortedDishes);
-            setLoading(false);
+            const response = await axios.get('https://itss-restaurant-backend.onrender.com/api/v1/dishes', {
+                params: {
+                    per_page: 50,
+                    page: 1
+                }
+            });
+            const sortedDishes = response.data.data.sort((a: any, b: any) => (a.distance || Infinity) - (b.distance || Infinity)); // Sắp xếp theo khoảng cách
+            setDishes(sortedDishes.slice(0, 10)); // Lấy 10 món ăn có khoảng cách gần nhất
+            setLoading(false); // Đánh dấu việc tải dữ liệu hoàn tất
         } catch (err) {
             setError('Failed to fetch suggested dishes');
             setLoading(false);
@@ -116,7 +121,11 @@ const RecommendedMenu: React.FC = () => {
                             )}
 
                             <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
-                                <img src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'} alt={dish.name} className='w-full h-full object-cover' />
+                                <img
+                                    src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'}
+                                    alt={dish.name}
+                                    className='w-full h-full object-cover'
+                                />
                             </div>
 
                             <div className='text-sm font-bold'>{dish.name}</div>

@@ -25,17 +25,11 @@ export const getSuggestedDishes = async ({ per_page, page }: { per_page: number;
     }
 };
 
+
 export const getDishes = async ({ per_page, page }: { per_page: number; page: number }) => {
     try {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            throw new Error('No authentication token found');
-        }
-
-        const response = await api.get(`${DISHES_ENDPOINT}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+        // Gọi API mà không cần authorization
+        const response = await api.get(DISHES_ENDPOINT, {
             params: {
                 per_page,
                 page,

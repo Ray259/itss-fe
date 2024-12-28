@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDishes } from '@/api/food-views.api';
+import axios from 'axios';
+import { getDishes } from '@/api/food-views.api'; // Giả sử bạn có hàm này để lấy danh sách món ăn
 
 const HighRatedDishes: React.FC = () => {
     const [dishes, setDishes] = useState<any[]>([]);
@@ -35,11 +36,22 @@ const HighRatedDishes: React.FC = () => {
         }
     };
 
-    // Gọi API để lấy danh sách món ăn
+    // Gọi API để lấy danh sách món ăn và rating trung bình
     const fetchDishes = async () => {
         try {
             const response = await getDishes({ per_page, page });
-            const sortedDishes = response.data.sort((a: any, b: any) => b.rating - a.rating); // Sắp xếp theo rating giảm dần
+            const dishesWithAvgRating = await Promise.all(response.data.map(async (dish: any) => {
+                try {
+                    const reviewsResponse = await axios.get(`https://itss-restaurant-backend.onrender.com/api/v1/reviews/dish/${dish.id}`);
+                    const avgRating = parseFloat(reviewsResponse.data.avg_rating.toFixed(1)) || 0;
+                    return { ...dish, avgRating };
+                } catch (err) {
+                    return { ...dish, avgRating: 0 }; // Gán giá trị mặc định nếu không thể lấy rating trung bình
+                }
+            }));
+
+            // Sắp xếp các món ăn theo rating trung bình giảm dần
+            const sortedDishes = dishesWithAvgRating.sort((a: any, b: any) => b.avgRating - a.avgRating);
             setDishes(sortedDishes.slice(0, 10)); // Lấy 10 món ăn có rating cao nhất
             setLoading(false); // Đánh dấu việc tải dữ liệu hoàn tất
         } catch (err) {
@@ -120,7 +132,9 @@ const HighRatedDishes: React.FC = () => {
                                     className='w-full h-full object-cover'
                                 />
                             </div>
-                            <div className='text-yellow-500 text-sm'>{dish.info ? `⭐ ${dish.info}` : '⭐ No Rating'}</div> {/* Thay info cho rating */}
+                            <div className='text-yellow-500 text-sm'>
+                                {`⭐ ${dish.avgRating.toFixed(1)}`}
+                            </div> {/* Hiển thị rating cụ thể */}
                             <div className='text-sm'>{dish.name}</div>
                             <div className='text-xs text-gray-500'>{dish.address}</div>
                         </div>

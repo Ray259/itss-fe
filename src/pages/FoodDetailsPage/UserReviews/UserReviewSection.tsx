@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import UserReview from './UserReview';
 import ReviewForm from './ReviewForm';
 import { getDishReviews, createDishReview } from '@/api/user-reviews.api';
+import { isLoggedIn } from '@/utils/auth';
 
 interface ReviewProps {
     id: number;
@@ -70,7 +71,11 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
                 </div>
             </div>
             <div className='w-1/2'>
-                <ReviewForm onCreateReview={handleCreateReview} />
+                {isLoggedIn() ? (
+                    <ReviewForm onCreateReview={handleCreateReview} />
+                ) : (
+                    <div className='text-red-600'>ログインしてレビューを投稿してください。</div>
+                )}
             </div>
         </div>
     );
