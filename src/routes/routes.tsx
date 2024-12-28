@@ -8,6 +8,9 @@ import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
 import Anket from '@/pages/Anket/page';
 import Settings from '@/pages/Settings/page'; 
 import LikeAndDislikePage from '@/pages/LikeAndDislikePage/page';
+import AddFoodForm from '@/pages/AddFoodAdmin/AddFood';
+import UpdateFoodForm from '@/pages/UpdateFoodAdmin/Updatefood';
+import DishesList from '@/pages/DishesListAdmin/disheslist';
 const routes: RouteObject[] = [
     {
         path: '/',
@@ -46,6 +49,10 @@ const routes: RouteObject[] = [
                 // TODO
                 element: <TestPage />
             },
+            // {
+            //     path: '/addfoodadmin',
+            //     element: <AddFoodForm />
+            // },
         ]
     },
 
@@ -64,6 +71,18 @@ const routes: RouteObject[] = [
     {
         path: '/likeanddislikepage',
         element: <LikeAndDislikePage />
+    },
+    {
+        path: '/addfoodadmin',
+        element: <AddFoodForm />
+    },
+    {
+        path: '/updatefoodadmin/:dishId',
+        element: <UpdateFoodForm />
+    },
+    {
+        path: '/dishes',
+        element: <DishesList />
     }
 ];
 
