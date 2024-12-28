@@ -1,0 +1,28 @@
+{
+    "survey": "Khảo sát",
+    "generalInfo": "Thông tin chung",
+    "vegetarianQuestion": "Bạn có phải là người ăn chay không?",
+    "yes": "Có",
+    "no": "Không",
+    "locationQuestion": "Bạn đang ở đâu?",
+    "locationPlaceholder": "Ví dụ: Số 1 đường Đại Cồ Việt, quận Hai Bà Trưng, Hà Nội",
+    "distanceQuestion": "Khoảng cách bạn có thể đi",
+    "distancePlaceholder": "Ví dụ: trong vòng 3 km",
+    "budgetQuestion": "Ngân sách cho bữa ăn",
+    "budgetPlaceholder": "Ví dụ: ~50000 VND",
+    "likes": "Thích",
+    "dislikes": "Không thích",
+    "flavors": {
+      "spicy": "Cay",
+      "sweet": "Ngọt",
+      "fried": "Chiên",
+      "grilled": "Nướng",
+      "japanese": "Món Nhật",
+      "french": "Món Pháp"
+    },
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "saved": "Đã lưu!",
+    "userIdNotFound": "Không tìm thấy ID người dùng.",
+    "updateFailed": "Cập nhật thất bại."
+  }

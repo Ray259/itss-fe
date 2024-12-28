@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '@/contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid';
 import { login as loginApi } from '@/api/auth.api';
@@ -13,6 +13,7 @@ const Login: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
+    const { role } = useParams();
 
     const isEmailValid = validInput.email(email);
     const isPasswordValid = validInput.password(password);
@@ -20,7 +21,8 @@ const Login: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await loginApi(email, password);
+            const roleCode = role === 'admin' ? 'ADMIN' : 'USER';
+            const response = await loginApi(email, password, true, roleCode);
             login(response.access_token, response.refresh_token);
             navigate('/homepage');
         } catch (error: any) {

@@ -6,7 +6,7 @@ import Register from '@pages/Register/page';
 import HomePage from '@/pages/homepages/HomePage';
 import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
 import Anket from '@/pages/Anket/page';
-import Settings from '@/pages/Settings/page'; 
+import Settings from '@/pages/Settings/page';
 import LikeAndDislikePage from '@/pages/LikeAndDislikePage/page';
 import AddFoodForm from '@/pages/AddFoodAdmin/AddFood';
 import UpdateFoodForm from '@/pages/UpdateFoodAdmin/Updatefood';
@@ -58,6 +58,10 @@ const routes: RouteObject[] = [
 
     {
         path: '/login',
+        element: <Login />
+    },
+    {
+        path: '/login/:role',
         element: <Login />
     },
     {

@@ -1,0 +1,28 @@
+{
+    "survey": "アンケート",
+    "generalInfo": "一般情報",
+    "vegetarianQuestion": "ベジタリアンですか？",
+    "yes": "はい",
+    "no": "いいえ",
+    "locationQuestion": "どこにいますか？",
+    "locationPlaceholder": "例: １Dai Co Viet通り、Hai Ba Trung、Ha Noi",
+    "distanceQuestion": "本場から行ける距離",
+    "distancePlaceholder": "例: ３キロ以下",
+    "budgetQuestion": "食事の予算",
+    "budgetPlaceholder": "例: ~50000VND",
+    "likes": "好み",
+    "dislikes": "苦手",
+    "flavors": {
+      "spicy": "辛い物",
+      "sweet": "甘い物",
+      "fried": "揚げ物",
+      "grilled": "焼き物",
+      "japanese": "日本料理",
+      "french": "フランス料理"
+    },
+    "cancel": "キャンセル",
+    "save": "保存",
+    "saved": "保存しました！",
+    "userIdNotFound": "ユーザーIDが見つかりません。",
+    "updateFailed": "更新に失敗しました。"
+  }

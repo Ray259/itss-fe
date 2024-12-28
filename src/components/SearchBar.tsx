@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
 import { searchDishes } from '@/api/food-details.api';
+import { useTranslation } from 'react-i18next';
 
 const SearchBar: React.FC = () => {
+    const { t } = useTranslation('common');
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState<{ id: number; name: string }[]>([]);
@@ -19,7 +21,7 @@ const SearchBar: React.FC = () => {
             setLoading(false);
             return;
         }
-    
+
         try {
             // Gọi API thực tế thông qua searchDishes
             const data = await searchDishes(value, 1, 10); // page = 1, per_page = 10
@@ -42,18 +44,15 @@ const SearchBar: React.FC = () => {
     };
 
     return (
-        <div 
-            className='relative w-full bg-gray-100 p-4 shadow-md z-10'
-            onClick={() => setResults([])}
-        >
-            <div 
+        <div className='relative w-full p-4 z-10' onClick={() => setResults([])}>
+            <div
                 className='flex items-center w-4/5 max-w-lg mx-auto px-4 py-2 rounded-md border border-gray-300 bg-white'
                 onClick={(e) => e.stopPropagation()}
             >
                 <MagnifyingGlassIcon className='h-5 w-5 text-gray-500 mr-3' />
                 <input
                     type='text'
-                    placeholder='食べ物やレストランを見つける...'
+                    placeholder={t('search')}
                     className='flex-grow outline-none'
                     value={query}
                     onChange={(e) => handleSearch(e.target.value)}
