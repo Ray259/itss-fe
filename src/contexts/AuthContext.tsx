@@ -16,9 +16,24 @@ type IAuthContext = {
 };
 
 export type UserProfile = {
-    id: string;
-    username: string;
-    avatar?: string;
+    id?: number;
+    display_name?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    location?: string;
+    avatar_url?: string;
+    dark_mode?: boolean;
+    language?: string;
+    font_size?: number;
+    notification?: boolean;
+    loved_flavor?: string[];
+    hated_flavor?: string[];
+    loved_dish?: string[];
+    vegetarian?: boolean;
+    loved_distinct?: number;
+    loved_price?: number;
+
 };
 
 const initialState = {

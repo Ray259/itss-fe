@@ -11,8 +11,8 @@ export const login = async (
     return response.data;
 };
 
-export const register = async (email: string, password: string): Promise<void> => {
-    const response = await api.post(REGISTER_ENDPOINT, { email, password });
+export const register = async (display_name: string, email: string, password: string): Promise<void> => {
+    const response = await api.post(REGISTER_ENDPOINT, { display_name, email, password });
     return response.data;
 };
 

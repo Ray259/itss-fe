@@ -11,10 +11,9 @@ const styles = {
       padding: '12px 25px',
       borderRadius: '8px',
       cursor: 'pointer',
-      border: 'none',
       fontSize: '16px',
       transition: 'background-color 0.3s',
-          border: '1px solid red', // Thay đổi border thành solid red
+      border: '1px solid red', // Thay đổi border thành solid red
   
     },
     cancelButton: {
