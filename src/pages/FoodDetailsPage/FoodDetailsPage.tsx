@@ -6,6 +6,8 @@ import UserReviewSection from './UserReviews/UserReviewSection';
 import StarRating from '@/components/StarRating';
 import { getFoodDetailsById } from '@/api/food-details.api';
 import { getUserInfo } from '@/api/user-info.api';
+import { getDishReviews } from '@/api/user-reviews.api'; // Import hàm lấy danh sách đánh giá
+import { isLoggedIn } from '@/utils/auth';
 
 interface FoodDetailsData {
     id: number;
@@ -21,9 +23,9 @@ interface FoodDetailsData {
 const FoodDetailsPage: React.FC = () => {
     const { foodId } = useParams<{ foodId: string }>();
     const [foodDetails, setFoodDetails] = useState<FoodDetailsData | null>(null);
-    const [userId, setUserId] = useState<number | null>(null);
-
-    const rating = 4; // TODO: fetch reviews, calculate rating
+    const [userId, setUserId] = useState<number | null>(null); // State để lưu trữ userId
+    const [averageRating, setAverageRating] = useState<number | null>(null); // State để lưu trữ rating trung bình
+    const [reviewCount, setReviewCount] = useState<number>(0); // State để lưu trữ số lượng đánh giá
 
     useEffect(() => {
         const fetchFoodDetails = async () => {
@@ -41,28 +43,48 @@ const FoodDetailsPage: React.FC = () => {
     }, [foodId]);
 
     useEffect(() => {
-        const fetchUserInfo = async () => {
+        if (isLoggedIn()) { // Kiểm tra trạng thái đăng nhập trước khi gọi API
+            const fetchUserInfo = async () => {
+                try {
+                    const userInfo = await getUserInfo();
+                    setUserId(userInfo.id);
+                } catch (error) {
+                    console.error('Error fetching user info:', error);
+                }
+            };
+
+            fetchUserInfo();
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
             try {
-                const userInfo = await getUserInfo();
-                setUserId(userInfo.id);
+                if (foodId) {
+                    const reviews = await getDishReviews(foodId);
+                    if (Array.isArray(reviews)) {
+                        const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+                        const average = totalRating / reviews.length;
+                        setAverageRating(Math.round(average)); // Làm tròn rating trung bình
+                        setReviewCount(reviews.length);
+                    }
+                }
             } catch (error) {
-                console.error('Error fetching user info:', error);
+                console.error('Error fetching reviews:', error);
             }
         };
 
-        fetchUserInfo();
-    }, []);
+        fetchReviews();
+    }, [foodId]);
 
-    if (!foodDetails || userId === null) {
+    if (!foodDetails) {
         return <div className='text-center text-gray-500 dark:text-gray-400'>Loading...</div>;
     }
 
     return (
         <div className='mx-auto bg-gray-100 dark:bg-gray-900 p-10 rounded-md shadow'>
             <div className='flex items-center p-4'>
-                <div className='text-red-600 dark:text-red-400 font-bold text-2xl mr-4'>
-                    {foodDetails.name}
-                </div>
+                <div className='text-red-600 dark:text-red-300 font-bold text-2xl mr-4'>{foodDetails.name}</div>
                 <div className='flex items-center'>
                     <StarRating rating={rating} fixed />
                 </div>
@@ -75,7 +97,9 @@ const FoodDetailsPage: React.FC = () => {
                 details={foodDetails.info}
                 categories={foodDetails.categories}
             />
-            <UserReviewSection dishId={foodId} userId={userId} />
+            {isLoggedIn() && userId !== null && (
+                <UserReviewSection dishId={foodId!} userId={userId} />
+            )}
         </div>
     );
 };

@@ -12,8 +12,8 @@ const App: React.FC = () => {
     }, [darkMode]);
 
     return (
-        <AuthProvider>
-            <Router>
+        <Router>
+            <AuthProvider>
                 <Routes>
                     {routes.map((route, index) => (
                         <Route key={index} path={route.path} element={route.element}>
@@ -23,8 +23,8 @@ const App: React.FC = () => {
                         </Route>
                     ))}
                 </Routes>
-            </Router>
-        </AuthProvider>
+            </AuthProvider>
+        </Router>
     );
 };
 

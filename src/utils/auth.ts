@@ -30,6 +30,10 @@ export const getLocalUser = (): UserProfile | null => {
     return userString ? JSON.parse(userString) : null;
 };
 
+export const isLoggedIn = () => {
+    return !!localStorage.getItem('accessToken');
+};
+
 export const clearLocalUser = () => {
     localStorage.removeItem('user');
 };

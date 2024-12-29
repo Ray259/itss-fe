@@ -1,0 +1,9 @@
+{
+    "homepage": "ホームページ",
+    "greeting": "今日はお昼ご飯に何が食べたいですか？",
+    "highlyRated": "高評価の料理",
+    "customizeMenu": "メニューのカスタマイズ",
+    "weeklyRecommendation": "毎週のおすすめメニュー",
+    "nearbyRecommendation": "近くのおすすめメニュー",
+    "daysOfWeek": ["月", "火", "水", "木", "金", "土", "日"]
+}

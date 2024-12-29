@@ -1,12 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import sidebarItems from '@configs/sidebarItems';
+import { useTranslation } from 'react-i18next';
+import getSidebarItems from '@configs/sidebarItems';
 
 interface SideBarProps {
     isVisible: boolean;
 }
 
 const SideBar: React.FC<SideBarProps> = ({ isVisible }) => {
+    const { t } = useTranslation('common');
+    const sidebarItems = getSidebarItems(t);
+
     return (
         <div
             className={`h-full w-[386px] opacity-95 bg-gradient-to-r from-[#ff8486] to-[#ffd1d1] dark:from-gray-700 dark:to-gray-900 shadow transform transition-transform duration-300 ease-in-out z-40 ${

@@ -1,0 +1,9 @@
+{
+    "homepage": "Homepage",
+    "greeting": "What would you like to have for lunch today?",
+    "highlyRated": "Highly Rated Dishes",
+    "customizeMenu": "Customize Menu",
+    "weeklyRecommendation": "Weekly Recommended Menu",
+    "nearbyRecommendation": "Nearby Recommended Menu",
+    "daysOfWeek": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+}

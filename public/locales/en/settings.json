@@ -3,6 +3,8 @@
   "general": "General",
   "username": "Username",
   "usernamePlaceholder": "Enter your username",
+  "avatar_url": "Avatar URL",
+  "avatarPlaceholder": "Enter your avatar URL",
   "password": "Password",
   "passwordPlaceholder": "Enter your password",
   "darkMode": "Dark Mode",

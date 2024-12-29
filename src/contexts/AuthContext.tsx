@@ -1,6 +1,8 @@
-import { createContext, ReactNode, useState } from 'react';
-import { setAccessToken, setRefreshToken, clearTokens, setLocalUser, clearLocalUser } from '@/utils/auth';
+import { createContext, ReactNode, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { setAccessToken, setRefreshToken, clearTokens, setLocalUser, clearLocalUser, getAccessToken } from '@/utils/auth';
 import { getUserInfo } from '@/api/user-info.api';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     children?: ReactNode;
@@ -33,7 +35,6 @@ export type UserProfile = {
     vegetarian?: boolean;
     loved_distinct?: number;
     loved_price?: number;
-
 };
 
 const initialState = {
@@ -50,6 +51,31 @@ const AuthContext = createContext<IAuthContext>(initialState);
 const AuthProvider = ({ children }: Props) => {
     const [isAuthenticated, setAuthenticated] = useState(initialState.isAuthenticated);
     const [user, setUser] = useState<UserProfile | null>(initialState.user);
+    const { i18n } = useTranslation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const initializeAuth = async () => {
+            const token = getAccessToken();
+            if (token) {
+                console.log('Access token found:', token);
+                setAuthenticated(true);
+                try {
+                    const user = await getUserInfo();
+                    if (user.language) {
+                        i18n.changeLanguage(user.language);
+                    }
+                    setUser(user);
+                    setLocalUser(user);
+                } catch (error) {
+                    console.error('Failed to fetch user info:', error);
+                    logout();
+                }
+            }
+        };
+
+        initializeAuth();
+    }, [i18n]);
 
     const login = async (accessToken: string, refreshToken: string) => {
         try {
@@ -60,7 +86,10 @@ const AuthProvider = ({ children }: Props) => {
             // Set user info
             console.log('Fetching user info...');
             const user = await getUserInfo();
-            console.log('User info:', user);
+            if (user.language) {
+                i18n.changeLanguage(user.language);
+                console.log('User language:', user.language);
+            }
             setUser(user);
             setLocalUser(user);
         } catch (error) {
@@ -74,6 +103,7 @@ const AuthProvider = ({ children }: Props) => {
         clearLocalUser();
         setAuthenticated(false);
         setUser(null);
+        navigate('/login');
     };
 
     return (
