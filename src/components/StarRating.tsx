@@ -28,11 +28,13 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, fixed = false, onRating
     };
 
     return (
-        <div>
+        <div className='flex space-x-1'>
             {[1, 2, 3, 4, 5].map((star) => (
                 <i
                     key={star}
-                    className={`fa-star ${hoverRating >= star || rating >= star ? 'fas' : 'far'} text-yellow-500 cursor-pointer`}
+                    className={`fa-star ${
+                        hoverRating >= star || rating >= star ? 'fas' : 'far'
+                    } cursor-pointer text-yellow-500 dark:text-yellow-400`}
                     onMouseEnter={() => handleMouseEnter(star)}
                     onMouseLeave={handleMouseLeave}
                     onClick={() => handleClick(star)}

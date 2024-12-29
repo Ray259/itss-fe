@@ -23,7 +23,7 @@ const Anket: React.FC = () => {
             loved_distinct: parseInt(distance.replace(t('distanceUnit'), ''), 10),
             loved_price: parseInt(budget.replace('~', '').replace('VND', ''), 10),
             loved_flavor: likes,
-            hated_flavor: dislikes
+            hated_flavor: dislikes,
         };
 
         try {
@@ -51,7 +51,11 @@ const Anket: React.FC = () => {
         console.log(t('formReset'));
     };
 
-    const handleAddItem = (list: string[], setter: React.Dispatch<React.SetStateAction<string[]>>, item: string) => {
+    const handleAddItem = (
+        list: string[],
+        setter: React.Dispatch<React.SetStateAction<string[]>>,
+        item: string
+    ) => {
         if (!list.includes(item)) {
             setter([...list, item]);
         } else {
@@ -60,9 +64,9 @@ const Anket: React.FC = () => {
     };
 
     return (
-        <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 p-5'>
-            <div className='bg-white w-full max-w-2xl p-5 rounded-lg shadow-md'>
-                <h1 className='text-center text-red-600 text-4xl mb-5'>{t('survey')}</h1>
+        <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-5'>
+            <div className='bg-gray-100 dark:bg-gray-800 w-full max-w-2xl p-5 rounded-lg shadow-md'>
+                <h1 className='text-center text-red-600 dark:text-red-400 text-4xl mb-5'>{t('survey')}</h1>
                 <form onSubmit={handleSubmit}>
                     <div className='mb-5'>
                         <h2 className='font-bold text-xl mb-3'>{t('generalInfo')}</h2>
@@ -100,7 +104,7 @@ const Anket: React.FC = () => {
                                 placeholder={t('locationPlaceholder')}
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
-                                className='w-full p-2 mt-2 border rounded'
+                                className='w-full p-2 mt-2 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 rounded'
                             />
                         </div>
                         <div className='mb-3'>
@@ -110,7 +114,7 @@ const Anket: React.FC = () => {
                                 placeholder={t('distancePlaceholder')}
                                 value={distance}
                                 onChange={(e) => setDistance(e.target.value)}
-                                className='w-full p-2 mt-2 border rounded'
+                                className='w-full p-2 mt-2 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 rounded'
                             />
                         </div>
                         <div className='mb-3'>
@@ -120,7 +124,7 @@ const Anket: React.FC = () => {
                                 placeholder={t('budgetPlaceholder')}
                                 value={budget}
                                 onChange={(e) => setBudget(e.target.value)}
-                                className='w-full p-2 mt-2 border rounded'
+                                className='w-full p-2 mt-2 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 rounded'
                             />
                         </div>
                     </div>
@@ -133,8 +137,8 @@ const Anket: React.FC = () => {
                                     key={item}
                                     className={`py-2 px-4 rounded transition duration-300 ${
                                         likes.includes(t(`flavors.${item}`))
-                                            ? 'bg-[#4e4070] text-white'
-                                            : 'bg-[#65558f] text-white hover:bg-[#4e4070]'
+                                            ? 'bg-gray-500 text-gray-100'
+                                            : 'bg-[#65558f] text-gray-100 hover:bg-[#4e4070]'
                                     }`}
                                     onClick={() => handleAddItem(likes, setLikes, t(`flavors.${item}`))}
                                     type='button'
@@ -153,8 +157,8 @@ const Anket: React.FC = () => {
                                     key={item}
                                     className={`py-2 px-4 rounded transition duration-300 ${
                                         dislikes.includes(t(`flavors.${item}`))
-                                            ? 'bg-[#4e4070] text-white'
-                                            : 'bg-[#65558f] text-white hover:bg-[#4e4070]'
+                                            ? 'bg-gray-500 text-gray-100'
+                                            : 'bg-[#65558f] text-gray-100 hover:bg-[#4e4070]'
                                     }`}
                                     onClick={() => handleAddItem(dislikes, setDislikes, t(`flavors.${item}`))}
                                     type='button'
@@ -167,14 +171,14 @@ const Anket: React.FC = () => {
 
                     <div className='flex justify-center gap-3 mt-5'>
                         <button
-                            className='bg-gray-500 text-white py-2 px-4 rounded transition duration-300 hover:bg-gray-600'
+                            className='bg-gray-500 text-gray-100 py-2 px-4 rounded transition duration-300 hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-500'
                             type='button'
                             onClick={handleCancel}
                         >
                             {t('cancel')}
                         </button>
                         <button
-                            className='bg-red-600 text-white py-2 px-4 rounded transition duration-300 hover:bg-red-700'
+                            className='bg-red-600 text-gray-100 py-2 px-4 rounded transition duration-300 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400'
                             type='submit'
                         >
                             {t('save')}

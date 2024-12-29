@@ -139,7 +139,7 @@ const UpdateFoodForm: React.FC = () => {
         </div>
 
         {images.length > 0 && (
-          <div className="uploaded-images mt-3 d-flex flex-wrap shadow-sm p-3 mb-9 bg-white rounded" style={{ marginLeft: "165px", borderRadius: "30px" }}>
+          <div className="uploaded-images mt-3 d-flex flex-wrap shadow-sm p-3 mb-9 bg-gray-100 dark:bg-gray-800 rounded" style={{ marginLeft: "165px", borderRadius: "30px" }}>
             {images.map((image, index) => (
               <div key={index} className="image-preview me-2 mb-2 position-relative">
                 <img
@@ -163,7 +163,7 @@ const UpdateFoodForm: React.FC = () => {
           <label htmlFor="description" className="me-3" style={{ width: "150px", fontWeight: 'Bold', fontSize: "20px", padding: "20px" }}>記述:</label>
           <textarea
             id="description"
-            className="form-control shadow-sm p-3 mb-9 bg-white rounded"
+            className="form-control shadow-sm p-3 mb-9 bg-gray-100 dark:bg-gray-800 rounded"
             style={{ width: "696px", height: "250px" }}
             value={description}
             onChange={(e) => setDescription(e.target.value)}

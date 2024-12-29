@@ -67,7 +67,7 @@ const AddFoodForm: React.FC = () => {
   };
 
   return (
-    <div className="container mt-5 page-container">
+    <div className="container mt-5 page-container bg-gray-100 dark:bg-gray-900 dark:text-gray-100 shadow-md">
       <form onSubmit={handleSubmit}>
         <h2 className="mb-4" style={{fontWeight: 'Bold', color:"Red", paddingLeft:"15px"}}>食べ物を追加</h2>
 
@@ -86,7 +86,7 @@ const AddFoodForm: React.FC = () => {
             <input
               type="text"
               id={field.id}
-              className="form-control"
+              className="form-control bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               style={{ width: "696px", height:"50px" ,borderColor: "red" }}
               value={field.value}
               onChange={(e) => field.setValue(e.target.value)}
@@ -119,7 +119,7 @@ const AddFoodForm: React.FC = () => {
 
         {/* Hiển thị ảnh sau khi tải lên */}
         {images.length > 0 && (
-          <div className="uploaded-images mt-3 d-flex flex-wrap shadow-sm p-3 mb-9 bg-white rounded" style={{ marginLeft: "165px", border: "5px   ", borderRadius: "30px" }}>
+          <div className="uploaded-images mt-3 d-flex flex-wrap shadow-sm p-3 mb-9 bg-gray-100 dark:bg-gray-800 rounded" style={{ marginLeft: "165px", border: "5px   ", borderRadius: "30px" }}>
             {images.map((image, index) => (
               <div key={index} className="image-preview me-2 mb-2 position-relative " >
                 <img
@@ -147,7 +147,7 @@ const AddFoodForm: React.FC = () => {
           </label>
           <textarea
             id="description"
-            className="form-control shadow-sm p-3 mb-9 bg-white rounded"
+            className="form-control shadow-sm p-3 mb-9 bg-gray-100 dark:bg-gray-800 rounded text-gray-900 dark:text-gray-100"
             style={{ width: "696px", height: "250px"}}
             value={description}
             onChange={(e) => setDescription(e.target.value)}

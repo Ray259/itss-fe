@@ -20,16 +20,16 @@ const socialIcons = [
     { src: instagramLogo, alt: 'Instagram Logo' },
     { src: googleLogo, alt: 'Google+ Logo' },
     { src: pinterestLogo, alt: 'Pinterest Logo' },
-    { src: rssLogo, alt: 'RSS Logo' }
+    { src: rssLogo, alt: 'RSS Logo' },
 ];
 
 const Footer: React.FC = () => {
     return (
         <div className='flex flex-col'>
             <div className='flex-grow'>
-                <footer className='bg-[#ff1100] text-white py-20'>
+                <footer className='bg-red-600 text-gray-100 dark:bg-gray-800 dark:text-gray-300 py-20'>
                     <div className='max-w-6xl mx-auto px-4 flex flex-wrap justify-between items-start'>
-                        <div className='w-full h-px bg-white opacity-30 mb-20'></div>
+                        <div className='w-full h-px bg-gray-100 dark:bg-gray-600 opacity-30 mb-20'></div>
                         <EZLunchLogo />
                         <ContactAndSocial />
                         <FooterLinksAndCopyright />
@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
 
 const EZLunchLogo: React.FC = () => (
     <div className='flex flex-col items-start'>
-        <div className='border-8 border-white px-4 py-2 mb-4 ml-12'>
+        <div className='border-8 border-gray-100 dark:border-gray-600 px-4 py-2 mb-4 ml-12'>
             <h1 className='text-4xl font-bold'>EZLunch</h1>
         </div>
     </div>
@@ -87,7 +87,7 @@ const SocialMediaIcons: React.FC = () => (
 
 const FooterLinksAndCopyright: React.FC = () => (
     <div className='flex flex-col items-start w-full mt-8'>
-        <div className='w-full h-px bg-white opacity-30 mb-6'></div>
+        <div className='w-full h-px bg-gray-100 dark:bg-gray-600 opacity-30 mb-6'></div>
         <div className='flex flex-wrap justify-between w-full'>
             <FooterLinks />
             <div className='text-sm opacity-70'>Copyright © 2018 • Lift Media Inc.</div>

@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from './routes/routes';
 import { AuthProvider } from './contexts/AuthContext';
+import { useDarkMode } from './contexts/DarkModeContext';
 
 const App: React.FC = () => {
+    const { darkMode } = useDarkMode();
+
+    useEffect(() => {
+        document.body.className = darkMode ? 'dark' : '';
+    }, [darkMode]);
+
     return (
         <AuthProvider>
             <Router>

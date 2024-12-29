@@ -1,8 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSuggestedDishes } from '@/api/food-views.api';
+import { useTranslation } from 'react-i18next';
 
 const RecommendedMenu: React.FC = () => {
+    const { t } = useTranslation('homepage');
     const [dishes, setDishes] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -10,7 +12,7 @@ const RecommendedMenu: React.FC = () => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const navigate = useNavigate(); // Khởi tạo hook useNavigate
-    const daysOfWeek = ['月', '火', '水', '木', '金', '土', '日']; // Monday to Sunday
+    const daysOfWeek = t('daysOfWeek', { returnObjects: true }) as string[];
 
     // Gọi API để lấy danh sách món ăn đề xuất
     const fetchDishes = async () => {
@@ -64,19 +66,18 @@ const RecommendedMenu: React.FC = () => {
 
     return (
         <div
-            className='p-6 rounded-lg mt-6'
+            className='p-6 rounded-lg mt-6 bg-gradient-to-r from-red-500 to-pink-100 dark:from-gray-700 dark:to-red-500'
             style={{
-                background: 'linear-gradient(135deg, #ff1100, #ffdede)',
                 paddingLeft: '40px',
                 paddingRight: '40px'
             }}
         >
-            <h2 className='text-lg font-bold text-white mb-4'>毎週のおすすめメニュー</h2>
+            <h2 className='text-lg font-bold text-gray-100 dark:text-gray-200 mb-4'>{t('weeklyRecommendation')}</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button
                         onClick={scrollLeft}
-                        className='absolute left-[-40px] top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full transition-colors'
+                        className='absolute left-[-40px] top-1/2 transform -translate-y-1/2 text-gray-100 dark:text-gray-300 p-2 rounded-full transition-colors'
                         style={{ zIndex: 10 }}
                     >
                         <span
@@ -105,7 +106,7 @@ const RecommendedMenu: React.FC = () => {
                     {dishes.map((dish, index) => (
                         <div
                             key={index}
-                            className='bg-white p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
+                            className='bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
                             onClick={() => navigate(`/food-details/${dish.id}`)} // Điều hướng đến trang chi tiết món ăn
                             style={{
                                 transition: 'transform 0.3s', // Thêm transition để mượt mà
@@ -114,17 +115,17 @@ const RecommendedMenu: React.FC = () => {
                             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
                             {/* Ngày hiển thị ở góc trên bên phải */}
-                            <div className='absolute top-2 right-2 text-xl font-bold text-red-500'>
+                            <div className='absolute top-2 right-2 text-xl font-bold text-red-500 dark:text-red-300'>
                                 {dish.day}
                             </div>
-                            <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
+                            <div className='w-full h-32 bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden mb-4'>
                                 <img src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'} alt={dish.name} className='w-full h-full object-cover' />
                             </div>
-                            <div className='text-sm font-bold'>{dish.name}</div>
-                            <div className='text-xs text-gray-500'>{dish.deliveryTime}</div>
+                            <div className='text-sm font-bold text-gray-900 dark:text-gray-100'>{dish.name}</div>
+                            <div className='text-xs text-gray-500 dark:text-gray-400'>{dish.deliveryTime}</div>
                             <div className='flex flex-wrap gap-1 mt-2'>
                                 {dish.ingredients && dish.ingredients.map((ingredient: string, i: number) => (
-                                    <span key={i} className='px-2 py-1 text-xs bg-gray-200 rounded-full text-gray-600'>
+                                    <span key={i} className='px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300'>
                                         {ingredient}
                                     </span>
                                 ))}

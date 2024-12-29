@@ -45,21 +45,21 @@ function LikeAndDislikePage() {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-3xl p-10 bg-white shadow-lg rounded-xl">
+        <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+            <div className="w-full max-w-3xl p-10 bg-gray-100 dark:bg-gray-800 shadow-lg rounded-xl">
                 <input
                     type="text"
                     placeholder="探したいものを入力してください"
-                    className="w-full p-4 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"
+                    className="w-full p-4 mb-6 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
 
-                <h2 className="text-xl font-bold text-gray-800 mb-4">味</h2>
-                <hr className="border-t border-gray-300 mb-6" />
+                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">味</h2>
+                <hr className="border-t border-gray-300 dark:border-gray-600 mb-6" />
                 <div className="grid grid-cols-5 gap-6">
                     {['辛い', '甘い', '苦い', '酸っぱい', '甘辛い', '塩辛い', '淡白', '薄い', '濃い', '旨味'].map((item) => (
                         <button
                             key={item}
-                            className={`bg-purple-800 text-white py-3 px-2 rounded-full hover:bg-purple-700 transition text-sm ${
+                            className={`bg-purple-800 dark:bg-purple-900 text-gray-100 dark:text-gray-300 py-3 px-2 rounded-full hover:bg-purple-700 dark:hover:bg-purple-800 transition text-sm ${
                                 selectedLikes.includes(item) ? 'bg-purple-700' : ''
                             }`}
                             type="button"
@@ -70,13 +70,13 @@ function LikeAndDislikePage() {
                     ))}
                 </div>
 
-                <h2 className="text-xl font-bold text-gray-800 mb-4 mt-4">食材</h2>
-                <hr className="border-t border-gray-300 mb-6" />
+                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 mt-4">食材</h2>
+                <hr className="border-t border-gray-300 dark:border-gray-600 mb-6" />
                 <div className="grid grid-cols-5 gap-6">
                     {['人参', 'ニンニク', '鳥肉', '豚肉', '牛', '野菜', '唐辛子', '卵', '豆腐', 'う魚', 'チーズ'].map((item) => (
                         <button
                             key={item}
-                            className={`bg-purple-800 text-white py-3 px-2 rounded-full hover:bg-purple-700 transition text-sm ${
+                            className={`bg-purple-800 dark:bg-purple-900 text-gray-100 dark:text-gray-300 py-3 px-2 rounded-full hover:bg-purple-700 dark:hover:bg-purple-800 transition text-sm ${
                                 selectedDislikes.includes(item) ? 'bg-purple-700' : ''
                             }`}
                             type="button"

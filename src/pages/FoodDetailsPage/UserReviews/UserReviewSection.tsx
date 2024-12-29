@@ -14,7 +14,7 @@ interface ReviewProps {
 }
 
 const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishId, userId }) => {
-    const [reviews, setReviews] = useState<ReviewProps[]>([]); // Khởi tạo là một mảng rỗng
+    const [reviews, setReviews] = useState<ReviewProps[]>([]); // Initial empty array
     const [currentPage, setCurrentPage] = useState(1);
     const reviewsPerPage = 2;
 
@@ -22,7 +22,6 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
         const fetchReviews = async () => {
             try {
                 const fetchedReviews = await getDishReviews(dishId);
-                // Đảm bảo rằng fetchedReviews là một mảng
                 if (Array.isArray(fetchedReviews)) {
                     setReviews(fetchedReviews);
                 } else {
@@ -49,9 +48,9 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
     const currentReviews = reviews.slice((currentPage - 1) * reviewsPerPage, currentPage * reviewsPerPage);
 
     return (
-        <div className='flex border-t'>
+        <div className='flex border-t border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900'>
             <div className='p-4 w-1/2'>
-                <h2 className='text-2xl text-red-600 font-semibold'>レビュー</h2>
+                <h2 className='text-2xl text-red-600 dark:text-red-400 font-semibold'>レビュー</h2>
                 {currentReviews.map((review) => (
                     <UserReview key={review.id} {...review} />
                 ))}
@@ -60,7 +59,9 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
                         <button
                             key={index}
                             className={`mx-2 px-3 py-1 border rounded ${
-                                currentPage === index + 1 ? 'bg-red-600 text-white' : 'bg-gray-200 text-red-600'
+                                currentPage === index + 1
+                                    ? 'bg-red-600 text-gray-100 dark:bg-red-500'
+                                    : 'bg-gray-200 text-red-600 dark:bg-gray-700 dark:text-red-400'
                             }`}
                             onClick={() => setCurrentPage(index + 1)}
                         >
@@ -69,7 +70,7 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
                     ))}
                 </div>
             </div>
-            <div className='w-1/2'>
+            <div className='w-1/2 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md'>
                 <ReviewForm onCreateReview={handleCreateReview} />
             </div>
         </div>

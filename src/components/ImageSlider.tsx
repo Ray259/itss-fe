@@ -29,11 +29,14 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, itemsToShow = 4 }) =>
     };
 
     return (
-        <div className='relative w-full mx-auto rounded-2xl shadow-lg flex items-center p-8'>
+        <div className='relative w-full mx-auto rounded-2xl shadow-lg flex items-center p-8 bg-gray-100 dark:bg-gray-800 dark:shadow-md'>
             {/* Previous Button */}
             {canScrollPrevious && (
-                <button onClick={goToPrevious} className='p-3 rounded-full transition'>
-                    <img src={arrowLeft} alt='Previous' className='h-8' />
+                <button
+                    onClick={goToPrevious}
+                    className='p-3 rounded-full transition bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
+                >
+                    <img src={arrowLeft} alt='Previous' className='h-8 filter dark:invert' />
                 </button>
             )}
 
@@ -53,7 +56,11 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, itemsToShow = 4 }) =>
                             }}
                             className='px-2'
                         >
-                            <img src={image} alt={`Image ${index}`} className='w-full h-48 object-cover rounded-lg' />
+                            <img
+                                src={image}
+                                alt={`Image ${index}`}
+                                className='w-full h-48 object-cover rounded-lg'
+                            />
                         </div>
                     ))}
                 </div>
@@ -61,8 +68,11 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, itemsToShow = 4 }) =>
 
             {/* Next Button */}
             {canScrollNext && (
-                <button onClick={goToNext} className='p-3 rounded-full transition'>
-                    <img src={arrowRight} alt='Next' className='h-8' />
+                <button
+                    onClick={goToNext}
+                    className='p-3 rounded-full transition bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
+                >
+                    <img src={arrowRight} alt='Next' className='h-8 filter dark:invert' />
                 </button>
             )}
         </div>
