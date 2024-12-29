@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const RecommendedMenu: React.FC = () => {
     const [dishes, setDishes] = useState<any[]>([]);
@@ -8,6 +9,7 @@ const RecommendedMenu: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [showLeftButton, setShowLeftButton] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const { t } = useTranslation('homepage');
 
     const navigate = useNavigate();
 
@@ -71,7 +73,7 @@ const RecommendedMenu: React.FC = () => {
                 paddingRight: '40px'
             }}
         >
-            <h2 className='text-lg font-bold text-white mb-4'>近くのおすすめメニュー</h2>
+            <h2 className='text-lg font-bold text-white mb-4'>{t('nearbyRecommendation')}</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button

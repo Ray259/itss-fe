@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getDishes } from '@/api/food-views.api'; // Giả sử bạn có hàm này để lấy danh sách món ăn
+import { useTranslation } from 'react-i18next';
 
 const HighRatedDishes: React.FC = () => {
     const [dishes, setDishes] = useState<any[]>([]);
@@ -14,6 +15,7 @@ const HighRatedDishes: React.FC = () => {
     const [showLeftButton, setShowLeftButton] = useState(false);
 
     const navigate = useNavigate();
+    const { t } = useTranslation('homepage');
 
     const checkScroll = () => {
         if (scrollRef.current) {
@@ -82,7 +84,7 @@ const HighRatedDishes: React.FC = () => {
                 paddingRight: '40px'
             }}
         >
-            <h2 className='text-lg font-bold text-red-500 mb-4'>高評価の料理</h2>
+            <h2 className='text-lg font-bold text-red-500 mb-4'>{t('highlyRated')}</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button
