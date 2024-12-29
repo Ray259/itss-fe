@@ -5,16 +5,19 @@ import EditIcon from "@mui/icons-material/Edit";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn"; 
 import AddFoodForm from '@/pages/AddFoodAdmin/AddFood';
 import UpdateFoodForm from '@/pages/UpdateFoodAdmin/Updatefood';
+import { useNavigate } from "react-router-dom";
 
 interface MenuItem {
   foodname: string;
   address: string;
   price: string;
   image: string;
+  id:string;
 }
 
 const DishesList: React.FC = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -42,11 +45,11 @@ const DishesList: React.FC = () => {
 
 
   const handleEdit = (id: string) => {
-    window.location.href =(`/updatefoodadmin/${id}`); 
+    navigate(`/updatefoodadmin/${id}`); 
   };
 
   const handleAddNew = () => {
-    window.location.href = "/addfoodadmin"; 
+    navigate("/addfoodadmin"); 
   };
 
   return (
@@ -103,6 +106,7 @@ const DishesList: React.FC = () => {
                   variant="contained"
                   color="error"
                   startIcon={<EditIcon />}
+                  onClick={() => handleEdit(item.id)}
                 >
                   編集する
                 </Button>
