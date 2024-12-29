@@ -1,8 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSuggestedDishes } from '@/api/food-views.api';
+import { useTranslation } from 'react-i18next';
 
 const RecommendedMenu: React.FC = () => {
+    const { t } = useTranslation('homepage');
     const [dishes, setDishes] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -10,7 +12,7 @@ const RecommendedMenu: React.FC = () => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const navigate = useNavigate(); // Khởi tạo hook useNavigate
-    const daysOfWeek = ['月', '火', '水', '木', '金', '土', '日']; // Monday to Sunday
+    const daysOfWeek = t('daysOfWeek', { returnObjects: true }) as string[];
 
     // Gọi API để lấy danh sách món ăn đề xuất
     const fetchDishes = async () => {
@@ -71,7 +73,7 @@ const RecommendedMenu: React.FC = () => {
                 paddingRight: '40px'
             }}
         >
-            <h2 className='text-lg font-bold text-white mb-4'>毎週のおすすめメニュー</h2>
+            <h2 className='text-lg font-bold text-white mb-4'>{t('weeklyRecommendation')}</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button
