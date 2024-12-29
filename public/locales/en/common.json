@@ -1,3 +1,11 @@
 {
-    "search": "Find foods..."
+    "search": "Find foods...",
+    "sidebar-1": "Homepage",
+    "sidebar-2": "Survey",
+    "sidebar-3": "Profile",
+    "sidebar-4": "Contact",
+    "sidebar-5": "Settings",
+    "sidebar-6": "Help & FAQ",
+    "logout": "Logout",
+    "login": "Login"
 }

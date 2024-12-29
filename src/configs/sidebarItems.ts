@@ -11,37 +11,39 @@ interface SidebarItem {
     icon: React.ElementType;
 }
 
-const sidebarItems: SidebarItem[] = [
-    {
-        label: 'ホームページ',
-        path: '/homepage',
-        icon: HomeIcon
-    },
-    {
-        label: 'アンケート',
-        path: '/anket',
-        icon: ClipboardDocumentIcon
-    },
-    {
-        label: 'プロフィール',
-        path: '/profile',
-        icon: UserIcon
-    },
-    {
-        label: 'お問い合わせ',
-        path: '/contact',
-        icon: EnvelopeIcon
-    },
-    {
-        label: '設定',
-        path: '/settings',
-        icon: CogIcon
-    },
-    {
-        label: 'ヘルプ & FAQ',
-        path: '/help',
-        icon: QuestionMarkCircleIcon
-    }
-];
+const getSidebarItems = (t: (key: string) => string): SidebarItem[] => {
+    return [
+        {
+            label: t('sidebar-1'),
+            path: '/homepage',
+            icon: HomeIcon
+        },
+        {
+            label: t('sidebar-2'),
+            path: '/anket',
+            icon: ClipboardDocumentIcon
+        },
+        {
+            label: t('sidebar-3'),
+            path: '/profile',
+            icon: UserIcon
+        },
+        {
+            label: t('sidebar-4'),
+            path: '/contact',
+            icon: EnvelopeIcon
+        },
+        {
+            label: t('sidebar-5'),
+            path: '/settings',
+            icon: CogIcon
+        },
+        {
+            label: t('sidebar-6'),
+            path: '/help',
+            icon: QuestionMarkCircleIcon
+        }
+    ];
+};
 
-export default sidebarItems;
+export default getSidebarItems;

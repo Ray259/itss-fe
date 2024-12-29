@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import { getLocalUser } from '@/utils/auth';
 import defaultAvatar from '@assets/img/default-avatar.png';
 import { AuthContext } from '@/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderProps {
     toggleSidebar: () => void;
@@ -12,6 +13,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
     const { logout } = useContext(AuthContext);
+    const { t } = useTranslation();
     const user = getLocalUser();
     const [showDropdown, setShowDropdown] = useState(false);
     return (
@@ -37,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                         onClick={() => setShowDropdown(!showDropdown)}
                     />
                     {showDropdown && (
-                        <div className='absolute right-0 mt-20 w-48 bg-white border border-gray-200 rounded-md shadow-lg'>
+                        <div className='absolute right-0 mt-20 z-10 w-48 bg-white border border-gray-200 rounded-md shadow-lg'>
                             <button
                                 className='block w-full text-left px-4 py-2 text-black hover:bg-gray-100'
                                 onClick={() => {
@@ -46,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                                     window.location.href = '/login';
                                 }}
                             >
-                                ログアウト
+                                {t('logout')}
                             </button>
                         </div>
                     )}
@@ -57,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                         className='px-4 py-2 rounded-lg text-black font-bold bg-gradient-to-r from-pink-100 to-red-500 hover:from-red-500 hover:to-red-700 shadow-md transition-all'
                         onClick={() => (window.location.href = '/login')}
                     >
-                        ログイン
+                        {t('login')}
                     </button>
                 </div>
             )}

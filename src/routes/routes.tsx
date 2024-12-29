@@ -1,5 +1,4 @@
-import React from 'react';
-import { RouteObject, Navigate } from 'react-router-dom';
+import { RouteObject } from 'react-router-dom';
 import BaseLayout from '@/layouts/BaseLayout';
 import TestPage from '@/pages/test';
 import Login from '@pages/Login/page';
@@ -13,7 +12,8 @@ import LikeAndDislikePage from '@/pages/LikeAndDislikePage/page';
 import AddFoodForm from '@/pages/AddFoodAdmin/AddFood';
 import UpdateFoodForm from '@/pages/UpdateFoodAdmin/Updatefood';
 import DishesList from '@/pages/DishesListAdmin/disheslist';
-import { isLoggedIn } from '@/utils/auth';
+import ProtectedRoute from '@/components/ProtectedRoute';
+
 const routes: RouteObject[] = [
     {
         path: '/',
@@ -21,11 +21,15 @@ const routes: RouteObject[] = [
         children: [
             {
                 path: '/',
-                element: isLoggedIn() ? <Navigate to="/homepage" /> : <LandingPage />
+                element: <LandingPage />
             },
             {
                 path: 'homepage',
-                element: isLoggedIn() ? <HomePage /> : <Navigate to="/" />
+                element: (
+                    <ProtectedRoute>
+                        <HomePage />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: 'food-details/:foodId',
@@ -33,7 +37,11 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'profile',
-                element: isLoggedIn() ? <TestPage /> : <Navigate to="/login" />
+                element: (
+                    <ProtectedRoute>
+                        <TestPage />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: 'contact',
@@ -41,11 +49,18 @@ const routes: RouteObject[] = [
             },
             {
                 path: '/anket',
-                element: <Anket />
+                element: (<ProtectedRoute>
+                    <Anket />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: 'settings',
-                element: isLoggedIn() ? <Settings /> : <Navigate to="/login" />
+                element: (
+                    <ProtectedRoute>
+                        <Settings />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: 'help',
@@ -67,19 +82,35 @@ const routes: RouteObject[] = [
     },
     {
         path: '/likeanddislikepage',
-        element: isLoggedIn() ? <LikeAndDislikePage /> : <Navigate to="/login" />
+        element: (
+            <ProtectedRoute>
+                <LikeAndDislikePage />
+            </ProtectedRoute>
+        )
     },
     {
         path: '/addfoodadmin',
-        element: isLoggedIn() ? <AddFoodForm /> : <Navigate to="/login" />
+        element: (
+            <ProtectedRoute>
+                <AddFoodForm />
+            </ProtectedRoute>
+        )
     },
     {
         path: '/updatefoodadmin/:dishId',
-        element: isLoggedIn() ? <UpdateFoodForm /> : <Navigate to="/login" />
+        element: (
+            <ProtectedRoute>
+                <UpdateFoodForm />
+            </ProtectedRoute>
+        )
     },
     {
         path: '/dishes',
-        element: isLoggedIn() ? <DishesList /> : <Navigate to="/login" />
+        element: (
+            <ProtectedRoute>
+                <DishesList />
+            </ProtectedRoute>
+        )
     }
 ];
 
