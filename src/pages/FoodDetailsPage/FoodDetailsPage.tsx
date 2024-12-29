@@ -85,9 +85,12 @@ const FoodDetailsPage: React.FC = () => {
         <div className='mx-auto bg-gray-100 dark:bg-gray-900 p-10 rounded-md shadow'>
             <div className='flex items-center p-4'>
                 <div className='text-red-600 dark:text-red-300 font-bold text-2xl mr-4'>{foodDetails.name}</div>
-                <div className='flex items-center'>
-                    <StarRating rating={rating} fixed />
-                </div>
+                {averageRating !== null && (
+                    <div className='flex items-center'>
+                        <StarRating rating={averageRating} fixed />
+                        <span className='text-gray-600 dark:text-gray-300 ml-2'>{averageRating} ({reviewCount} reviews)</span>
+                    </div>
+                )}
             </div>
             <FoodImages images={foodDetails.images} />
             <FoodInfo
