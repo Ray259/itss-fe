@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { validInput } from '@/utils/validInput';
 import { register } from '@/api/auth.api';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -53,6 +54,9 @@ export default function Register() {
 
     return (
         <div className='bg-white flex flex-col items-center justify-center min-h-screen p-4 relative'>
+            <Helmet>
+                <title>登録 - EZLunch</title>
+            </Helmet>
             {/* Decorative circles */}
             <div
                 className='absolute'

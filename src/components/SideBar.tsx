@@ -21,6 +21,7 @@ const SideBar: React.FC<SideBarProps> = ({ isVisible }) => {
                         className={({ isActive }) =>
                             `flex items-center mb-4 p-3 rounded-md ${isActive ? 'bg-[#ffd1d1]' : 'hover:bg-[#ffe4e4]'}`
                         }
+                        style={{ color: 'inherit', textDecoration: 'none' }}
                     >
                         {item.icon && <item.icon className='w-6 h-6 mr-4' />}
                         <span className="text-black text-base font-['Roboto']">{item.label}</span>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { updatePreferences, UserPreferencesRequest } from '@api/user-info.api';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { getLocalUser } from '@/utils/auth';
 
 const Anket: React.FC = () => {
-    const { userId } = useParams<{ userId: string }>();
+    const user = getLocalUser();
+    const userId = user?.id;
     const { t } = useTranslation('anket');
     const [vegetarian, setVegetarian] = useState<string>('');
     const [location, setLocation] = useState<string>('');

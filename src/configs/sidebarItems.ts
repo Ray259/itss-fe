@@ -19,7 +19,7 @@ const sidebarItems: SidebarItem[] = [
     },
     {
         label: 'アンケート',
-        path: '/survey',
+        path: '/anket',
         icon: ClipboardDocumentIcon
     },
     {

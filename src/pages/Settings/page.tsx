@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserProfile } from "@/contexts/AuthContext";
 import { useTranslation } from 'react-i18next';
 import LanguageSetting from '@/components/LanguageSetting';
+import { Helmet } from "react-helmet-async";
 
 const SettingsPage = () => {
   const { t, i18n } = useTranslation('settings');
@@ -35,6 +36,9 @@ const SettingsPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <Helmet>
+        <title>{t('settings')} - EZLunch </title>
+      </Helmet>
       <main className="w-full lg:w-3/4 mx-auto px-4 mt-8 flex-grow">
         <h1 className="text-center text-red-500 text-2xl font-bold mb-8">{t('settings')}</h1>
 

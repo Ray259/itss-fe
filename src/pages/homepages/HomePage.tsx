@@ -2,10 +2,14 @@ import React from 'react';
 import HighRatedDishes from './HighRatedDishes';
 import RecommendedMenu from './Recommended';
 import PopularDishes from './PopularDishes';
+import { Helmet } from 'react-helmet-async';
 
 const HomePage: React.FC = () => {
     return (
         <div className='w-full bg-gray-50'>
+            <Helmet>
+                <title>ホームページ - EZLunch</title>
+            </Helmet>
             <div className='max-w-screen-xl mx-auto w-full'>
                 <div className='flex items-center py-8 px-4'>
                     <p className='text-red-500 font-bold text-xl flex-grow'>今日はお昼ご飯に何が食べたいですか？</p>

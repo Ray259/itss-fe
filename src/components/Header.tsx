@@ -1,6 +1,7 @@
 import React from 'react';
 import toggleButton from '../assets/img/toggle btn.svg';
 import SearchBar from './SearchBar';
+import { getLocalUser } from '@/utils/auth';
 
 interface HeaderProps {
     toggleSidebar: () => void;
@@ -8,6 +9,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
+    const user = getLocalUser();
+    console.log(user);
     return (
         <div className='w-full z-10 h-24 bg-white shadow-md flex items-center justify-between px-4'>
             <div>

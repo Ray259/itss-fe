@@ -5,6 +5,7 @@ import { AuthContext } from '@/contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid';
 import { login as loginApi } from '@/api/auth.api';
 import { validInput } from '@/utils/validInput';
+import { Helmet } from 'react-helmet-async';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -35,10 +36,13 @@ const Login: React.FC = () => {
 
     return (
         <div className='bg-white flex flex-col items-center justify-between min-h-screen p-4'>
+            <Helmet>
+                <title>ログイン - EZLunch</title>
+            </Helmet>
             <div className='flex flex-col items-center justify-center flex-grow relative'>
                 {/* Circles Background */}
                 <div className='absolute w-24 h-24 top-0 left-10 bg-orange-400 rounded-full'></div>
-     +           <div className='absolute w-36 h-36 -top-20 right-5 bg-orange-200 rounded-full'></div>
+                <div className='absolute w-36 h-36 -top-20 right-5 bg-orange-200 rounded-full'></div>
 
                 <div className='bg-white p-8 rounded-lg shadow-md z-10'>
                     <h1 className='text-center text-2xl text-black font-bold mb-4'>ログイン</h1>
