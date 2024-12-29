@@ -49,17 +49,46 @@ const UpdateFoodForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const dishData = {
-      name: foodName,
-      price: parseFloat(price),
-      address: address,
-      categories: categories,
-      images: images.map((image) => image.url || URL.createObjectURL(image)),
-      info: description,
-    };
-
+    const token = localStorage.getItem('accessToken');
     try {
+      // 1. Upload ảnh mới (không có `url`)
+      const uploadedImageUrls = await Promise.all(
+        images
+          .filter((image) => !image.url) // Chỉ upload ảnh mới
+          .map(async (image) => {
+            const formData = new FormData();
+            formData.append("file", image);
+  
+            const response = await axios.post(
+              "https://itss-restaurant-backend.onrender.com/api/v1/upload",
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  accept: "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+  
+            return response.data.url; 
+          })
+      );
+  
+      const allImageUrls = [
+        ...images.filter((image) => image.url).map((image) => image.url!), 
+        ...uploadedImageUrls, // Ảnh mới (URL từ API upload)
+      ];
+  
+      const dishData = {
+        name: foodName,
+        price: parseFloat(price),
+        address: address,
+        categories: categories,
+        images: allImageUrls, 
+        info: description,
+      };
+  
       const response = await axios.patch(
         `https://itss-restaurant-backend.onrender.com/api/v1/dishes/${dishId}`,
         dishData,
@@ -67,11 +96,11 @@ const UpdateFoodForm: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
             accept: "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MzU1NDIyMTh9.BT5t60pixKtokSRvno5hMLt9AispmzUgQCvuPLy11yE`, 
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
+  
       console.log("Dish updated successfully:", response.data);
       alert("Món ăn đã được cập nhật thành công!");
       navigate("/dishes");
@@ -80,19 +109,20 @@ const UpdateFoodForm: React.FC = () => {
       alert("Cập nhật món ăn thất bại!");
     }
   };
+  
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedImages = Array.from(e.target.files);
-      setImages((prevImages) => [...prevImages, ...selectedImages]);
+      setImages((prevImages) => [...prevImages, ...selectedImages]); 
     }
   };
+  
 
   const handleRemoveImage = (indexToRemove: number) => {
-    setImages((prevImages) =>
-      prevImages.filter((_, index) => index !== indexToRemove)
-    );
+    setImages((prevImages) => prevImages.filter((_, index) => index !== indexToRemove));
   };
+  
 
   return (
     <div className="container mt-5 page-container">

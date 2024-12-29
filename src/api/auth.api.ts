@@ -8,6 +8,9 @@ export const login = async (
     roleCode: string = 'USER'
 ): Promise<{ access_token: string; refresh_token: string }> => {
     const response = await api.post(LOGIN_ENDPOINT, { email, password, remember_me: rememberMe, role_code: roleCode });
+    const { access_token, refresh_token } = response.data;
+    localStorage.setItem('accessToken', access_token);
+    localStorage.setItem('refreshToken', refresh_token);
     return response.data;
 };
 
@@ -18,6 +21,8 @@ export const register = async (display_name: string, email: string, password: st
 
 export const logout = async () => {
     const response = await api.post(LOGOUT_ENDPOINT);
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     return response.data;
 };
 

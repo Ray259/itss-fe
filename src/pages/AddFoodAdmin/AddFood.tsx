@@ -26,19 +26,43 @@ const AddFoodForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const imageUrls = images.map((image) => URL.createObjectURL(image)); // Biến đổi các file thành URL tạm thời
-
-    const dishData = {
-      name: foodName,
-      price: parseFloat(price),
-      address: address,
-      categories: categories,
-      images: imageUrls, // Thay bằng các URL của ảnh đã tải lên
-      info: description,
-    };
+    const token = localStorage.getItem('accessToken');
 
     try {
+      // 1. Upload từng ảnh qua API
+      const uploadedImageUrls = await Promise.all(
+        images.map(async (image) => {
+          const formData = new FormData();
+          formData.append("file", image);
+  
+          const response = await axios.post(
+            "https://itss-restaurant-backend.onrender.com/api/v1/upload",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                accept: "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+  
+          return response.data.url; // Trả về URL của ảnh đã upload
+        })
+      );
+  
+      console.log("Uploaded image URLs:", uploadedImageUrls);
+  
+      // 2. Gửi request tạo món ăn
+      const dishData = {
+        name: foodName,
+        price: parseFloat(price),
+        address: address,
+        categories: categories,
+        images: uploadedImageUrls, // Gửi các URL ảnh đã upload
+        info: description,
+      };
+      
       const response = await axios.post(
         "https://itss-restaurant-backend.onrender.com/api/v1/dishes",
         dishData,
@@ -46,17 +70,18 @@ const AddFoodForm: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
             accept: "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MzU1NDIyMTh9.BT5t60pixKtokSRvno5hMLt9AispmzUgQCvuPLy11yE`, 
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
+  
       console.log("Phản hồi từ server:", response.data);
       navigate("/dishes");
     } catch (error) {
-      console.error("Lỗi khi gửi request:", error);
+      console.error("Lỗi khi xử lý:", error);
     }
   };
+  
 
   // Hàm xử lý khi người dùng chọn nhiều ảnh
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
