@@ -1,5 +1,5 @@
 import api from '@configs/axios';
-import { LOGIN_ENDPOINT, LOGOUT_ENDPOINT, PROFILE_ENDPOINT, REGISTER_ENDPOINT } from '@configs/api-endpoints';
+import { LOGIN_ENDPOINT, REGISTER_ENDPOINT } from '@configs/api-endpoints';
 
 export const login = async (
     email: string,
@@ -21,8 +21,6 @@ export const register = async (display_name: string, email: string, password: st
 
 export const logout = async () => {
     const response = await api.post(LOGOUT_ENDPOINT);
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
     return response.data;
 };
 

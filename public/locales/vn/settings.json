@@ -3,6 +3,8 @@
   "general": "Chung",
   "username": "Tên người dùng",
   "usernamePlaceholder": "Nhập tên người dùng của bạn",
+  "avatar_url": "URL ảnh đại diện",
+  "avatarPlaceholder": "Nhập URL ảnh đại diện của bạn",
   "password": "Mật khẩu",
   "passwordPlaceholder": "Nhập mật khẩu của bạn",
   "darkMode": "Chế độ tối",

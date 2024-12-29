@@ -4,16 +4,8 @@ import { GET_DISH_REVIEWS_ENDPOINT, CREATE_DISH_REVIEW_ENDPOINT } from '@configs
 // Hàm lấy reviews cho món ăn
 export const getDishReviews = async (dishId: string) => {
     try {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            throw new Error('No authentication token found');
-        }
-
-        const response = await api.get(GET_DISH_REVIEWS_ENDPOINT.replace('{dish_id}', dishId), {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        // Gọi API mà không cần authorization
+        const response = await api.get(GET_DISH_REVIEWS_ENDPOINT.replace('{dish_id}', dishId));
 
         console.log('API response:', response.data); // Log phản hồi từ API
 

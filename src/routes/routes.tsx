@@ -4,6 +4,7 @@ import TestPage from '@/pages/test';
 import Login from '@pages/Login/page';
 import Register from '@pages/Register/page';
 import HomePage from '@/pages/homepages/HomePage';
+import LandingPage from '@/pages/homepages/LandingPage';
 import FoodDetailsPage from '@/pages/FoodDetailsPage/FoodDetailsPage';
 import Anket from '@/pages/Anket/page';
 import Settings from '@/pages/Settings/page';
@@ -11,6 +12,8 @@ import LikeAndDislikePage from '@/pages/LikeAndDislikePage/page';
 import AddFoodForm from '@/pages/AddFoodAdmin/AddFood';
 import UpdateFoodForm from '@/pages/UpdateFoodAdmin/Updatefood';
 import DishesList from '@/pages/DishesListAdmin/disheslist';
+import ProtectedRoute from '@/components/ProtectedRoute';
+
 const routes: RouteObject[] = [
     {
         path: '/',
@@ -18,12 +21,15 @@ const routes: RouteObject[] = [
         children: [
             {
                 path: '/',
-                element: <HomePage />
+                element: <LandingPage />
             },
             {
                 path: 'homepage',
-                // TODO
-                element: <HomePage />
+                element: (
+                    <ProtectedRoute>
+                        <HomePage />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: 'food-details/:foodId',
@@ -31,31 +37,37 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'profile',
-                // TODO
-                element: <TestPage />
+                element: (
+                    <ProtectedRoute>
+                        <TestPage />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: 'contact',
-                // TODO
                 element: <TestPage />
+            },
+            {
+                path: '/anket',
+                element: (<ProtectedRoute>
+                    <Anket />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: 'settings',
-                // TODO
-                element: <Settings />
+                element: (
+                    <ProtectedRoute>
+                        <Settings />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: 'help',
-                // TODO
                 element: <TestPage />
-            },
-            // {
-            //     path: '/addfoodadmin',
-            //     element: <AddFoodForm />
-            // },
+            }
         ]
     },
-
     {
         path: '/login',
         element: <Login />
@@ -69,16 +81,20 @@ const routes: RouteObject[] = [
         element: <Register />
     },
     {
-        path: '/anket',
-        element: <Anket />
-    },
-    {
         path: '/likeanddislikepage',
-        element: <LikeAndDislikePage />
+        element: (
+            <ProtectedRoute>
+                <LikeAndDislikePage />
+            </ProtectedRoute>
+        )
     },
     {
         path: '/addfoodadmin',
-        element: <AddFoodForm />
+        element: (
+            <ProtectedRoute>
+                <AddFoodForm />
+            </ProtectedRoute>
+        )
     },
     {
         path: '/dishes/:dishId',
@@ -86,7 +102,11 @@ const routes: RouteObject[] = [
     },
     {
         path: '/dishes',
-        element: <DishesList />
+        element: (
+            <ProtectedRoute>
+                <DishesList />
+            </ProtectedRoute>
+        )
     }
 ];
 
