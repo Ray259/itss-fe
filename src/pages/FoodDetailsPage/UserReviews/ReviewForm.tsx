@@ -1,14 +1,22 @@
 import { useState } from 'react';
 import StarRating from '@/components/StarRating';
 
-const ReviewForm: React.FC = () => {
+interface ReviewFormProps {
+    onCreateReview: (review: { comment: string; rating?: number }) => void;
+}
+
+const ReviewForm: React.FC<ReviewFormProps> = ({ onCreateReview }) => {
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
 
     const handleSubmit = () => {
-        // TODO: submit review
-        setReview('');
-        setRating(0);
+        if (review.trim() && rating > 0) {
+            onCreateReview({ comment: review, rating });
+            setReview('');
+            setRating(0);
+        } else {
+            alert('Please provide both a comment and a rating.');
+        }
     };
 
     return (

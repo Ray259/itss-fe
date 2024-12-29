@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getSuggestedDishes } from '@/api/food-views.api';
 
 const RecommendedMenu: React.FC = () => {
@@ -6,14 +7,14 @@ const RecommendedMenu: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showLeftButton, setShowLeftButton] = useState(false);
-    const [selectedDish, setSelectedDish] = useState<any | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    // Gọi API để lấy danh sách món ăn đề xuất
+    const navigate = useNavigate();
+
     const fetchDishes = async () => {
         try {
             const response = await getSuggestedDishes({ per_page: 50, page: 1 });
-            const sortedDishes = response.data.sort((a: any, b: any) => a.distance - b.distance); // Sắp xếp theo khoảng cách
+            const sortedDishes = response.data.sort((a: any, b: any) => (a.distance || Infinity) - (b.distance || Infinity)); // Sắp xếp theo khoảng cách
             setDishes(sortedDishes);
             setLoading(false);
         } catch (err) {
@@ -47,10 +48,6 @@ const RecommendedMenu: React.FC = () => {
         fetchDishes();
         checkScroll();
     }, []); // Chỉ gọi fetchDishes một lần khi component được mount
-
-    const handleDishClick = (dish: any) => {
-        setSelectedDish(dish);
-    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -105,11 +102,18 @@ const RecommendedMenu: React.FC = () => {
                         <div
                             key={index}
                             className='bg-white p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
-                            onClick={() => handleDishClick(dish)}
+                            onClick={() => navigate(`/food-details/${dish.id}`)}
+                            style={{
+                                transition: 'transform 0.3s', // Thêm transition để mượt mà
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')} // Phóng to khi di chuột tới
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
-                            <div className='absolute top-2 right-2 text-xl font-bold text-red-500'>
-                                {dish.distance} km
-                            </div>
+                            {dish.distance !== null && (
+                                <div className='absolute top-2 right-2 text-xl font-bold text-red-500'>
+                                    {dish.distance.toFixed(1)} km
+                                </div>
+                            )}
 
                             <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
                                 <img src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'} alt={dish.name} className='w-full h-full object-cover' />
@@ -145,13 +149,6 @@ const RecommendedMenu: React.FC = () => {
                     </span>
                 </button>
             </div>
-
-            {selectedDish && (
-                <div className='mt-6 p-4 bg-white rounded-lg shadow-md'>
-                    <h3 className='text-xl font-bold text-red-500'>{selectedDish.name}</h3>
-                    <p>{selectedDish.details}</p>
-                </div>
-            )}
         </div>
     );
 };

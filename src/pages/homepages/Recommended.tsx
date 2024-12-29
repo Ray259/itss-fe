@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getSuggestedDishes } from '@/api/food-views.api';
 
 const RecommendedMenu: React.FC = () => {
@@ -6,15 +7,20 @@ const RecommendedMenu: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showLeftButton, setShowLeftButton] = useState(false);
-    const [selectedDish, setSelectedDish] = useState<any | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate(); // Khởi tạo hook useNavigate
+    const daysOfWeek = ['月', '火', '水', '木', '金', '土', '日']; // Monday to Sunday
 
     // Gọi API để lấy danh sách món ăn đề xuất
     const fetchDishes = async () => {
         try {
-            const response = await getSuggestedDishes({ per_page: 50, page: 1 });
-            const sortedDishes = response.data.sort((a: any, b: any) => a.distance - b.distance); // Sắp xếp theo khoảng cách
-            setDishes(sortedDishes);
+            const response = await getSuggestedDishes({ per_page: 7, page: 1 });
+            const suggestedDishes = response.data.slice(0, 7).map((dish: any, index: number) => ({
+                ...dish,
+                day: daysOfWeek[index] // Gán ngày cho từng món ăn
+            }));
+            setDishes(suggestedDishes);
             setLoading(false);
         } catch (err) {
             setError('Failed to fetch suggested dishes');
@@ -46,11 +52,7 @@ const RecommendedMenu: React.FC = () => {
     useEffect(() => {
         fetchDishes();
         checkScroll();
-    }, []); // Chỉ gọi fetchDishes một lần khi component được mount
-
-    const handleDishClick = (dish: any) => {
-        setSelectedDish(dish);
-    };
+    }, []);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -69,7 +71,7 @@ const RecommendedMenu: React.FC = () => {
                 paddingRight: '40px'
             }}
         >
-            <h2 className='text-lg font-bold text-white mb-4'>近くのおすすめメニュー</h2>
+            <h2 className='text-lg font-bold text-white mb-4'>毎週のおすすめメニュー</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button
@@ -90,7 +92,6 @@ const RecommendedMenu: React.FC = () => {
                         </span>
                     </button>
                 )}
-
                 <div
                     ref={scrollRef}
                     className='flex space-x-4 overflow-hidden'
@@ -105,16 +106,20 @@ const RecommendedMenu: React.FC = () => {
                         <div
                             key={index}
                             className='bg-white p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
-                            onClick={() => handleDishClick(dish)}
+                            onClick={() => navigate(`/food-details/${dish.id}`)} // Điều hướng đến trang chi tiết món ăn
+                            style={{
+                                transition: 'transform 0.3s', // Thêm transition để mượt mà
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')} // Phóng to khi di chuột tới
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
+                            {/* Ngày hiển thị ở góc trên bên phải */}
                             <div className='absolute top-2 right-2 text-xl font-bold text-red-500'>
-                                {dish.distance} km
+                                {dish.day}
                             </div>
-
                             <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
                                 <img src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'} alt={dish.name} className='w-full h-full object-cover' />
                             </div>
-
                             <div className='text-sm font-bold'>{dish.name}</div>
                             <div className='text-xs text-gray-500'>{dish.deliveryTime}</div>
                             <div className='flex flex-wrap gap-1 mt-2'>
@@ -145,13 +150,6 @@ const RecommendedMenu: React.FC = () => {
                     </span>
                 </button>
             </div>
-
-            {selectedDish && (
-                <div className='mt-6 p-4 bg-white rounded-lg shadow-md'>
-                    <h3 className='text-xl font-bold text-red-500'>{selectedDish.name}</h3>
-                    <p>{selectedDish.details}</p>
-                </div>
-            )}
         </div>
     );
 };

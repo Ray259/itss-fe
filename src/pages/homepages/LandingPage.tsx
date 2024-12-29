@@ -1,7 +1,5 @@
 import React from 'react';
 import HighRatedDishes from './HighRatedDishes';
-import RecommendedMenu from './Recommended';
-import PopularDishes from './PopularDishes';
 
 const HomePage: React.FC = () => {
     return (
@@ -19,14 +17,6 @@ const HomePage: React.FC = () => {
 
                 <section className='py-8 px-4'>
                     <HighRatedDishes />
-                </section>
-
-                <section className='py-8 px-4'>
-                    <RecommendedMenu/>
-                </section>
-
-                <section className='py-8 px-4'>
-                    <PopularDishes/>
                 </section>
             </div>
         </div>
