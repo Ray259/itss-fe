@@ -1,5 +1,6 @@
 import React from 'react';
 import HighRatedDishes from './HighRatedDishes';
+import PopularDishes from './PopularDishes';
 
 const HomePage: React.FC = () => {
     return (
@@ -17,6 +18,9 @@ const HomePage: React.FC = () => {
 
                 <section className='py-8 px-4'>
                     <HighRatedDishes />
+                </section>
+                <section className='py-8 px-4'>
+                    <PopularDishes/>
                 </section>
             </div>
         </div>
