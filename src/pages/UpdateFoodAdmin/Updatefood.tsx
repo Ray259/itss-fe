@@ -3,6 +3,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from "react-router-dom";
 import './AddFood.css'; 
+import { useNavigate } from "react-router-dom";
 
 interface Image extends File {
   url?: string;
@@ -10,6 +11,7 @@ interface Image extends File {
 const UpdateFoodForm: React.FC = () => {
 
   const { dishId } = useParams<{ dishId: string }>();
+  const navigate = useNavigate();
 
   const [foodName, setFoodName] = useState("");
   const [price, setPrice] = useState("");
@@ -19,7 +21,6 @@ const UpdateFoodForm: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
-    // Fetch existing dish data when the component loads
     const fetchDishData = async () => {
       try {
         const response = await axios.get(
@@ -30,7 +31,7 @@ const UpdateFoodForm: React.FC = () => {
         setAddress(response.data.address);
         setCategories(response.data.categories);
         setDescription(response.data.info);
-        setImages(response.data.images.map((url: string) => ({ name: url, url }))); // Assuming images are URLs
+        setImages(response.data.images.map((url: string) => ({ name: url, url }))); 
       } catch (error) {
         console.error("Failed to fetch dish data:", error);
       }
@@ -66,13 +67,14 @@ const UpdateFoodForm: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
             accept: "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MzUzMTcxNjV9.FkfkpnpZvZ4l9BeBh8kyyI1DSPYy5W2hZVtpK-lSAl8`, // Replace with your access token
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MzU1NDIyMTh9.BT5t60pixKtokSRvno5hMLt9AispmzUgQCvuPLy11yE`, 
           },
         }
       );
 
       console.log("Dish updated successfully:", response.data);
       alert("Món ăn đã được cập nhật thành công!");
+      navigate("/dishes");
     } catch (error) {
       console.error("Failed to update dish:", error);
       alert("Cập nhật món ăn thất bại!");

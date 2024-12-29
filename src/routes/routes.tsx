@@ -81,7 +81,7 @@ const routes: RouteObject[] = [
         element: <AddFoodForm />
     },
     {
-        path: '/updatefoodadmin/:dishId',
+        path: '/dishes/:dishId',
         element: <UpdateFoodForm />
     },
     {

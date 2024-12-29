@@ -2,8 +2,13 @@ import React, { useState  } from "react";
 import axios from "axios";
  import "bootstrap/dist/css/bootstrap.min.css";
 import './AddFood.css'; 
+import { useNavigate } from "react-router-dom";
+
 
 const AddFoodForm: React.FC = () => {
+
+  const navigate = useNavigate();
+
   const [foodName, setFoodName] = useState("");
   const [price, setPrice] = useState("");
   const [address, setAddress] = useState("");
@@ -41,12 +46,13 @@ const AddFoodForm: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
             accept: "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MzUzMTcxNjV9.FkfkpnpZvZ4l9BeBh8kyyI1DSPYy5W2hZVtpK-lSAl8`, // Thêm access token vào headers
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MzU1NDIyMTh9.BT5t60pixKtokSRvno5hMLt9AispmzUgQCvuPLy11yE`, 
           },
         }
       );
 
       console.log("Phản hồi từ server:", response.data);
+      navigate("/dishes");
     } catch (error) {
       console.error("Lỗi khi gửi request:", error);
     }
