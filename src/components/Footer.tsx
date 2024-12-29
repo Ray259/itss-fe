@@ -98,7 +98,15 @@ const FooterLinksAndCopyright: React.FC = () => (
 const FooterLinks: React.FC = () => (
     <div className='flex flex-wrap gap-4'>
         {footerLinks.map((link, idx) => (
-            <a key={idx} href='#' className='text-sm font-medium uppercase hover:underline'>
+            <a
+                key={idx}
+                href='#'
+                className='text-sm font-medium uppercase hover:underline'
+                style={{
+                    color: '#ffffff',
+                    textDecoration: 'none'
+                }}
+            >
                 {link}
             </a>
         ))}

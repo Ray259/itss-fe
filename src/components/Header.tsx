@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import toggleButton from '../assets/img/toggle btn.svg';
 import SearchBar from './SearchBar';
 import { getLocalUser } from '@/utils/auth';
+import defaultAvatar from '@assets/img/default-avatar.png';
+import { AuthContext } from '@/contexts/AuthContext';
 
 interface HeaderProps {
     toggleSidebar: () => void;
@@ -9,8 +11,9 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
+    const { logout } = useContext(AuthContext);
     const user = getLocalUser();
-    console.log(user);
+    const [showDropdown, setShowDropdown] = useState(false);
     return (
         <div className='w-full z-10 h-24 bg-white shadow-md flex items-center justify-between px-4'>
             <div>
@@ -20,10 +23,44 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                 <SearchBar />
             </div>
 
-            {/* TODO */}
-            <div className='flex items-center space-x-4'>
-                <div className='w-11 h-11 bg-gray-300 rounded-md'></div>
-            </div>
+            {user ? (
+                <div className='relative flex items-center space-x-2'>
+                    <div
+                        className='text-red-500 text-center cursor-pointer'
+                        onClick={() => setShowDropdown(!showDropdown)}
+                    >
+                        {user.display_name}
+                    </div>
+                    <img
+                        src={user.avatar_url || defaultAvatar}
+                        className='w-11 h-11 rounded-md border-2 border-red-400 cursor-pointer'
+                        onClick={() => setShowDropdown(!showDropdown)}
+                    />
+                    {showDropdown && (
+                        <div className='absolute right-0 mt-20 w-48 bg-white border border-gray-200 rounded-md shadow-lg'>
+                            <button
+                                className='block w-full text-left px-4 py-2 text-black hover:bg-gray-100'
+                                onClick={() => {
+                                    logout();
+                                    setShowDropdown(false);
+                                    window.location.href = '/login';
+                                }}
+                            >
+                                ログアウト
+                            </button>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <div className='flex items-center space-x-4'>
+                    <button
+                        className='px-4 py-2 rounded-lg text-black font-bold bg-gradient-to-r from-pink-100 to-red-500 hover:from-red-500 hover:to-red-700 shadow-md transition-all'
+                        onClick={() => (window.location.href = '/login')}
+                    >
+                        ログイン
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
