@@ -25,7 +25,7 @@ const Login: React.FC = () => {
             const roleCode = role === 'admin' ? 'ADMIN' : 'USER';
             const response = await loginApi(email, password, true, roleCode);
             login(response.access_token, response.refresh_token);
-            navigate('/homepage');
+            navigate(role === 'admin' ? '/admin/dishes' : '/homepage');
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || 'ログインに失敗しました。もう一度お試しください。');
         }

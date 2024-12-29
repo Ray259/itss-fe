@@ -101,7 +101,7 @@ const routes: RouteObject[] = [
         element: <UpdateFoodForm />
     },
     {
-        path: '/dishes',
+        path: '/admin/dishes',
         element: (
             <ProtectedRoute>
                 <DishesList />
