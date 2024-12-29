@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { updatePreferences, UserPreferencesRequest } from '@api/user-info.api';
 import { useTranslation } from 'react-i18next';
 import { getLocalUser } from '@/utils/auth';
@@ -7,23 +8,41 @@ const Anket: React.FC = () => {
     const user = getLocalUser();
     const userId = user?.id;
     const { t } = useTranslation('anket');
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Nhận dữ liệu từ LikeAndDislikePage
+    const selectedItems = location.state?.selectedItems || [];
+    const source = location.state?.source || ''; // 'likes' hoặc 'dislikes'
+
     const [vegetarian, setVegetarian] = useState<string>('');
-    const [location, setLocation] = useState<string>('');
+    const [locationInput, setLocationInput] = useState<string>('');
     const [distance, setDistance] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
     const [likes, setLikes] = useState<string[]>([]);
     const [dislikes, setDislikes] = useState<string[]>([]);
+
+    // Cập nhật danh sách "likes" hoặc "dislikes" khi nhận được dữ liệu từ LikeAndDislikePage
+    useEffect(() => {
+        if (selectedItems.length > 0) {
+            if (source === 'likes') {
+                setLikes((prev) => [...new Set([...prev, ...selectedItems])]); // Thêm mục mới vào likes
+            } else if (source === 'dislikes') {
+                setDislikes((prev) => [...new Set([...prev, ...selectedItems])]); // Thêm mục mới vào dislikes
+            }
+        }
+    }, [selectedItems, source]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const requestData: UserPreferencesRequest = {
             vegeterian: vegetarian === 'yes',
-            address: location,
+            address: locationInput,
             loved_distinct: parseInt(distance.replace(t('distanceUnit'), ''), 10),
             loved_price: parseInt(budget.replace('~', '').replace('VND', ''), 10),
             loved_flavor: likes,
-            hated_flavor: dislikes
+            hated_flavor: dislikes,
         };
 
         try {
@@ -43,7 +62,7 @@ const Anket: React.FC = () => {
 
     const handleCancel = () => {
         setVegetarian('');
-        setLocation('');
+        setLocationInput('');
         setDistance('');
         setBudget('');
         setLikes([]);
@@ -51,12 +70,9 @@ const Anket: React.FC = () => {
         console.log(t('formReset'));
     };
 
-    const handleAddItem = (list: string[], setter: React.Dispatch<React.SetStateAction<string[]>>, item: string) => {
-        if (!list.includes(item)) {
-            setter([...list, item]);
-        } else {
-            setter(list.filter((i) => i !== item));
-        }
+    // Điều hướng tới LikeAndDislikePage khi ấn nút "+"
+    const navigateToLikeAndDislikePage = (source: 'likes' | 'dislikes') => {
+        navigate('/likeanddislikepage', { state: { source, likes, dislikes } }); // Truyền thông tin hiện tại
     };
 
     return (
@@ -98,8 +114,8 @@ const Anket: React.FC = () => {
                             <input
                                 type='text'
                                 placeholder={t('locationPlaceholder')}
-                                value={location}
-                                onChange={(e) => setLocation(e.target.value)}
+                                value={locationInput}
+                                onChange={(e) => setLocationInput(e.target.value)}
                                 className='w-full p-2 mt-2 border rounded'
                             />
                         </div>
@@ -126,42 +142,40 @@ const Anket: React.FC = () => {
                     </div>
 
                     <div className='mb-5'>
-                        <h2 className='font-bold text-xl mb-3'>{t('likes')}</h2>
-                        <div className='flex flex-wrap gap-3'>
-                            {['spicy', 'sweet', 'fried', 'grilled'].map((item) => (
-                                <button
-                                    key={item}
-                                    className={`py-2 px-4 rounded transition duration-300 ${
-                                        likes.includes(t(`flavors.${item}`))
-                                            ? 'bg-[#4e4070] text-white'
-                                            : 'bg-[#65558f] text-white hover:bg-[#4e4070]'
-                                    }`}
-                                    onClick={() => handleAddItem(likes, setLikes, t(`flavors.${item}`))}
-                                    type='button'
-                                >
-                                    {t(`flavors.${item}`)}
-                                </button>
+                        <h2 className='font-bold text-xl mb-1'>{t('likes')}</h2>
+                        <p className='text-sm text-gray-600 mb-3'>好みをリストに追加できます</p> {/* Dòng chữ thêm vào */}
+                        <div className='flex flex-wrap gap-3 items-center'>
+                            {likes.map((item, index) => (
+                                <span key={index} className='py-2 px-4 bg-purple-800 text-white rounded'>
+                                    {item}
+                                </span>
                             ))}
+                            <button
+                                type='button'
+                                className='py-2 px-4 bg-purple-800 text-white rounded hover:bg-purple-900 transition'
+                                onClick={() => navigateToLikeAndDislikePage('likes')}
+                            >
+                                +
+                            </button>
                         </div>
                     </div>
 
                     <div className='mb-5'>
-                        <h2 className='font-bold text-xl mb-3'>{t('dislikes')}</h2>
-                        <div className='flex flex-wrap gap-3'>
-                            {['japanese', 'french', 'fried', 'grilled'].map((item) => (
-                                <button
-                                    key={item}
-                                    className={`py-2 px-4 rounded transition duration-300 ${
-                                        dislikes.includes(t(`flavors.${item}`))
-                                            ? 'bg-[#4e4070] text-white'
-                                            : 'bg-[#65558f] text-white hover:bg-[#4e4070]'
-                                    }`}
-                                    onClick={() => handleAddItem(dislikes, setDislikes, t(`flavors.${item}`))}
-                                    type='button'
-                                >
-                                    {t(`flavors.${item}`)}
-                                </button>
+                        <h2 className='font-bold text-xl mb-1'>{t('dislikes')}</h2>
+                        <p className='text-sm text-gray-600 mb-3'>嫌いなものをリストに追加できます</p> {/* Dòng chữ thêm vào */}
+                        <div className='flex flex-wrap gap-3 items-center'>
+                            {dislikes.map((item, index) => (
+                                <span key={index} className='py-2 px-4 bg-purple-800 text-white rounded'>
+                                    {item}
+                                </span>
                             ))}
+                            <button
+                                type='button'
+                                className='py-2 px-4 bg-purple-800 text-white rounded hover:bg-purple-900 transition'
+                                onClick={() => navigateToLikeAndDislikePage('dislikes')}
+                            >
+                                +
+                            </button>
                         </div>
                     </div>
 
