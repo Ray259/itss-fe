@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useState } from 'react';
 import { setAccessToken, setRefreshToken, clearTokens, setLocalUser, clearLocalUser } from '@/utils/auth';
 import { getUserInfo } from '@/api/user-info.api';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     children?: ReactNode;
@@ -51,6 +52,8 @@ const AuthProvider = ({ children }: Props) => {
     const [isAuthenticated, setAuthenticated] = useState(initialState.isAuthenticated);
     const [user, setUser] = useState<UserProfile | null>(initialState.user);
 
+    const { i18n } = useTranslation();
+
     const login = async (accessToken: string, refreshToken: string) => {
         try {
             setAccessToken(accessToken);
@@ -60,7 +63,10 @@ const AuthProvider = ({ children }: Props) => {
             // Set user info
             console.log('Fetching user info...');
             const user = await getUserInfo();
-            console.log('User info:', user);
+            if (user.language) {
+                i18n.changeLanguage(user.language);
+                console.log('User language:', user.language);
+            }
             setUser(user);
             setLocalUser(user);
         } catch (error) {

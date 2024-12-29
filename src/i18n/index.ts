@@ -7,8 +7,7 @@ i18n.use(Backend)
     .use(initReactI18next)
     .use(LanguageDetector)
     .init({
-        lng: 'jp',
-        fallbackLng: 'jp',
+        fallbackLng: 'ja',
         debug: true,
 
         backend: {

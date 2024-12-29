@@ -40,6 +40,10 @@ const routes: RouteObject[] = [
                 element: <TestPage />
             },
             {
+                path: '/anket',
+                element: <Anket />
+            },
+            {
                 path: 'settings',
                 element: isLoggedIn() ? <Settings /> : <Navigate to="/login" />
             },
@@ -60,10 +64,6 @@ const routes: RouteObject[] = [
     {
         path: '/register',
         element: <Register />
-    },
-    {
-        path: '/anket',
-        element: <Anket />
     },
     {
         path: '/likeanddislikepage',

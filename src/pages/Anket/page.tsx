@@ -60,7 +60,7 @@ const Anket: React.FC = () => {
     };
 
     return (
-        <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 p-5'>
+        <div className='flex flex-col items-center justify-center min-h-screen p-5'>
             <div className='bg-white w-full max-w-2xl p-5 rounded-lg shadow-md'>
                 <h1 className='text-center text-red-600 text-4xl mb-5'>{t('survey')}</h1>
                 <form onSubmit={handleSubmit}>

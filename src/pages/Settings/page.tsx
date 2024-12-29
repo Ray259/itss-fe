@@ -13,6 +13,12 @@ const SettingsPage = () => {
   const fetchUserData = async () => {
     try {
       const user = await getUserInfo();
+      if (!user.phone) {
+        user.phone = "";
+      }
+      if (user.language) {
+        i18n.changeLanguage(user.language);
+      }
       setUserData(user);
     } catch (error) {
       console.error("Failed to fetch user data:", error);
@@ -45,13 +51,24 @@ const SettingsPage = () => {
         <section className="mb-12">
           <h2 className="text-orange-500 text-xl font-bold mb-4">{t('general')}</h2>
           <div className="space-y-4">
-            <div className="grid grid-cols-6 items-center gap-4">
+          <div className="grid grid-cols-6 items-center gap-4">
               <label className="col-span-1 text-gray-700">{t('username')}</label>
               <input
                 type="text"
                 placeholder={t('usernamePlaceholder')}
                 value={userData?.display_name}
                 onChange={(e) => setUserData({ ...userData, display_name: e.target.value })}
+                className="col-span-5 border border-orange-500 rounded-md w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <div className="grid grid-cols-6 items-center gap-4">
+              <label className="col-span-1 text-gray-700">{t('avatar_url')}</label>
+              <input
+                type="text"
+                placeholder={t('avatarPlaceholder')}
+                value={userData?.avatar_url}
+                onChange={(e) => setUserData({ ...userData, avatar_url: e.target.value })}
                 className="col-span-5 border border-orange-500 rounded-md w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
@@ -93,7 +110,7 @@ const SettingsPage = () => {
             <div className="grid grid-cols-6 items-center gap-4">
               <label className="col-span-1 text-gray-700">{t('language')}</label>
               <div className="col-span-5">
-                <LanguageSetting value={i18n.language} />
+                <LanguageSetting value={userData?.language || 'ja'} onChange={(value) => setUserData({ ...userData, language: value })} />
               </div>
             </div>
 
