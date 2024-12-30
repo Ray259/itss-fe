@@ -1,22 +1,25 @@
 'use  client';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { validInput } from '@/utils/validInput';
 import { register } from '@/api/auth.api';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { login as loginApi } from '@/api/auth.api';
+import { AuthContext } from '@/contexts/AuthContext';
 
 export default function Register() {
-    const [username, setUsername] = useState('');
+    const [displayName, setDisplayName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const isEmailValid = validInput.email(email);
     const isPasswordValid = validInput.password(password);
-    const isUsernameValid = validInput.username(username);
+    const isUsernameValid = validInput.username(displayName);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -44,9 +47,11 @@ export default function Register() {
         }
 
         try {
-            await register(username, email, password);
+            await register(displayName, email, password);
             setSuccessMessage('登録が完了しました。ログインしてください。');
-            navigate('/login');
+            const res = await loginApi(email, password, true, 'USER');
+            login(res.access_token, res.refresh_token);
+            navigate('/anket');
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || '登録に失敗しました。再度お試しください。');
         }
@@ -101,16 +106,16 @@ export default function Register() {
 
                 <form onSubmit={handleSubmit} id='registration-form'>
                     <div className='mb-4'>
-                        <label htmlFor='username' className='block text-sm font-medium text-[#4e4f50]'>
+                        <label htmlFor='display_name' className='block text-sm font-medium text-[#4e4f50]'>
                             ユーザー名
                         </label>
                         <input
                             type='text'
-                            id='username'
-                            name='username'
+                            id='display_name'
+                            name='display_name'
                             className='w-full p-3 mt-2 border-2 border-[#d1d5db] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FE724C]'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
                             required
                         />
                     </div>
