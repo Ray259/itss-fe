@@ -14,7 +14,7 @@ import AddFoodForm from '@/pages/AddFoodAdmin/AddFood';
 import UpdateFoodForm from '@/pages/UpdateFoodAdmin/Updatefood';
 import DishesList from '@/pages/DishesListAdmin/disheslist';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import { isLoggedIn } from '@/utils/auth';
+
 const routes: RouteObject[] = [
     {
         path: '/',
