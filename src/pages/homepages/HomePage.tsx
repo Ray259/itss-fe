@@ -1,7 +1,7 @@
 import React from 'react';
 import HighRatedDishes from './HighRatedDishes';
 import RecommendedMenu from './Recommended';
-import PopularDishes from './PopularDishes';
+import PopularRestaurant from './PopularRestaurants';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 
@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
                 </div>
 
                 <section className='py-8 px-4'>
-                    <PopularDishes />
+                    <PopularRestaurant  />
                 </section>
             </div>
         </div>

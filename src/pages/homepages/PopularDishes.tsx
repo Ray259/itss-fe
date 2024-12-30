@@ -70,7 +70,7 @@ const RecommendedMenu: React.FC = () => {
             style={{
                 paddingLeft: '40px',
                 paddingRight: '40px',
-                boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.5)',
+                boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.7)',
                 borderRadius: '15px'
             }}
         >

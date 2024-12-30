@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getSuggestedDishes } from '@/api/food-views.api';
 
 const RecommendedMenu: React.FC = () => {
@@ -6,8 +7,9 @@ const RecommendedMenu: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showLeftButton, setShowLeftButton] = useState(false);
-    const [selectedDish, setSelectedDish] = useState<any | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate(); // Sử dụng hook useNavigate để điều hướng
 
     // Gọi API để lấy danh sách món ăn đề xuất
     const fetchDishes = async () => {
@@ -48,8 +50,8 @@ const RecommendedMenu: React.FC = () => {
         checkScroll();
     }, []); // Chỉ gọi fetchDishes một lần khi component được mount
 
-    const handleDishClick = (dish: any) => {
-        setSelectedDish(dish);
+    const handleDishClick = (dishId: string) => {
+        navigate(`/food-details/${dishId}`); // Điều hướng đến trang chi tiết món ăn
     };
 
     if (loading) {
@@ -65,7 +67,9 @@ const RecommendedMenu: React.FC = () => {
             className='p-6 rounded-lg mt-6 bg-gradient-to-r from-red-500 to-pink-100 dark:from-gray-700 dark:to-red-500'
             style={{
                 paddingLeft: '40px',
-                paddingRight: '40px'
+                paddingRight: '40px',
+                boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.7)',
+                borderRadius: '15px'
             }}
         >
             <h2 className='text-lg font-bold text-gray-100 dark:text-gray-200 mb-4'>近くのおすすめメニュー</h2>
@@ -104,12 +108,21 @@ const RecommendedMenu: React.FC = () => {
                         <div
                             key={index}
                             className='bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
-                            onClick={() => handleDishClick(dish)}
+                            onClick={() => handleDishClick(dish.id)}
+                            style={{
+                                transition: 'transform 0.3s', // Thêm transition để mượt mà
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')} // Phóng to khi di chuột tới
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
-                            <div className='absolute top-2 right-2 text-xl font-bold text-red-500 dark:text-red-300'>
-                                {dish.distance} km
-                            </div>
+                            {/* Khoảng cách hiển thị trong hộp */}
+                            {dish.distance !== null && dish.distance !== undefined && (
+                                <div className="absolute top-2 right-2 bg-white shadow-lg rounded-full p-2 text-[#FE724C] font-bold text-base flex items-center justify-center" style={{ boxShadow: '0px 5px 20px rgba(255, 255, 255, 0.5)' }}>
+                                    <span className="text-lg">{dish.distance.toFixed(1)} km</span>
+                                </div>
+                            )}
 
+                            {/* Hình ảnh sản phẩm */}
                             <div className='w-full h-32 bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden mb-4'>
                                 <img src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'} alt={dish.name} className='w-full h-full object-cover' />
                             </div>
@@ -144,13 +157,6 @@ const RecommendedMenu: React.FC = () => {
                     </span>
                 </button>
             </div>
-
-            {selectedDish && (
-                <div className='mt-6 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-md'>
-                    <h3 className='text-xl font-bold text-red-500 dark:text-red-400'>{selectedDish.name}</h3>
-                    <p>{selectedDish.details}</p>
-                </div>
-            )}
         </div>
     );
 };
