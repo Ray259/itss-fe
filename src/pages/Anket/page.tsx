@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { updatePreferences, UserPreferencesRequest } from '@api/user-info.api';
 import { useTranslation } from 'react-i18next';
 import { getLocalUser } from '@/utils/auth';
@@ -11,6 +11,7 @@ const Anket: React.FC = () => {
     const userId = user?.id;
     const { t } = useTranslation('anket');
     const location = useLocation();
+    const navigate = useNavigate(); // Thêm hook điều hướng
 
     // Nhận dữ liệu từ LikeAndDislikePage
     const selectedItems = location.state?.selectedItems || [];
@@ -65,6 +66,9 @@ const Anket: React.FC = () => {
                 const response = await updatePreferences(userId, requestData);
                 alert(t('saved'));
                 console.log('Response from API:', response);
+
+                // Chuyển hướng về Homepage sau khi lưu thành công
+                navigate('/homepage');
             } else {
                 console.error('User ID is undefined');
                 alert(t('userIdNotFound'));
