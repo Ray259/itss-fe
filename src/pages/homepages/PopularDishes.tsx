@@ -69,7 +69,9 @@ const RecommendedMenu: React.FC = () => {
             className='p-6 rounded-lg mt-6 bg-gradient-to-r from-red-500 to-pink-100 dark:from-gray-700 dark:to-red-500'
             style={{
                 paddingLeft: '40px',
-                paddingRight: '40px'
+                paddingRight: '40px',
+                boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.5)',
+                borderRadius: '15px'
             }}
         >
             <h2 className='text-lg font-bold text-gray-100 dark:text-gray-200 mb-4'>{t('nearbyRecommendation')}</h2>
@@ -115,13 +117,15 @@ const RecommendedMenu: React.FC = () => {
                             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')} // Phóng to khi di chuột tới
                             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
+                            {/* Khoảng cách hiển thị trong hộp */}
                             {dish.distance !== null && (
-                                <div className='absolute top-2 right-2 text-xl font-bold text-red-500 dark:text-red-300'>
-                                    {dish.distance.toFixed(1)} km
+                                <div className="absolute top-2 right-2 bg-white shadow-lg rounded-full p-2 text-[#FE724C] font-bold text-base flex items-center justify-center" style={{ boxShadow: '0px 5px 20px rgba(255, 255, 255, 0.5)' }}>
+                                    <span className="text-lg">{dish.distance.toFixed(1)} km</span>
                                 </div>
                             )}
 
-                            <div className='w-full h-32 bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden mb-4'>
+                            {/* Hình ảnh sản phẩm */}
+                            <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
                                 <img
                                     src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'}
                                     alt={dish.name}

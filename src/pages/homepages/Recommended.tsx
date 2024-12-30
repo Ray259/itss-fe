@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSuggestedDishes } from '@/api/food-views.api';
 import { useTranslation } from 'react-i18next';
+import { ClockIcon } from '@heroicons/react/24/solid'; //
 
 const RecommendedMenu: React.FC = () => {
     const { t } = useTranslation('homepage');
@@ -69,10 +70,12 @@ const RecommendedMenu: React.FC = () => {
             className='p-6 rounded-lg mt-6 bg-gradient-to-r from-red-500 to-pink-100 dark:from-gray-700 dark:to-red-500'
             style={{
                 paddingLeft: '40px',
-                paddingRight: '40px'
+                paddingRight: '40px',
+                boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.5)',
+                borderRadius: '15px'
             }}
         >
-            <h2 className='text-lg font-bold text-gray-100 dark:text-gray-200 mb-4'>{t('weeklyRecommendation')}</h2>
+            <h2 className='text-lg font-bold text-white mb-4'>{t('weeklyRecommendation')}</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button
@@ -114,19 +117,24 @@ const RecommendedMenu: React.FC = () => {
                             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')} // Phóng to khi di chuột tới
                             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
-                            {/* Ngày hiển thị ở góc trên bên phải */}
-                            <div className='absolute top-2 right-2 text-xl font-bold text-red-500 dark:text-red-300'>
-                                {dish.day}
+                            {/* Ngày hiển thị trong hộp */}
+                            <div className="absolute top-2 right-2 bg-white shadow-lg rounded-full p-2 text-[#FE724C] font-bold text-base flex items-center justify-center" style={{ boxShadow: '0px 5px 20px rgba(255, 255, 255, 0.5)' }}>
+                                <span className="text-lg">{dish.day}</span>
                             </div>
-                            <div className='w-full h-32 bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden mb-4'>
+
+                            <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
                                 <img src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'} alt={dish.name} className='w-full h-full object-cover' />
                             </div>
-                            <div className='text-sm font-bold text-gray-900 dark:text-gray-100'>{dish.name}</div>
-                            <div className='text-xs text-gray-500 dark:text-gray-400'>{dish.deliveryTime}</div>
+                            <div className='text-sm font-bold'>{dish.name}</div>
+                            {/* Thời gian giao hàng */}
+                            <div className="flex items-center text-xs text-gray-500 mt-1">
+                                <ClockIcon className="text-[#FE724C] mr-1" style={{ width: '16px', height: '16px' }} />
+                                {dish.info}
+                            </div>
                             <div className='flex flex-wrap gap-1 mt-2'>
-                                {dish.ingredients && dish.ingredients.map((ingredient: string, i: number) => (
-                                    <span key={i} className='px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300'>
-                                        {ingredient}
+                                {dish.categories && dish.categories.map((category: string, i: number) => (
+                                    <span key={i} className='px-2 py-1 text-xs bg-gray-200 rounded-full text-gray-600'>
+                                        {category}
                                     </span>
                                 ))}
                             </div>

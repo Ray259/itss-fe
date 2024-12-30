@@ -23,16 +23,21 @@ const HomePage: React.FC = () => {
                     </button>
                 </div>
 
-                <section className='py-8 px-4'>
-                    <HighRatedDishes />
-                </section>
+                {/* Bao bọc các phần HighRatedDishes và RecommendedMenu bằng thẻ div với nền đỏ */}
+                <div className='bg-[#FF0000] py-8'
+                     style={{ borderRadius: '15px' }}
+                    >
+                    <section className='py-8 px-4'>
+                        <HighRatedDishes />
+                    </section>
+
+                    <section className='py-8 px-4'>
+                        <RecommendedMenu />
+                    </section>
+                </div>
 
                 <section className='py-8 px-4'>
-                    <RecommendedMenu/>
-                </section>
-
-                <section className='py-8 px-4'>
-                    <PopularDishes/>
+                    <PopularDishes />
                 </section>
             </div>
         </div>
