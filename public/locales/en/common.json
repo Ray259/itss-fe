@@ -7,5 +7,6 @@
     "sidebar-5": "Settings",
     "sidebar-6": "Help & FAQ",
     "logout": "Logout",
-    "login": "Login"
+    "login": "Login",
+    "loading": "Loading..."
 }

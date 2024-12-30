@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import StarRating from '@/components/StarRating';
+import { useTranslation } from 'react-i18next';
 
 interface ReviewFormProps {
     onCreateReview: (review: { comment: string; rating?: number }) => void;
@@ -8,6 +9,7 @@ interface ReviewFormProps {
 const ReviewForm: React.FC<ReviewFormProps> = ({ onCreateReview }) => {
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
+    const { t } = useTranslation('details');
 
     const handleSubmit = () => {
         if (review.trim() && rating > 0) {
@@ -20,23 +22,23 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onCreateReview }) => {
     };
 
     return (
-        <div className='p-4 bg-gray-100 dark:bg-gray-900 shadow'>
-            <div className='p-4 shadow-md rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800'>
+        <div className='p-4 dark:bg-gray-900'>
+            <div className='p-2 min-h-72 shadow-md border rounded-lg dark:border-gray-700 dark:bg-gray-800'>
                 <div className='flex justify-between items-center'>
-                    <h3 className='text-lg text-red-600 dark:text-red-400 font-semibold'>あなたのレビュー</h3>
+                    <h3 className='text-xl text-red-600 dark:text-red-400 font-semibold'>{t('yourReview')}</h3>
                     <button
                         className='px-3 py-1 bg-[#ff1100] hover:bg-red-700 font-bold text-gray-100 rounded-xl dark:bg-red-600 dark:hover:bg-red-500'
                         onClick={handleSubmit}
                     >
-                        投稿
+                        {t('postReview')}
                     </button>
                 </div>
-                <div className='flex items-center mt-4'>
+                <div className='flex items-center'>
                     <StarRating rating={rating} onRatingChange={setRating} />
                 </div>
                 <textarea
-                    className='w-full mt-4 p-2 border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-                    placeholder='ここにレビューを追加してください...'
+                    className='w-full min-h-44 mt-4 p-2 border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                    placeholder={t('placeholderReview')}
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
                 />

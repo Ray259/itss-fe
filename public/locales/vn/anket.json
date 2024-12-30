@@ -11,7 +11,9 @@
     "budgetQuestion": "Ngân sách cho bữa ăn",
     "budgetPlaceholder": "Ví dụ: ~50000 VND",
     "likes": "Thích",
+    "likesDes": "Bạn có thể thêm những thứ bạn thích vào danh sách.",
     "dislikes": "Không thích",
+    "dislikesDes": "Bạn có thể thêm những thứ bạn không thích vào danh sách.",
     "flavors": {
       "spicy": "Cay",
       "sweet": "Ngọt",

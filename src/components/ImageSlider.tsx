@@ -29,7 +29,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, itemsToShow = 4 }) =>
     };
 
     return (
-        <div className='relative w-full mx-auto rounded-2xl shadow-lg flex items-center p-8 bg-gray-100 dark:bg-gray-800 dark:shadow-md'>
+        <div className='relative w-full mx-auto rounded-2xl shadow-md flex items-center p-8 bg-gray-100 dark:bg-gray-800 dark:shadow-md'>
             {/* Previous Button */}
             {canScrollPrevious && (
                 <button

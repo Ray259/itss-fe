@@ -1,0 +1,9 @@
+{
+    "categories": "Categories",
+    "description": "Description",
+    "reviews": "Reviews",
+    "yourReview": "Your Review",
+    "postReview": "Post",
+    "placeholderReview" : "Add your review here...",
+    "rating": "Rating"
+}

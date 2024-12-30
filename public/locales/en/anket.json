@@ -11,7 +11,9 @@
   "budgetQuestion": "Meal budget",
   "budgetPlaceholder": "e.g., ~50000 VND",
   "likes": "Likes",
+  "likesDes": "You can add things you like to the list.",
   "dislikes": "Dislikes",
+  "dislikesDes": "You can add things you dislike to the list.",
   "flavors": {
     "spicy": "Spicy",
     "sweet": "Sweet",
