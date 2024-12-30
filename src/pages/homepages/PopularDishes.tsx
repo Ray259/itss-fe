@@ -66,19 +66,18 @@ const RecommendedMenu: React.FC = () => {
 
     return (
         <div
-            className='p-6 rounded-lg mt-6'
+            className='p-6 rounded-lg mt-6 bg-gradient-to-r from-red-500 to-pink-100 dark:from-gray-700 dark:to-red-500'
             style={{
-                background: 'linear-gradient(135deg, #ff1100, #ffdede)',
                 paddingLeft: '40px',
                 paddingRight: '40px'
             }}
         >
-            <h2 className='text-lg font-bold text-white mb-4'>{t('nearbyRecommendation')}</h2>
+            <h2 className='text-lg font-bold text-gray-100 dark:text-gray-200 mb-4'>{t('nearbyRecommendation')}</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button
                         onClick={scrollLeft}
-                        className='absolute left-[-40px] top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full transition-colors'
+                        className='absolute left-[-40px] top-1/2 transform -translate-y-1/2 text-gray-100 dark:text-gray-300 p-2 rounded-full transition-colors'
                         style={{ zIndex: 10 }}
                     >
                         <span
@@ -108,7 +107,7 @@ const RecommendedMenu: React.FC = () => {
                     {dishes.map((dish, index) => (
                         <div
                             key={index}
-                            className='bg-white p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
+                            className='bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow-md flex flex-col min-w-[300px] relative cursor-pointer'
                             onClick={() => navigate(`/food-details/${dish.id}`)}
                             style={{
                                 transition: 'transform 0.3s', // Thêm transition để mượt mà
@@ -117,12 +116,12 @@ const RecommendedMenu: React.FC = () => {
                             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')} // Quay lại kích thước ban đầu khi rời chuột
                         >
                             {dish.distance !== null && (
-                                <div className='absolute top-2 right-2 text-xl font-bold text-red-500'>
+                                <div className='absolute top-2 right-2 text-xl font-bold text-red-500 dark:text-red-300'>
                                     {dish.distance.toFixed(1)} km
                                 </div>
                             )}
 
-                            <div className='w-full h-32 bg-gray-300 rounded-lg overflow-hidden mb-4'>
+                            <div className='w-full h-32 bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden mb-4'>
                                 <img
                                     src={dish.images && dish.images.length > 0 ? dish.images[0] : 'default-image.jpg'}
                                     alt={dish.name}
@@ -130,11 +129,11 @@ const RecommendedMenu: React.FC = () => {
                                 />
                             </div>
 
-                            <div className='text-sm font-bold'>{dish.name}</div>
-                            <div className='text-xs text-gray-500'>{dish.deliveryTime}</div>
+                            <div className='text-sm font-bold text-gray-900 dark:text-gray-100'>{dish.name}</div>
+                            <div className='text-xs text-gray-500 dark:text-gray-400'>{dish.deliveryTime}</div>
                             <div className='flex flex-wrap gap-1 mt-2'>
                                 {dish.ingredients && dish.ingredients.map((ingredient: string, i: number) => (
-                                    <span key={i} className='px-2 py-1 text-xs bg-gray-200 rounded-full text-gray-600'>
+                                    <span key={i} className='px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300'>
                                         {ingredient}
                                     </span>
                                 ))}
@@ -144,11 +143,11 @@ const RecommendedMenu: React.FC = () => {
                 </div>
                 <button
                     onClick={scrollRight}
-                    className='absolute right-[-40px] top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full transition-colors'
+                    className='absolute right-[-40px] top-1/2 transform -translate-y-1/2 text-gray-100 dark:text-gray-900 p-2 rounded-full transition-colors'
                     style={{ zIndex: 10 }}
                 >
                     <span
-                        className='text-3xl text-red-500'
+                        className='text-3xl text-red-500 dark:text-red-400'
                         style={{
                             transform: 'scaleY(6)',
                             display: 'inline-block',

@@ -6,8 +6,12 @@
   white-space: nowrap;
   font-family: 'Roboto', sans-serif;
   font-size: 20px;
-  font-weight: Bold;
-  
+  font-weight: Bold; 
+}
+
+.category-label.dark {
+  background-color: #ff4a4a;
+  color: #fff;
 }
 
 .checkbox-align {
@@ -17,4 +21,8 @@
 
 .page-container {
   margin-bottom: 50px; /* Khoảng trắng 50px ở cuối trang */
+}
+
+.page-container.dark {
+  background-color: #1a1a1a;
 }
