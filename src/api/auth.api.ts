@@ -8,9 +8,6 @@ export const login = async (
     roleCode: string = 'USER'
 ): Promise<{ access_token: string; refresh_token: string }> => {
     const response = await api.post(LOGIN_ENDPOINT, { email, password, remember_me: rememberMe, role_code: roleCode });
-    const { access_token, refresh_token } = response.data;
-    localStorage.setItem('accessToken', access_token);
-    localStorage.setItem('refreshToken', refresh_token);
     return response.data;
 };
 

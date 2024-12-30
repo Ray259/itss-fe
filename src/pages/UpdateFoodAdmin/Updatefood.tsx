@@ -47,6 +47,13 @@ const UpdateFoodForm: React.FC = () => {
     );
   };
 
+  const handleCancel = () => {
+    const confirmCancel = window.confirm("変更を取り消したいですか？");
+    if (confirmCancel) {
+      navigate("/admin/dishes");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('accessToken');
@@ -102,11 +109,11 @@ const UpdateFoodForm: React.FC = () => {
       );
   
       console.log("Dish updated successfully:", response.data);
-      alert("Món ăn đã được cập nhật thành công!");
-      navigate("/dishes");
+      alert("料理が正常に更新されました！");
+      navigate("/admin/dishes");
     } catch (error) {
       console.error("Failed to update dish:", error);
-      alert("Cập nhật món ăn thất bại!");
+      alert("料理の更新に失敗しました！");
     }
   };
   
@@ -233,7 +240,7 @@ const UpdateFoodForm: React.FC = () => {
         </div>
 
         <div className="d-flex justify-content-end">
-          <button type="button" className="btn btn-secondary me-3">
+          <button type="button" className="btn btn-secondary me-3" onClick={handleCancel}>
             キャンセル
           </button>
           <button type="submit" className="btn btn-danger">

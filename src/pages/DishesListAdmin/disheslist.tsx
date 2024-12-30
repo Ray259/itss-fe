@@ -28,7 +28,7 @@ const DishesList: React.FC = () => {
   useEffect(() => {
     axios
       .get("https://itss-restaurant-backend.onrender.com/api/v1/dishes", {
-        params: { per_page: 37, page: 1 }, // Lấy tất cả món ăn (hoặc giới hạn tùy backend)
+        params: { per_page: 37, page: 1 }, 
       })
       .then((response) => {
         const dishes = response.data.data.map((dish: any) => ({
@@ -44,6 +44,15 @@ const DishesList: React.FC = () => {
         console.error("Error fetching menu items:", error);
       });
   }, []);
+
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("ログアウトしてもよろしいですか？");
+    if (confirmLogout) {
+      localStorage.removeItem("accessToken");
+      alert("ログアウトが成功しました！");
+      navigate("/login/admin");
+    }
+  };
 
   const handleEdit = (id: string) => {
     navigate(`/dishes/${id}`);
@@ -66,11 +75,11 @@ const DishesList: React.FC = () => {
   const totalPages = Math.ceil(menuItems.length / itemsPerPage);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setCurrentPage(value); // Cập nhật trang hiện tại
+    setCurrentPage(value); 
   };
 
   const handleDelete = async (id: string) => {
-    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa món ăn này không?");
+    const confirmDelete = window.confirm("この料理を削除してもよろしいですか？");
     if (!confirmDelete) return;
   
     const token = localStorage.getItem('accessToken');
@@ -80,21 +89,43 @@ const DishesList: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert("Món ăn đã được xóa thành công!");
+      alert("料理が正常に削除されました！");
   
-      // Cập nhật danh sách món ăn
       setMenuItems((prevMenuItems) => prevMenuItems.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Lỗi khi xóa món ăn:", error);
-      alert("Xóa món ăn thất bại!");
+      alert("料理の削除に失敗しました！");
     }
   };
 
   return (
     <Box padding={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        padding={2}
+        sx={{
+          position: "relative",
+          width: "100%",
+          backgroundColor: "white",
+          zIndex: 1000,
+        }}
+      ></Box>
       <Typography variant="h4" gutterBottom style={{ color: "red", fontWeight: "bold" }}>
       食べ物一覧
       </Typography>
+      <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleLogout}
+          style={{ 
+            marginLeft: "auto", 
+            marginRight: "16px",
+            }}
+        >
+          ログアウト
+        </Button>
       <Box textAlign="center" marginBottom={2}>
         <Button
           variant="contained"

@@ -24,6 +24,13 @@ const AddFoodForm: React.FC = () => {
     );
   };
 
+  const handleCancel = () => {
+    const confirmCancel = window.confirm("変更を取り消したいですか？");
+    if (confirmCancel) {
+      navigate("/admin/dishes");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('accessToken');
@@ -76,6 +83,7 @@ const AddFoodForm: React.FC = () => {
       );
   
       console.log("Phản hồi từ server:", response.data);
+      alert("料理が正常に追加されました！");
       navigate("/dishes");
     } catch (error) {
       console.error("Lỗi khi xử lý:", error);
@@ -224,7 +232,7 @@ const AddFoodForm: React.FC = () => {
 
         {/* Nút bấm */}
         <div className="d-flex justify-content-end">
-          <button type="button" className="btn btn-secondary me-3">
+          <button type="button" className="btn btn-secondary me-3" onClick={handleCancel}>
             キャンセル
           </button>
           <button type="submit" className="btn btn-danger">
