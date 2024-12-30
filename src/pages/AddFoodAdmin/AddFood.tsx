@@ -84,7 +84,7 @@ const AddFoodForm: React.FC = () => {
   
       console.log("Phản hồi từ server:", response.data);
       alert("料理が正常に追加されました！");
-      navigate("/dishes");
+      navigate("/admin/dishes");
     } catch (error) {
       console.error("Lỗi khi xử lý:", error);
     }

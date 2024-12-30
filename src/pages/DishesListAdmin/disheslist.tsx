@@ -21,8 +21,8 @@ interface MenuItem {
 
 const DishesList: React.FC = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-  const itemsPerPage = 12; // Số món ăn mỗi trang
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 12; 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,11 +33,19 @@ const DishesList: React.FC = () => {
       .then((response) => {
         const dishes = response.data.data.map((dish: any) => ({
           foodname: dish.name || "No name",
-          address: dish.address || "No description",
+          address: dish.address || "No address",
           price: dish.price ? `${dish.price}đ` : "No price",
           image: { url: dish.images?.[0] }, 
           id: dish.id,
         }));
+        const sortedDishes = dishes.sort((a, b) => {
+          const idA = parseInt(a.id, 10);
+          const idB = parseInt(b.id, 10);
+          if (isNaN(idA) || isNaN(idB)) {
+            return b.id.localeCompare(a.id);
+          }
+          return idB - idA; 
+        });
         setMenuItems(dishes);
       })
       .catch((error) => {
