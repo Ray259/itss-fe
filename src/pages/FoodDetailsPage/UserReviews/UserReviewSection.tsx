@@ -3,6 +3,7 @@ import UserReview from './UserReview';
 import ReviewForm from './ReviewForm';
 import { getDishReviews, createDishReview } from '@/api/user-reviews.api';
 import { isLoggedIn } from '@/utils/auth';
+import { useTranslation } from 'react-i18next';
 
 interface ReviewProps {
     id: number;
@@ -48,10 +49,11 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
     const totalPages = Math.ceil(reviews.length / reviewsPerPage);
     const currentReviews = reviews.slice((currentPage - 1) * reviewsPerPage, currentPage * reviewsPerPage);
 
+    const { t } = useTranslation('details');
     return (
         <div className='flex border-t border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900'>
             <div className='p-4 w-1/2'>
-                <h2 className='text-2xl text-red-600 dark:text-red-400 font-semibold'>レビュー</h2>
+                <h2 className='text-2xl text-red-600 dark:text-red-400 font-semibold'>{t('reviews') }</h2>
                 {currentReviews.map((review) => (
                     <UserReview key={review.id} {...review} />
                 ))}
@@ -71,7 +73,7 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
                     ))}
                 </div>
             </div>
-            <div className='w-1/2 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md'>
+            <div className='w-1/2 bg-gray-100 dark:bg-gray-800'>
                 {isLoggedIn() ? (
                     <ReviewForm onCreateReview={handleCreateReview} />
                 ) : (

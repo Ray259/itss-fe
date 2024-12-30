@@ -1,0 +1,9 @@
+{
+    "categories": "カテゴリー",
+    "description": "詳細情報",
+    "reviews": "レビュー",
+    "yourReview": "あなたのレビュー",
+    "postReview": "投稿",
+    "placeholderReview" : "ここにレビューを追加してください...",
+    "rating": "評価"
+}

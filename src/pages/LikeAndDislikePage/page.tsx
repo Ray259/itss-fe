@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 const styles = {
   buttonContainer: {
@@ -27,14 +26,14 @@ const styles = {
   },
 };
 
-function LikeAndDislikePage() {
-  const [selectedItems, setSelectedItems] = useState<string[]>([]); // Lưu các mục đã chọn
-  const navigate = useNavigate();
-  const location = useLocation();
+interface LikeAndDislikePageProps {
+  source: 'likes' | 'dislikes';
+  selectedItems: string[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
+  onClose: () => void;
+}
 
-  // Nhận thông tin source từ state (likes hoặc dislikes)
-  const source = location.state?.source || 'likes';
-
+const LikeAndDislikePage: React.FC<LikeAndDislikePageProps> = ({ source, selectedItems, setSelectedItems, onClose }) => {
   const toggleSelection = (item: string) => {
     setSelectedItems((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
@@ -42,7 +41,7 @@ function LikeAndDislikePage() {
   };
 
   const handleSave = () => {
-    navigate('/anket', { state: { selectedItems, source } }); // Truyền selectedItems và source về Anket
+    onClose();
   };
 
   return (
@@ -139,6 +138,7 @@ function LikeAndDislikePage() {
           <button
             style={{ ...styles.button, ...styles.cancelButton }}
             type="button"
+            onClick={onClose}
           >
             キャンセル
           </button>

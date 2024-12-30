@@ -11,7 +11,9 @@
     "budgetQuestion": "食事の予算",
     "budgetPlaceholder": "例: ~50000VND",
     "likes": "好み",
+    "likesDes": "好みをリストに追加できます",
     "dislikes": "苦手",
+    "dislikesDes": "嫌いなものをリストに追加できます",
     "flavors": {
       "spicy": "辛い物",
       "sweet": "甘い物",

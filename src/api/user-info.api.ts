@@ -8,7 +8,7 @@ export interface UserPreferencesRequest {
     loved_distinct: number;
     loved_flavor: string[];
     loved_price: number;
-    vegeterian: boolean;
+    vegetarian: boolean;
 }
 export interface UpdateUserRequest {
     address?: string;
@@ -28,7 +28,7 @@ export interface UpdateUserRequest {
     loved_price?: number;
 }
 
-export const updatePreferences = async (id: string, body: UserPreferencesRequest) => {
+export const updatePreferences = async (id: number, body: UserPreferencesRequest) => {
     try {
         const token = getAccessToken();
         const response = await api.patch(`${USER_BASE_ENDPOINT}/${id}`, body, {
