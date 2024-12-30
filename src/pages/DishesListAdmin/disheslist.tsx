@@ -49,6 +49,7 @@ const DishesList: React.FC = () => {
     const confirmLogout = window.confirm("ログアウトしてもよろしいですか？");
     if (confirmLogout) {
       localStorage.removeItem("accessToken");
+      localStorage.removeItem('refreshToken');
       alert("ログアウトが成功しました！");
       navigate("/login/admin");
     }
