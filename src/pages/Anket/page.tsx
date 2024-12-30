@@ -50,6 +50,9 @@ const Anket: React.FC = () => {
                 const response = await updatePreferences(userId, requestData);
                 alert(t('saved'));
                 console.log('Response from API:', response);
+
+                // Chuyển hướng về Homepage sau khi lưu thành công
+                navigate('/homepage');
             } else {
                 console.error('User ID is undefined');
                 alert(t('userIdNotFound'));
