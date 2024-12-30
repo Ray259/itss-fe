@@ -221,7 +221,10 @@ const UpdateFoodForm: React.FC = () => {
                 gap: "20px",
               }}
             >
-              {["辛い物", "酸っぱい物", "揚げ物", "甘い物", "塩辛い物", "焼き物", "デザート", "日本料理", "ベトナム料理", "中華料理"].map((category) => (
+              {['辛い', '甘い', '苦い', '酸っぱい', '甘辛い', '塩辛い', '淡白', '薄い', '濃い', '旨味',
+                '人参', 'ニンニク', '鳥肉', '豚肉', '牛', '野菜', '唐辛子', '卵', '豆腐', 'う魚', 'チーズ',
+                '日本料理', '甘イタリア料理', 'フランス料理', 'ベトナム料理', 'アジア料理', 'ベジタリアン', '美食', 'ファストフード', 'ストリートフード'
+              ].map((category) => (
                 <div key={category} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "180px" }}>
                   <label className="form-check-label category-label" htmlFor={category}>{category}</label>
                   <input
