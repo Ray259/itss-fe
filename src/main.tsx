@@ -7,6 +7,10 @@ import { I18nextProvider } from 'react-i18next';
 import { HelmetProvider } from 'react-helmet-async';
 import { DarkModeProvider } from './contexts/DarkModeContext';
 
+if (!i18n.language) {
+    i18n.changeLanguage('ja');
+}
+
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <HelmetProvider>
