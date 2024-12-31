@@ -1,45 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import { getUserInfo, updateUser } from "@/api/user-info.api";
 import { useNavigate } from "react-router-dom";
-import { UserProfile } from "@/contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { useTranslation } from 'react-i18next';
 import LanguageSetting from '@/components/LanguageSetting';
 import { Helmet } from "react-helmet-async";
 import DarkModeSetting from '@/components/DarkModeSetting';
 
 const SettingsPage = () => {
-  const { t, i18n } = useTranslation('settings');
-  const [userData, setUserData] = useState<UserProfile | null>(null);
+  const { t } = useTranslation('settings');
+  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const fetchUserData = async () => {
-    try {
-      const user = await getUserInfo();
-      if (!user.phone) {
-        user.phone = "";
-      }
-      if (user.language) {
-        i18n.changeLanguage(user.language);
-      }
-      setUserData(user);
-    } catch (error) {
-      console.error("Failed to fetch user data:", error);
-    }
-  }
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  const [newPassword, setNewPassword] = useState("");
+
   const onSubmit = async () => {
-    if (!userData?.id) return;
+    if (!user?.id) return;
     try {
-      const response = await updateUser(userData?.id, userData);
+      const response = await updateUser(user.id, user);
+      await getUserInfo();
+      setUser(user);
       console.log("Response from API:", response);
       alert(t('save'));
     } catch (error) {
       console.error("Failed to update user:", error);
       alert(t('updateFailed'));
     }
-  }
-  const [newPassword, setNewPassword] = useState("");
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-800">
@@ -57,8 +43,8 @@ const SettingsPage = () => {
               <input
                 type="text"
                 placeholder={t('usernamePlaceholder')}
-                value={userData?.display_name}
-                onChange={(e) => setUserData({ ...userData, display_name: e.target.value })}
+                value={user?.display_name || ''}
+                onChange={(e) => setUser({ ...user, display_name: e.target.value })}
                 className="col-span-5 border border-orange-500 rounded-md w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-orange-400 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
               />
             </div>
@@ -68,8 +54,8 @@ const SettingsPage = () => {
               <input
                 type="text"
                 placeholder={t('avatarPlaceholder')}
-                value={userData?.avatar_url}
-                onChange={(e) => setUserData({ ...userData, avatar_url: e.target.value })}
+                value={user?.avatar_url || ''}
+                onChange={(e) => setUser({ ...user, avatar_url: e.target.value })}
                 className="col-span-5 border border-orange-500 rounded-md w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-orange-400 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
               />
             </div>
@@ -95,7 +81,7 @@ const SettingsPage = () => {
             <div className="grid grid-cols-6 items-center gap-4">
               <label className="col-span-1 text-gray-700 dark:text-gray-200">{t('language')}</label>
               <div className="col-span-5">
-                <LanguageSetting value={userData?.language || 'ja'} onChange={(value) => setUserData({ ...userData, language: value })} />
+                <LanguageSetting value={user?.language || 'ja'} onChange={(value) => setUser({ ...user, language: value })} />
               </div>
             </div>
 
@@ -106,11 +92,11 @@ const SettingsPage = () => {
                   type="range"
                   min="1"
                   max="50"
-                  value={userData?.font_size || 14}
-                  onChange={(e) => setUserData({ ...userData, font_size: parseInt(e.target.value) })}
+                  value={user?.font_size || 14}
+                  onChange={(e) => setUser({ ...user, font_size: parseInt(e.target.value) })}
                   className="w-full appearance-none h-2 rounded-full"
                   style={{
-                    background: `linear-gradient(to right, #FF6A00 0%, #FF6A00 ${userData?.font_size ? userData?.font_size * 2 : 28}%, #F3F4F6 ${userData?.font_size ? userData?.font_size : 28}%, #F3F4F6 100%)`,
+                    background: `linear-gradient(to right, #FF6A00 0%, #FF6A00 ${user?.font_size ? user.font_size * 2 : 28}%, #F3F4F6 ${user?.font_size ? user.font_size : 28}%, #F3F4F6 100%)`,
                   }}
                 />
               </div>
@@ -122,17 +108,17 @@ const SettingsPage = () => {
                 <input
                   type="checkbox"
                   className="sr-only peer"
-                  checked={userData?.notification}
-                  onChange={() => setUserData({ ...userData, notification: !userData?.notification })}
+                  checked={user?.notification || false}
+                  onChange={() => setUser({ ...user, notification: !user?.notification })}
                 />
                 <div
                   className={`w-11 h-6 rounded-full transition-all duration-300 ${
-                    userData?.notification ? "bg-orange-500" : "bg-gray-200 dark:bg-gray-700"
+                    user?.notification ? "bg-orange-500" : "bg-gray-200 dark:bg-gray-700"
                   }`}
                 >
                   <span
                     className={`absolute left-1 top-1 w-4 h-4 bg-gray-100 rounded-full transition-transform duration-300 ${
-                      userData?.notification ? "translate-x-5" : ""
+                      user?.notification ? "translate-x-5" : ""
                     }`}
                   ></span>
                 </div>
@@ -150,8 +136,8 @@ const SettingsPage = () => {
                 <input
                   id="favoriteTaste"
                   type="text"
-                  value={userData?.loved_flavor?.join(", ")}
-                  onChange={(e) => setUserData({ ...userData, loved_flavor: e.target.value.split(", ") })}
+                  value={user?.loved_flavor?.join(", ") || ''}
+                  onChange={(e) => setUser({ ...user, loved_flavor: e.target.value.split(", ") })}
                   className="flex-1 w-full border border-red-400 dark:border-red-500 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-400 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                   placeholder={t('favoriteTastePlaceholder')}
                 />
@@ -163,8 +149,8 @@ const SettingsPage = () => {
                 <input
                   id="dislikedTaste"
                   type="text"
-                  value={userData?.hated_flavor?.join(", ")}
-                  onChange={(e) => setUserData({ ...userData, hated_flavor: e.target.value.split(", ") })}
+                  value={user?.hated_flavor?.join(", ") || ''}
+                  onChange={(e) => setUser({ ...user, hated_flavor: e.target.value.split(", ") })}
                   className="flex-1 w-full border border-red-400 dark:border-red-500 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-400 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                   placeholder={t('dislikedTastePlaceholder')}
                 />
@@ -176,8 +162,8 @@ const SettingsPage = () => {
                 <input
                   id="location"
                   type="text"
-                  value={userData?.address}
-                  onChange={(e) => setUserData({ ...userData, address: e.target.value })}
+                  value={user?.address || ''}
+                  onChange={(e) => setUser({ ...user, address: e.target.value })}
                   className="flex-1 w-full border border-red-400 dark:border-red-500 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-400 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                   placeholder={t('locationPlaceholder')}
                 />
@@ -189,8 +175,8 @@ const SettingsPage = () => {
                 <input
                   id="favoriteCuisine"
                   type="text"
-                  value={userData?.loved_dish?.join(", ")}
-                  onChange={(e) => setUserData({ ...userData, loved_dish: e.target.value.split(", ") })}
+                  value={user?.loved_dish?.join(", ") || ''}
+                  onChange={(e) => setUser({ ...user, loved_dish: e.target.value.split(", ") })}
                   className="flex-1 w-full border border-red-400 dark:border-red-500 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-400 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
                   placeholder={t('favoriteCuisinePlaceholder')}
                 />

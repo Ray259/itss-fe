@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { updatePreferences, UserPreferencesRequest } from '@api/user-info.api';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getUserInfo, updatePreferences } from '@api/user-info.api';
 import { useTranslation } from 'react-i18next';
-import { getLocalUser } from '@/utils/auth';
 import Modal from '@components/Modal';
 import LikeAndDislikePage from '@/pages/LikeAndDislikePage/page';
+import { AuthContext } from '@/contexts/AuthContext';
 
 const Anket: React.FC = () => {
-    const user = getLocalUser();
-    const userId = user?.id;
+    const { user, setUser } = useContext(AuthContext);
     const { t } = useTranslation('anket');
     const location = useLocation();
     const navigate = useNavigate(); // Thêm hook điều hướng
@@ -17,10 +16,6 @@ const Anket: React.FC = () => {
     const selectedItems = location.state?.selectedItems || [];
     const source = location.state?.source || ''; // 'likes' hoặc 'dislikes'
 
-    const [vegetarian, setVegetarian] = useState<boolean>(false);
-    const [locationInput, setLocationInput] = useState<string>('');
-    const [distance, setDistance] = useState<string>('');
-    const [budget, setBudget] = useState<string>('');
     const [likes, setLikes] = useState<string[]>([]);
     const [dislikes, setDislikes] = useState<string[]>([]);
 
@@ -28,16 +23,14 @@ const Anket: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [modalSource, setModalSource] = useState<'likes' | 'dislikes'>('likes');
 
+    const isInit = useRef(false);
     useEffect(() => {
-        if (user) {
-            setVegetarian(user.vegetarian || false);
-            setLocationInput(user.address || '');
+        if (!isInit.current && user) {
             setLikes(user.loved_flavor || []);
             setDislikes(user.hated_flavor || []);
-            setDistance(user.loved_distinct?.toString() || '');
-            setBudget(user.loved_price?.toString() || '');
+            isInit.current = true;
         }
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         if (selectedItems.length > 0) {
@@ -52,20 +45,20 @@ const Anket: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const requestData: UserPreferencesRequest = {
-            vegetarian,
-            address: locationInput,
-            loved_distinct: parseInt(distance.replace(t('distanceUnit'), ''), 10),
-            loved_price: parseInt(budget.replace('~', '').replace('VND', ''), 10),
-            loved_flavor: likes,
-            hated_flavor: dislikes
-        };
-
         try {
-            if (userId) {
-                const response = await updatePreferences(userId, requestData);
-                alert(t('saved'));
+            if (user?.id) {
+                const updatedUser = {
+                    ...user,
+                    loved_flavor: likes,
+                    hated_flavor: dislikes,
+                    loved_distinct: parseFloat(user.loved_distinct?.replace(t('distanceUnit'), '')) || 0,
+                    loved_price: parseInt((user.loved_price?.toString() || '').replace('~', '').replace('VND', '')) || 0
+                };
+                const response = await updatePreferences(user.id, updatedUser);
                 console.log('Response from API:', response);
+                const refreshedUser = await getUserInfo();
+                setUser(refreshedUser);
+                alert(t('saved'));
 
                 // Chuyển hướng về Homepage sau khi lưu thành công
                 navigate('/homepage');
@@ -81,12 +74,9 @@ const Anket: React.FC = () => {
 
     const handleCancel = () => {
         if (user) {
-            setVegetarian(user.vegetarian || false);
-            setLocationInput(user.address || '');
+            setUser(user || {});
             setLikes(user.loved_flavor || []);
             setDislikes(user.hated_flavor || []);
-            setDistance(user.loved_distinct?.toString() || '');
-            setBudget(user.loved_price?.toString() || '');
         }
         console.log(t('formReset'));
     };
@@ -115,8 +105,8 @@ const Anket: React.FC = () => {
                                         type='radio'
                                         name='vegetarian'
                                         value='yes'
-                                        onChange={() => setVegetarian(true)}
-                                        checked={vegetarian === true}
+                                        onChange={() => setUser({ ...user, vegetarian: true, love_flavor: likes, hate_flavor: dislikes })}
+                                        checked={user?.vegetarian === true}
                                         className='mr-2'
                                     />
                                     {t('yes')}
@@ -126,8 +116,8 @@ const Anket: React.FC = () => {
                                         type='radio'
                                         name='vegetarian'
                                         value='no'
-                                        onChange={() => setVegetarian(false)}
-                                        checked={vegetarian === false}
+                                        onChange={() => setUser({ ...user, vegetarian: false, love_flavor: likes, hate_flavor: dislikes })}
+                                        checked={user?.vegetarian === false}
                                         className='mr-2'
                                     />
                                     {t('no')}
@@ -139,8 +129,8 @@ const Anket: React.FC = () => {
                             <input
                                 type='text'
                                 placeholder={t('locationPlaceholder')}
-                                value={locationInput}
-                                onChange={(e) => setLocationInput(e.target.value)}
+                                value={user?.address || ''}
+                                onChange={(e) => setUser({ ...user, address: e.target.value, love_flavor: likes, hate_flavor: dislikes })}
                                 className='w-full p-2 mt-2 border rounded'
                             />
                         </div>
@@ -149,8 +139,8 @@ const Anket: React.FC = () => {
                             <input
                                 type='text'
                                 placeholder={t('distancePlaceholder')}
-                                value={distance}
-                                onChange={(e) => setDistance(e.target.value)}
+                                value={user?.loved_distinct == '0' ? '' : user?.loved_distinct}
+                                onChange={(e) => setUser({ ...user, loved_distinct: e.target.value, love_flavor: likes, hate_flavor: dislikes })}
                                 className='w-full p-2 mt-2 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 rounded'
                             />
                         </div>
@@ -159,8 +149,8 @@ const Anket: React.FC = () => {
                             <input
                                 type='text'
                                 placeholder={t('budgetPlaceholder')}
-                                value={budget}
-                                onChange={(e) => setBudget(e.target.value)}
+                                value={user?.loved_price == '0' ? '' : user?.loved_price}
+                                onChange={(e) => setUser({ ...user, loved_price: e.target.value, love_flavor: likes, hate_flavor: dislikes })}
                                 className='w-full p-2 mt-2 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 rounded'
                             />
                         </div>

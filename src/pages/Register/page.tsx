@@ -53,7 +53,12 @@ export default function Register() {
             login(res.access_token, res.refresh_token);
             navigate('/anket');
         } catch (error: any) {
-            setErrorMessage(error.response?.data?.message || '登録に失敗しました。再度お試しください。');
+            console.log(error);
+            if (error.response?.data?.error_code === 'USER_ALREADY_EXISTS') {
+                setErrorMessage('このメールアドレスは既に登録されています。別のメールアドレスを使用してください。');
+            } else {
+                setErrorMessage(error.response?.data?.message || '登録に失敗しました。再度お試しください。');
+            }
         }
     };
 

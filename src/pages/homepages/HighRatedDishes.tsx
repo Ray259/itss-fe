@@ -78,15 +78,16 @@ const HighRatedDishes: React.FC = () => {
 
     return (
         <div
-            className='p-6 rounded-lg mt-6 bg-gradient-to-r from-red-500 to-pink-100 dark:from-gray-700 dark:to-red-500'
+            className='p-6 rounded-lg mt-6'
             style={{
+                background: 'linear-gradient(135deg, #ffdede, #ff1100)',
                 paddingLeft: '40px',
                 paddingRight: '40px',
-                boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.5)', // Thêm boxShadow màu trắng cho container chính
-                borderRadius: '15px' // Thêm borderRadius cho container chính
+                boxShadow: '15px 15px 30px rgba(255, 255, 255, 0.5)',
+                borderRadius: '15px'
             }}
         >
-            <h2 className='text-lg font-bold text-gray-100 dark:text-gray-200 mb-4'>{t('highlyRated')}</h2>
+            <h2 className='text-lg font-bold text-red-500 mb-4'>{t('highlyRated')}</h2>
             <div className='relative'>
                 {showLeftButton && (
                     <button

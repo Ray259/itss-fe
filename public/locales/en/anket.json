@@ -26,5 +26,6 @@
   "save": "Save",
   "saved": "Saved!",
   "userIdNotFound": "User ID not found.",
-  "updateFailed": "Update failed."
+  "updateFailed": "Update failed.",
+  "distanceUnit": "km"
 }

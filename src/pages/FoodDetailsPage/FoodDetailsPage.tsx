@@ -28,18 +28,34 @@ const FoodDetailsPage: React.FC = () => {
     const [averageRating, setAverageRating] = useState<number | null>(null); // State để lưu trữ rating trung bình
     const [reviewCount, setReviewCount] = useState<number>(0); // State để lưu trữ số lượng đánh giá
 
-    useEffect(() => {
-        const fetchFoodDetails = async () => {
-            try {
-                if (foodId) {
-                    const data = await getFoodDetailsById(foodId);
-                    setFoodDetails(data);
-                }
-            } catch (error) {
-                console.error('Error fetching food details:', error);
+    const fetchFoodDetails = async () => {
+        try {
+            if (foodId) {
+                const data = await getFoodDetailsById(foodId);
+                setFoodDetails(data);
             }
-        };
+        } catch (error) {
+            console.error('Error fetching food details:', error);
+        }
+    };
 
+    const fetchReviews = async () => {
+        try {
+            if (foodId) {
+                const reviews = await getDishReviews(foodId);
+                if (Array.isArray(reviews)) {
+                    const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+                    const average = totalRating / reviews.length;
+                    setAverageRating(Math.round(average)); // Làm tròn rating trung bình
+                    setReviewCount(reviews.length);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchFoodDetails();
     }, [foodId]);
 
@@ -59,22 +75,6 @@ const FoodDetailsPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                if (foodId) {
-                    const reviews = await getDishReviews(foodId);
-                    if (Array.isArray(reviews)) {
-                        const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
-                        const average = totalRating / reviews.length;
-                        setAverageRating(Math.round(average)); // Làm tròn rating trung bình
-                        setReviewCount(reviews.length);
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching reviews:', error);
-            }
-        };
-
         fetchReviews();
     }, [foodId]);
 
@@ -105,7 +105,9 @@ const FoodDetailsPage: React.FC = () => {
                 details={foodDetails.info}
                 categories={foodDetails.categories}
             />
-            {isLoggedIn() && userId !== null && <UserReviewSection dishId={foodId!} userId={userId} />}
+            {isLoggedIn() && userId !== null && (
+                <UserReviewSection dishId={foodId!} userId={userId} onCreateReview={fetchReviews} />
+            )}
         </div>
     );
 };

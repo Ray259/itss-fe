@@ -15,25 +15,31 @@ interface ReviewProps {
     avatar?: string;
 }
 
-const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishId, userId }) => {
-    const [reviews, setReviews] = useState<ReviewProps[]>([]); // Initial empty array
+interface UserReviewSectionProps {
+    dishId: string;
+    userId: number;
+    onCreateReview: () => void;
+}
+
+const UserReviewSection: React.FC<UserReviewSectionProps> = ({ dishId, userId, onCreateReview }) => {
+    const [reviews, setReviews] = useState<ReviewProps[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const reviewsPerPage = 2;
 
-    useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const fetchedReviews = await getDishReviews(dishId);
-                if (Array.isArray(fetchedReviews)) {
-                    setReviews(fetchedReviews);
-                } else {
-                    console.error('Fetched reviews is not an array:', fetchedReviews);
-                }
-            } catch (error) {
-                console.error('Failed to fetch reviews:', error);
+    const fetchReviews = async () => {
+        try {
+            const fetchedReviews = await getDishReviews(dishId);
+            if (Array.isArray(fetchedReviews)) {
+                setReviews(fetchedReviews);
+            } else {
+                console.error('Fetched reviews is not an array:', fetchedReviews);
             }
-        };
+        } catch (error) {
+            console.error('Failed to fetch reviews:', error);
+        }
+    };
 
+    useEffect(() => {
         fetchReviews();
     }, [dishId]);
 
@@ -41,6 +47,7 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
         try {
             const newReview = await createDishReview(dishId, { ...review, userId });
             setReviews([newReview, ...reviews]);
+            onCreateReview(); // Gọi lại hàm tải dữ liệu từ thành phần cha
         } catch (error) {
             console.error('Failed to create review:', error);
         }
@@ -53,7 +60,7 @@ const UserReviewSection: React.FC<{ dishId: string; userId: number }> = ({ dishI
     return (
         <div className='flex border-t border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900'>
             <div className='p-4 w-1/2'>
-                <h2 className='text-2xl text-red-600 dark:text-red-400 font-semibold'>{t('reviews') }</h2>
+                <h2 className='text-2xl text-red-600 dark:text-red-400 font-semibold'>{t('reviews')}</h2>
                 {currentReviews.map((review) => (
                     <UserReview key={review.id} {...review} />
                 ))}

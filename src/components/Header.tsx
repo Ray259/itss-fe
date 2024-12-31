@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import toggleButton from '../assets/img/toggle btn.svg';
 import SearchBar from './SearchBar';
-import { getLocalUser } from '@/utils/auth';
 import defaultAvatar from '@assets/img/default-avatar.png';
 import { AuthContext } from '@/contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -12,9 +11,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
-    const { logout } = useContext(AuthContext);
+    const { logout, user } = useContext(AuthContext);
     const { t } = useTranslation();
-    const user = getLocalUser();
     const [showDropdown, setShowDropdown] = useState(false);
     return (
         <div className='w-full z-10 h-24 shadow-md flex items-center justify-between px-4 bg-gray-100 dark:bg-gray-800 dark:shadow-lg'>
