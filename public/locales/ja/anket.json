@@ -26,5 +26,6 @@
     "save": "保存",
     "saved": "保存しました！",
     "userIdNotFound": "ユーザーIDが見つかりません。",
-    "updateFailed": "更新に失敗しました。"
+    "updateFailed": "更新に失敗しました。",
+    "distanceUnit": "キロ"
   }

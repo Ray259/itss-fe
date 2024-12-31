@@ -26,5 +26,6 @@
     "save": "Lưu",
     "saved": "Đã lưu!",
     "userIdNotFound": "Không tìm thấy ID người dùng.",
-    "updateFailed": "Cập nhật thất bại."
+    "updateFailed": "Cập nhật thất bại.",
+    "distanceUnit": "km"
   }

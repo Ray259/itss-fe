@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setAccessToken, setRefreshToken, clearTokens, setLocalUser, clearLocalUser, getAccessToken } from '@/utils/auth';
+import { setAccessToken, setRefreshToken, clearTokens, getAccessToken } from '@/utils/auth';
 import { getUserInfo } from '@/api/user-info.api';
 import { useTranslation } from 'react-i18next';
 
@@ -58,15 +58,14 @@ const AuthProvider = ({ children }: Props) => {
         const initializeAuth = async () => {
             const token = getAccessToken();
             if (token) {
-                console.log('Access token found:', token);
                 setAuthenticated(true);
                 try {
                     const user = await getUserInfo();
+                    console.log('Fetched user info:', user);
+                    setUser(user);
                     if (user.language) {
                         i18n.changeLanguage(user.language);
                     }
-                    setUser(user);
-                    setLocalUser(user);
                 } catch (error) {
                     console.error('Failed to fetch user info:', error);
                     logout();
@@ -91,7 +90,6 @@ const AuthProvider = ({ children }: Props) => {
                 console.log('User language:', user.language);
             }
             setUser(user);
-            setLocalUser(user);
         } catch (error) {
             console.error('Failed to fetch user info:', error);
             logout();
@@ -100,7 +98,6 @@ const AuthProvider = ({ children }: Props) => {
 
     const logout = () => {
         clearTokens();
-        clearLocalUser();
         setAuthenticated(false);
         setUser(null);
         navigate('/login');
