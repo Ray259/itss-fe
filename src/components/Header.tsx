@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import defaultAvatar from '@assets/img/default-avatar.png';
 import { AuthContext } from '@/contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
     toggleSidebar: () => void;
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
+    const navigate = useNavigate();
     const { logout, user } = useContext(AuthContext);
     const { t } = useTranslation();
     const [showDropdown, setShowDropdown] = useState(false);
@@ -48,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                                 onClick={() => {
                                     logout();
                                     setShowDropdown(false);
-                                    window.location.href = '/login';
+                                    navigate('/login');
                                 }}
                             >
                                 {t('logout')}
@@ -60,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                 <div className='flex items-center space-x-4'>
                     <button
                         className='px-4 py-2 rounded-lg text-gray-900 font-bold bg-gradient-to-r from-pink-100 to-red-500 hover:from-red-500 hover:to-red-700 shadow-md transition-all dark:text-gray-100 dark:from-gray-800 dark:to-gray-700 dark:hover:from-gray-700 dark:hover:to-gray-900'
-                        onClick={() => (window.location.href = '/login')}
+                        onClick={() => navigate('/login')}
                     >
                         {t('login')}
                     </button>
